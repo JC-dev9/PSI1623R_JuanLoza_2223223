@@ -44,9 +44,11 @@ namespace BeLightBible
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+            this.panel1 = new System.Windows.Forms.Panel();
             this.materialTabControl1.SuspendLayout();
             this.tabBible.SuspendLayout();
             this.flowLayoutPanelVersiculos.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // materialTabControl1
@@ -79,10 +81,8 @@ namespace BeLightBible
             // 
             // tabBible
             // 
-            this.tabBible.Controls.Add(this.btnBuscar);
-            this.tabBible.Controls.Add(this.cmbCapitulo);
-            this.tabBible.Controls.Add(this.cmbLivro);
             this.tabBible.Controls.Add(this.flowLayoutPanelVersiculos);
+            this.tabBible.Controls.Add(this.panel1);
             this.tabBible.ImageKey = "book-marked(1).png";
             this.tabBible.Location = new System.Drawing.Point(4, 31);
             this.tabBible.Name = "tabBible";
@@ -100,7 +100,7 @@ namespace BeLightBible
             this.btnBuscar.Depth = 0;
             this.btnBuscar.HighEmphasis = true;
             this.btnBuscar.Icon = null;
-            this.btnBuscar.Location = new System.Drawing.Point(437, 6);
+            this.btnBuscar.Location = new System.Drawing.Point(395, 8);
             this.btnBuscar.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnBuscar.MouseState = MaterialSkin.MouseState.HOVER;
             this.btnBuscar.Name = "btnBuscar";
@@ -128,7 +128,7 @@ namespace BeLightBible
             this.cmbCapitulo.FormattingEnabled = true;
             this.cmbCapitulo.IntegralHeight = false;
             this.cmbCapitulo.ItemHeight = 29;
-            this.cmbCapitulo.Location = new System.Drawing.Point(278, 6);
+            this.cmbCapitulo.Location = new System.Drawing.Point(275, 9);
             this.cmbCapitulo.MaxDropDownItems = 4;
             this.cmbCapitulo.MouseState = MaterialSkin.MouseState.OUT;
             this.cmbCapitulo.Name = "cmbCapitulo";
@@ -151,7 +151,7 @@ namespace BeLightBible
             this.cmbLivro.FormattingEnabled = true;
             this.cmbLivro.IntegralHeight = false;
             this.cmbLivro.ItemHeight = 29;
-            this.cmbLivro.Location = new System.Drawing.Point(6, 6);
+            this.cmbLivro.Location = new System.Drawing.Point(3, 9);
             this.cmbLivro.MaxDropDownItems = 4;
             this.cmbLivro.MouseState = MaterialSkin.MouseState.OUT;
             this.cmbLivro.Name = "cmbLivro";
@@ -164,14 +164,18 @@ namespace BeLightBible
             // 
             this.flowLayoutPanelVersiculos.AutoScroll = true;
             this.flowLayoutPanelVersiculos.Controls.Add(this.richTextBoxVersiculos);
+            this.flowLayoutPanelVersiculos.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanelVersiculos.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flowLayoutPanelVersiculos.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.flowLayoutPanelVersiculos.Location = new System.Drawing.Point(3, 55);
+            this.flowLayoutPanelVersiculos.Location = new System.Drawing.Point(3, 62);
+            this.flowLayoutPanelVersiculos.Margin = new System.Windows.Forms.Padding(0, 25, 0, 0);
             this.flowLayoutPanelVersiculos.Name = "flowLayoutPanelVersiculos";
-            this.flowLayoutPanelVersiculos.Padding = new System.Windows.Forms.Padding(6, 0, 0, 0);
-            this.flowLayoutPanelVersiculos.Size = new System.Drawing.Size(798, 337);
+            this.flowLayoutPanelVersiculos.Padding = new System.Windows.Forms.Padding(6, 25, 0, 0);
+            this.flowLayoutPanelVersiculos.Size = new System.Drawing.Size(798, 330);
             this.flowLayoutPanelVersiculos.TabIndex = 0;
             this.flowLayoutPanelVersiculos.WrapContents = false;
+            this.flowLayoutPanelVersiculos.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+
             // 
             // richTextBoxVersiculos
             // 
@@ -180,7 +184,7 @@ namespace BeLightBible
             this.richTextBoxVersiculos.Dock = System.Windows.Forms.DockStyle.Fill;
             this.richTextBoxVersiculos.Font = new System.Drawing.Font("Segoe UI", 11F);
             this.richTextBoxVersiculos.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.richTextBoxVersiculos.Location = new System.Drawing.Point(9, 3);
+            this.richTextBoxVersiculos.Location = new System.Drawing.Point(9, 28);
             this.richTextBoxVersiculos.Name = "richTextBoxVersiculos";
             this.richTextBoxVersiculos.ReadOnly = true;
             this.richTextBoxVersiculos.Size = new System.Drawing.Size(0, 0);
@@ -216,6 +220,17 @@ namespace BeLightBible
             this.imageList1.Images.SetKeyName(2, "book-marked(1).png");
             this.imageList1.Images.SetKeyName(3, "house.png");
             // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.btnBuscar);
+            this.panel1.Controls.Add(this.cmbLivro);
+            this.panel1.Controls.Add(this.cmbCapitulo);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel1.Location = new System.Drawing.Point(3, 3);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(798, 59);
+            this.panel1.TabIndex = 5;
+            // 
             // MenuForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -230,8 +245,9 @@ namespace BeLightBible
             this.Load += new System.EventHandler(this.MenuForm_Load);
             this.materialTabControl1.ResumeLayout(false);
             this.tabBible.ResumeLayout(false);
-            this.tabBible.PerformLayout();
             this.flowLayoutPanelVersiculos.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -249,5 +265,6 @@ namespace BeLightBible
         private MaterialSkin.Controls.MaterialButton btnBuscar;
         private MaterialSkin.Controls.MaterialComboBox cmbCapitulo;
         private RichTextBox richTextBoxVersiculos;
+        private Panel panel1;
     }
 }

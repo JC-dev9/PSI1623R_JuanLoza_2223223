@@ -34,7 +34,60 @@ namespace BeLightBible
 );
         }
 
-    
+        private async Task BibleTab(string livro, int capitulo)
+        {
+
+            string url = $"https://bible-api.com/{livro}+{capitulo}?translation=almeida";
+
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    HttpResponseMessage response = await client.GetAsync(url);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string json = await response.Content.ReadAsStringAsync();
+                        dynamic data = JsonConvert.DeserializeObject(json);
+
+                        flowLayoutPanelVersiculos.Controls.Clear(); // Limpa os antigos
+
+                        foreach (var versiculo in data.verses)
+                        {
+                            MaterialLabel lbl = new MaterialLabel();
+                            lbl.Text = $"{versiculo.verse}: {versiculo.text}";
+                            lbl.Tag = (int)versiculo.verse;
+                            lbl.Cursor = Cursors.Hand;
+                            lbl.MouseClick += new MouseEventHandler(VersiculoClicado);
+                            lbl.AutoSize = true;
+                            lbl.Margin = new Padding(5);
+                            float tamanhoFonte = this.Width / 70f; // Ajuste esse valor como quiser
+                            lbl.Font = new Font("Roboto", tamanhoFonte);
+
+                            var card = new Panel()
+                            {
+                                Padding = new Padding(10),
+                                Margin = new Padding(5),
+                                AutoSize = true,
+                            };
+
+                            lbl.ForeColor = Color.White;
+                            lbl.BackColor = Color.Transparent;
+
+                            card.Controls.Add(lbl);
+                            flowLayoutPanelVersiculos.Controls.Add(card);
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Erro ao buscar versículos da API.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Erro: {ex.Message}");
+                }
+            }
+        }
 
         private async Task SetupBibleTab()
         {
@@ -68,40 +121,7 @@ namespace BeLightBible
             menu.Show(lbl, new Point(e.X, e.Y));
         }
 
-        private async Task BibleTab(string livro, int capitulo)
-        {
-
-            string url = $"https://bible-api.com/{livro}+{capitulo}?translation=almeida";
-
-            using (HttpClient client = new HttpClient())
-            {
-                try
-                {
-                    HttpResponseMessage response = await client.GetAsync(url);
-                    if (response.IsSuccessStatusCode)
-                    {
-                        string json = await response.Content.ReadAsStringAsync();
-                        dynamic data = JsonConvert.DeserializeObject(json);
-
-                        flowLayoutPanelVersiculos.Controls.Clear(); // Limpa os antigos
-
-                        foreach (var versiculo in data.verses)
-                        {
-                            MaterialLabel lbl = new MaterialLabel();
-                            lbl.Text = $"{versiculo.verse}: {versiculo.text}";
-                        }
-                    }
-                    else
-                    {
-                        MessageBox.Show("Erro ao buscar versículos da API.");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Erro: {ex.Message}");
-                }
-            }
-        }
+       
 
 
         private void btnLogout_Click(object sender, EventArgs e)
