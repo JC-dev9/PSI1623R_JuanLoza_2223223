@@ -36,15 +36,15 @@ namespace BeLightBible
             this.materialTabControl1 = new MaterialSkin.Controls.MaterialTabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabBible = new System.Windows.Forms.TabPage();
-            this.btnBuscar = new MaterialSkin.Controls.MaterialButton();
-            this.cmbCapitulo = new MaterialSkin.Controls.MaterialComboBox();
-            this.cmbLivro = new MaterialSkin.Controls.MaterialComboBox();
             this.flowLayoutPanelVersiculos = new System.Windows.Forms.FlowLayoutPanel();
             this.richTextBoxVersiculos = new System.Windows.Forms.RichTextBox();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.btnBuscar = new MaterialSkin.Controls.MaterialButton();
+            this.cmbLivro = new MaterialSkin.Controls.MaterialComboBox();
+            this.cmbCapitulo = new MaterialSkin.Controls.MaterialComboBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
-            this.panel1 = new System.Windows.Forms.Panel();
             this.materialTabControl1.SuspendLayout();
             this.tabBible.SuspendLayout();
             this.flowLayoutPanelVersiculos.SuspendLayout();
@@ -93,6 +93,48 @@ namespace BeLightBible
             this.tabBible.UseVisualStyleBackColor = true;
             this.tabBible.Click += new System.EventHandler(this.tabPage2_Click);
             // 
+            // flowLayoutPanelVersiculos
+            // 
+            this.flowLayoutPanelVersiculos.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.flowLayoutPanelVersiculos.AutoScroll = true;
+            this.flowLayoutPanelVersiculos.Controls.Add(this.richTextBoxVersiculos);
+            this.flowLayoutPanelVersiculos.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.flowLayoutPanelVersiculos.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.flowLayoutPanelVersiculos.Location = new System.Drawing.Point(3, 62);
+            this.flowLayoutPanelVersiculos.Margin = new System.Windows.Forms.Padding(0, 25, 0, 0);
+            this.flowLayoutPanelVersiculos.Name = "flowLayoutPanelVersiculos";
+            this.flowLayoutPanelVersiculos.Padding = new System.Windows.Forms.Padding(6, 25, 0, 0);
+            this.flowLayoutPanelVersiculos.Size = new System.Drawing.Size(798, 330);
+            this.flowLayoutPanelVersiculos.TabIndex = 0;
+            this.flowLayoutPanelVersiculos.WrapContents = false;
+            // 
+            // richTextBoxVersiculos
+            // 
+            this.richTextBoxVersiculos.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            this.richTextBoxVersiculos.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.richTextBoxVersiculos.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.richTextBoxVersiculos.Font = new System.Drawing.Font("Segoe UI", 11F);
+            this.richTextBoxVersiculos.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.richTextBoxVersiculos.Location = new System.Drawing.Point(9, 28);
+            this.richTextBoxVersiculos.Name = "richTextBoxVersiculos";
+            this.richTextBoxVersiculos.ReadOnly = true;
+            this.richTextBoxVersiculos.Size = new System.Drawing.Size(0, 0);
+            this.richTextBoxVersiculos.TabIndex = 0;
+            this.richTextBoxVersiculos.Text = "";
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.btnBuscar);
+            this.panel1.Controls.Add(this.cmbLivro);
+            this.panel1.Controls.Add(this.cmbCapitulo);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel1.Location = new System.Drawing.Point(3, 3);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(798, 59);
+            this.panel1.TabIndex = 5;
+            // 
             // btnBuscar
             // 
             this.btnBuscar.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
@@ -113,29 +155,6 @@ namespace BeLightBible
             this.btnBuscar.UseAccentColor = false;
             this.btnBuscar.UseVisualStyleBackColor = true;
             this.btnBuscar.Click += new System.EventHandler(this.btnBuscar_Click);
-            // 
-            // cmbCapitulo
-            // 
-            this.cmbCapitulo.AutoResize = false;
-            this.cmbCapitulo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.cmbCapitulo.Depth = 0;
-            this.cmbCapitulo.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
-            this.cmbCapitulo.DropDownHeight = 118;
-            this.cmbCapitulo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbCapitulo.DropDownWidth = 121;
-            this.cmbCapitulo.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.cmbCapitulo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.cmbCapitulo.FormattingEnabled = true;
-            this.cmbCapitulo.IntegralHeight = false;
-            this.cmbCapitulo.ItemHeight = 29;
-            this.cmbCapitulo.Location = new System.Drawing.Point(275, 9);
-            this.cmbCapitulo.MaxDropDownItems = 4;
-            this.cmbCapitulo.MouseState = MaterialSkin.MouseState.OUT;
-            this.cmbCapitulo.Name = "cmbCapitulo";
-            this.cmbCapitulo.Size = new System.Drawing.Size(101, 35);
-            this.cmbCapitulo.StartIndex = 0;
-            this.cmbCapitulo.TabIndex = 2;
-            this.cmbCapitulo.UseTallSize = false;
             // 
             // cmbLivro
             // 
@@ -160,36 +179,28 @@ namespace BeLightBible
             this.cmbLivro.TabIndex = 1;
             this.cmbLivro.UseTallSize = false;
             // 
-            // flowLayoutPanelVersiculos
+            // cmbCapitulo
             // 
-            this.flowLayoutPanelVersiculos.AutoScroll = true;
-            this.flowLayoutPanelVersiculos.Controls.Add(this.richTextBoxVersiculos);
-            this.flowLayoutPanelVersiculos.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanelVersiculos.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanelVersiculos.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.flowLayoutPanelVersiculos.Location = new System.Drawing.Point(3, 62);
-            this.flowLayoutPanelVersiculos.Margin = new System.Windows.Forms.Padding(0, 25, 0, 0);
-            this.flowLayoutPanelVersiculos.Name = "flowLayoutPanelVersiculos";
-            this.flowLayoutPanelVersiculos.Padding = new System.Windows.Forms.Padding(6, 25, 0, 0);
-            this.flowLayoutPanelVersiculos.Size = new System.Drawing.Size(798, 330);
-            this.flowLayoutPanelVersiculos.TabIndex = 0;
-            this.flowLayoutPanelVersiculos.WrapContents = false;
-            this.flowLayoutPanelVersiculos.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-
-            // 
-            // richTextBoxVersiculos
-            // 
-            this.richTextBoxVersiculos.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
-            this.richTextBoxVersiculos.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.richTextBoxVersiculos.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.richTextBoxVersiculos.Font = new System.Drawing.Font("Segoe UI", 11F);
-            this.richTextBoxVersiculos.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.richTextBoxVersiculos.Location = new System.Drawing.Point(9, 28);
-            this.richTextBoxVersiculos.Name = "richTextBoxVersiculos";
-            this.richTextBoxVersiculos.ReadOnly = true;
-            this.richTextBoxVersiculos.Size = new System.Drawing.Size(0, 0);
-            this.richTextBoxVersiculos.TabIndex = 0;
-            this.richTextBoxVersiculos.Text = "";
+            this.cmbCapitulo.AutoResize = false;
+            this.cmbCapitulo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.cmbCapitulo.Depth = 0;
+            this.cmbCapitulo.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
+            this.cmbCapitulo.DropDownHeight = 118;
+            this.cmbCapitulo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbCapitulo.DropDownWidth = 121;
+            this.cmbCapitulo.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.cmbCapitulo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.cmbCapitulo.FormattingEnabled = true;
+            this.cmbCapitulo.IntegralHeight = false;
+            this.cmbCapitulo.ItemHeight = 29;
+            this.cmbCapitulo.Location = new System.Drawing.Point(275, 9);
+            this.cmbCapitulo.MaxDropDownItems = 4;
+            this.cmbCapitulo.MouseState = MaterialSkin.MouseState.OUT;
+            this.cmbCapitulo.Name = "cmbCapitulo";
+            this.cmbCapitulo.Size = new System.Drawing.Size(101, 35);
+            this.cmbCapitulo.StartIndex = 0;
+            this.cmbCapitulo.TabIndex = 2;
+            this.cmbCapitulo.UseTallSize = false;
             // 
             // tabPage3
             // 
@@ -219,17 +230,6 @@ namespace BeLightBible
             this.imageList1.Images.SetKeyName(1, "bot.png");
             this.imageList1.Images.SetKeyName(2, "book-marked(1).png");
             this.imageList1.Images.SetKeyName(3, "house.png");
-            // 
-            // panel1
-            // 
-            this.panel1.Controls.Add(this.btnBuscar);
-            this.panel1.Controls.Add(this.cmbLivro);
-            this.panel1.Controls.Add(this.cmbCapitulo);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(3, 3);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(798, 59);
-            this.panel1.TabIndex = 5;
             // 
             // MenuForm
             // 

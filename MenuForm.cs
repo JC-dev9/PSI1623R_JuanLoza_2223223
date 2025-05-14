@@ -10,18 +10,19 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Net.Http;
+using BeLightBible.Services;
 using Newtonsoft.Json;
 
 namespace BeLightBible
 {
     public partial class MenuForm : MaterialForm
     {
+        private readonly ApiBibleService bibleService = new ApiBibleService();
         private readonly MaterialSkinManager materialSkinManager;
         public MenuForm()
         {
             InitializeComponent();
          
-
             var skinManager = MaterialSkinManager.Instance;
             skinManager.AddFormToManage(this);
             skinManager.Theme = MaterialSkinManager.Themes.DARK;
@@ -36,37 +37,40 @@ namespace BeLightBible
 
         private async Task BibleTab(string livro, int capitulo)
         {
+            var data = await bibleService.BuscarVersiculo(livro, capitulo);
 
-            string url = $"https://bible-api.com/{livro}+{capitulo}?translation=almeida";
-
-            using (HttpClient client = new HttpClient())
+            if (data == null)
             {
-                try
-                {
-                    HttpResponseMessage response = await client.GetAsync(url);
-                    if (response.IsSuccessStatusCode)
-                    {
-                        string json = await response.Content.ReadAsStringAsync();
-                        dynamic data = JsonConvert.DeserializeObject(json);
+                MessageBox.Show("Erro ao buscar versículos da API.");
+                return;
+            }
 
-                        flowLayoutPanelVersiculos.Controls.Clear(); // Limpa os antigos
+            flowLayoutPanelVersiculos.Controls.Clear();
 
-                        foreach (var versiculo in data.verses)
+            foreach (var versiculo in data.verses)
                         {
-                            MaterialLabel lbl = new MaterialLabel();
+                            Label lbl = new Label();
                             lbl.Text = $"{versiculo.verse}: {versiculo.text}";
                             lbl.Tag = (int)versiculo.verse;
                             lbl.Cursor = Cursors.Hand;
                             lbl.MouseClick += new MouseEventHandler(VersiculoClicado);
-                            lbl.AutoSize = true;
-                            lbl.Margin = new Padding(5);
+
+
                             float tamanhoFonte = this.Width / 70f; // Ajuste esse valor como quiser
-                            lbl.Font = new Font("Roboto", tamanhoFonte);
+
+                            lbl.AutoSize = true;
+                            lbl.Height = TextRenderer.MeasureText(lbl.Text, lbl.Font, new Size(lbl.Width, int.MaxValue), TextFormatFlags.WordBreak).Height + 20;
+
+                            lbl.MaximumSize = new Size(flowLayoutPanelVersiculos.ClientSize.Width - 20, 0);
+                            lbl.Width = flowLayoutPanelVersiculos.ClientSize.Width - 20;
+                            lbl.Font = new Font("Segoe UI", 12, FontStyle.Italic);
+                            lbl.Margin = new Padding(1);
+                            lbl.Padding = new Padding(1);
 
                             var card = new Panel()
                             {
-                                Padding = new Padding(10),
-                                Margin = new Padding(5),
+                                Padding = new Padding(1),
+                                Margin = new Padding(1),
                                 AutoSize = true,
                             };
 
@@ -76,31 +80,12 @@ namespace BeLightBible
                             card.Controls.Add(lbl);
                             flowLayoutPanelVersiculos.Controls.Add(card);
                         }
-                    }
-                    else
-                    {
-                        MessageBox.Show("Erro ao buscar versículos da API.");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Erro: {ex.Message}");
-                }
-            }
+            
+
+            
         }
 
-        private async Task SetupBibleTab()
-        {
-            // Simula um atraso para mostrar o carregamento
-            // await Task.Delay(2000);
-
-            // Aqui você pode adicionar o código para carregar a Bíblia
-            // Por exemplo, carregar os livros, capítulos e versículos da Bíblia
-            // Isso pode incluir chamadas a APIs ou consultas a bancos de dados
-            // lblLoading.Visible = false; // Esconde o rótulo de carregamento
-        }
-
-        private void GrifarVersiculo(MaterialLabel lbl)
+        private void GrifarVersiculo(Label lbl)
         {
             ColorDialog colorDialog = new ColorDialog();
             if (colorDialog.ShowDialog() == DialogResult.OK)
@@ -113,16 +98,28 @@ namespace BeLightBible
         }
         private void VersiculoClicado(object sender, MouseEventArgs e)
         {
-            MaterialLabel lbl = sender as MaterialLabel;
-            int numero = (int)lbl.Tag;
 
-            ContextMenu menu = new ContextMenu();
-            menu.MenuItems.Add("Grifar", (s, ev) => GrifarVersiculo(lbl));
-            menu.Show(lbl, new Point(e.X, e.Y));
+                Label lbl = sender as Label;
+                int numero = (int)lbl.Tag;
+
+                // Sublinha o texto
+                lbl.Font = new Font(lbl.Font, lbl.Font.Style | FontStyle.Underline);
+
+                // Cria um ContextMenuStrip (mais moderno que ContextMenu)
+                ContextMenuStrip menu = new ContextMenuStrip();
+
+                // Adiciona a opção "Grifar"
+                menu.Items.Add("Grifar", null, (s, ev) => GrifarVersiculo(lbl));
+
+                // Quando o menu for fechado, remove o sublinhado
+                menu.Closed += (s, ev) =>
+                {
+                    lbl.Font = new Font(lbl.Font, lbl.Font.Style & ~FontStyle.Underline);
+                };
+
+                // Mostra o menu na posição do clique
+                menu.Show(lbl, new Point(e.X, e.Y));
         }
-
-       
-
 
         private void btnLogout_Click(object sender, EventArgs e)
         {
@@ -133,12 +130,19 @@ namespace BeLightBible
 
         private void MenuForm_Load(object sender, EventArgs e)
         {
-            var livros = new List<string> { "Gênesis", "Êxodo", "Levítico", "Números", "Deuteronômio" }; // Pode expandir
+            // Obter todos os livros e adicionar no combo box
 
+            var livros = Versiculo.GetTodosOsLivros();
             cmbLivro.Items.AddRange(livros.ToArray());
             cmbLivro.SelectedIndex = 0;
 
-            for (int i = 1; i <= 50; i++) // Ex: Gênesis tem até 50
+            // Limpar capítulos ao mudar de livro
+            cmbCapitulo.Items.Clear();
+
+            string livroSelecionado = cmbLivro.SelectedItem.ToString();
+            int numeroCapitulos = Versiculo.GetNumeroDeCapitulos(livroSelecionado);
+
+            for (int i = 1; i <= numeroCapitulos; i++)
                 cmbCapitulo.Items.Add(i.ToString());
 
             cmbCapitulo.SelectedIndex = 0;
