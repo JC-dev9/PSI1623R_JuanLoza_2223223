@@ -91,7 +91,6 @@ namespace BeLightBible
             this.tabBible.TabIndex = 1;
             this.tabBible.Text = "Bíblia";
             this.tabBible.UseVisualStyleBackColor = true;
-            this.tabBible.Click += new System.EventHandler(this.tabPage2_Click);
             // 
             // flowLayoutPanelVersiculos
             // 
@@ -242,7 +241,6 @@ namespace BeLightBible
             this.Name = "MenuForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "BeLight Bible";
-            this.Load += new System.EventHandler(this.MenuForm_Load);
             this.materialTabControl1.ResumeLayout(false);
             this.tabBible.ResumeLayout(false);
             this.flowLayoutPanelVersiculos.ResumeLayout(false);
