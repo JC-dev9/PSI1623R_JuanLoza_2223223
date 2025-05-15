@@ -39,20 +39,22 @@ namespace BeLightBible
             this.flowLayoutPanelVersiculos = new System.Windows.Forms.FlowLayoutPanel();
             this.richTextBoxVersiculos = new System.Windows.Forms.RichTextBox();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.picAudio = new System.Windows.Forms.PictureBox();
+            this.picBtnAnteriorCapitulo = new System.Windows.Forms.PictureBox();
+            this.picBtnProximoCapitulo = new System.Windows.Forms.PictureBox();
             this.btnBuscar = new MaterialSkin.Controls.MaterialButton();
             this.cmbLivro = new MaterialSkin.Controls.MaterialComboBox();
             this.cmbCapitulo = new MaterialSkin.Controls.MaterialComboBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
-            this.picBtnProximoCapitulo = new System.Windows.Forms.PictureBox();
-            this.picBtnAnteriorCapitulo = new System.Windows.Forms.PictureBox();
             this.materialTabControl1.SuspendLayout();
             this.tabBible.SuspendLayout();
             this.flowLayoutPanelVersiculos.SuspendLayout();
             this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.picBtnProximoCapitulo)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picAudio)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picBtnAnteriorCapitulo)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picBtnProximoCapitulo)).BeginInit();
             this.SuspendLayout();
             // 
             // materialTabControl1
@@ -69,7 +71,7 @@ namespace BeLightBible
             this.materialTabControl1.Multiline = true;
             this.materialTabControl1.Name = "materialTabControl1";
             this.materialTabControl1.SelectedIndex = 0;
-            this.materialTabControl1.Size = new System.Drawing.Size(812, 430);
+            this.materialTabControl1.Size = new System.Drawing.Size(874, 430);
             this.materialTabControl1.TabIndex = 0;
             // 
             // tabPage1
@@ -91,7 +93,7 @@ namespace BeLightBible
             this.tabBible.Location = new System.Drawing.Point(4, 31);
             this.tabBible.Name = "tabBible";
             this.tabBible.Padding = new System.Windows.Forms.Padding(3);
-            this.tabBible.Size = new System.Drawing.Size(804, 395);
+            this.tabBible.Size = new System.Drawing.Size(866, 395);
             this.tabBible.TabIndex = 1;
             this.tabBible.Text = "Bíblia";
             this.tabBible.UseVisualStyleBackColor = true;
@@ -109,7 +111,7 @@ namespace BeLightBible
             this.flowLayoutPanelVersiculos.Margin = new System.Windows.Forms.Padding(0, 25, 0, 0);
             this.flowLayoutPanelVersiculos.Name = "flowLayoutPanelVersiculos";
             this.flowLayoutPanelVersiculos.Padding = new System.Windows.Forms.Padding(6, 25, 0, 0);
-            this.flowLayoutPanelVersiculos.Size = new System.Drawing.Size(798, 330);
+            this.flowLayoutPanelVersiculos.Size = new System.Drawing.Size(860, 330);
             this.flowLayoutPanelVersiculos.TabIndex = 0;
             this.flowLayoutPanelVersiculos.WrapContents = false;
             // 
@@ -130,6 +132,7 @@ namespace BeLightBible
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.Transparent;
+            this.panel1.Controls.Add(this.picAudio);
             this.panel1.Controls.Add(this.picBtnAnteriorCapitulo);
             this.panel1.Controls.Add(this.picBtnProximoCapitulo);
             this.panel1.Controls.Add(this.btnBuscar);
@@ -139,8 +142,36 @@ namespace BeLightBible
             this.panel1.ForeColor = System.Drawing.SystemColors.GrayText;
             this.panel1.Location = new System.Drawing.Point(3, 3);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(798, 59);
+            this.panel1.Size = new System.Drawing.Size(860, 59);
             this.panel1.TabIndex = 5;
+            // 
+            // picAudio
+            // 
+            this.picAudio.Image = ((System.Drawing.Image)(resources.GetObject("picAudio.Image")));
+            this.picAudio.Location = new System.Drawing.Point(512, 5);
+            this.picAudio.Name = "picAudio";
+            this.picAudio.Size = new System.Drawing.Size(77, 47);
+            this.picAudio.TabIndex = 7;
+            this.picAudio.TabStop = false;
+            this.picAudio.Click += new System.EventHandler(this.picAudio_Click);
+            // 
+            // picBtnAnteriorCapitulo
+            // 
+            this.picBtnAnteriorCapitulo.Image = ((System.Drawing.Image)(resources.GetObject("picBtnAnteriorCapitulo.Image")));
+            this.picBtnAnteriorCapitulo.Location = new System.Drawing.Point(608, 5);
+            this.picBtnAnteriorCapitulo.Name = "picBtnAnteriorCapitulo";
+            this.picBtnAnteriorCapitulo.Size = new System.Drawing.Size(77, 47);
+            this.picBtnAnteriorCapitulo.TabIndex = 6;
+            this.picBtnAnteriorCapitulo.TabStop = false;
+            // 
+            // picBtnProximoCapitulo
+            // 
+            this.picBtnProximoCapitulo.Image = ((System.Drawing.Image)(resources.GetObject("picBtnProximoCapitulo.Image")));
+            this.picBtnProximoCapitulo.Location = new System.Drawing.Point(705, 5);
+            this.picBtnProximoCapitulo.Name = "picBtnProximoCapitulo";
+            this.picBtnProximoCapitulo.Size = new System.Drawing.Size(77, 47);
+            this.picBtnProximoCapitulo.TabIndex = 5;
+            this.picBtnProximoCapitulo.TabStop = false;
             // 
             // btnBuscar
             // 
@@ -239,29 +270,11 @@ namespace BeLightBible
             this.imageList1.Images.SetKeyName(2, "book-marked(1).png");
             this.imageList1.Images.SetKeyName(3, "house.png");
             // 
-            // picBtnProximoCapitulo
-            // 
-            this.picBtnProximoCapitulo.Image = ((System.Drawing.Image)(resources.GetObject("picBtnProximoCapitulo.Image")));
-            this.picBtnProximoCapitulo.Location = new System.Drawing.Point(705, 5);
-            this.picBtnProximoCapitulo.Name = "picBtnProximoCapitulo";
-            this.picBtnProximoCapitulo.Size = new System.Drawing.Size(77, 47);
-            this.picBtnProximoCapitulo.TabIndex = 5;
-            this.picBtnProximoCapitulo.TabStop = false;
-            // 
-            // picBtnAnteriorCapitulo
-            // 
-            this.picBtnAnteriorCapitulo.Image = ((System.Drawing.Image)(resources.GetObject("picBtnAnteriorCapitulo.Image")));
-            this.picBtnAnteriorCapitulo.Location = new System.Drawing.Point(608, 5);
-            this.picBtnAnteriorCapitulo.Name = "picBtnAnteriorCapitulo";
-            this.picBtnAnteriorCapitulo.Size = new System.Drawing.Size(77, 47);
-            this.picBtnAnteriorCapitulo.TabIndex = 6;
-            this.picBtnAnteriorCapitulo.TabStop = false;
-            // 
             // MenuForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(818, 497);
+            this.ClientSize = new System.Drawing.Size(880, 497);
             this.Controls.Add(this.materialTabControl1);
             this.DrawerShowIconsWhenHidden = true;
             this.DrawerTabControl = this.materialTabControl1;
@@ -273,8 +286,9 @@ namespace BeLightBible
             this.flowLayoutPanelVersiculos.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.picBtnProximoCapitulo)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picAudio)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picBtnAnteriorCapitulo)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picBtnProximoCapitulo)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -295,5 +309,6 @@ namespace BeLightBible
         private Panel panel1;
         private PictureBox picBtnProximoCapitulo;
         private PictureBox picBtnAnteriorCapitulo;
+        private PictureBox picAudio;
     }
 }
