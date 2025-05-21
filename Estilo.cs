@@ -14,14 +14,16 @@ namespace BeLightBible
 
         public void EstilizarPictureBoxComoBotao(PictureBox pic, bool proximo, ComboBox cmbLivro, ComboBox cmbCapitulo, Func<string, int, Task> BibleTab)
         {
-            pic.BackColor = Color.FromArgb(255, 138, 101); // DeepOrange200
+            pic.BackColor = Color.FromArgb(255, 112, 67); // DeepOrange200
             pic.SizeMode = PictureBoxSizeMode.CenterImage;
             pic.Cursor = Cursors.Hand;
             pic.Padding = new Padding(8);
 
-            pic.MouseEnter += (s, e) => pic.BackColor = Color.FromArgb(255, 112, 67);  // DeepOrange300
+            pic.MouseEnter += (s, e) => pic.BackColor = Color.FromArgb(255, 138, 101);  // DeepOrange300
             pic.MouseDown += (s, e) => pic.BackColor = Color.FromArgb(230, 74, 25);    // DeepOrange700
-            pic.MouseUp += (s, e) => pic.BackColor = Color.FromArgb(255, 112, 67);
+            pic.MouseUp += (s, e) => pic.BackColor = Color.FromArgb(255, 138, 101);
+            pic.MouseLeave += (s, e) => pic.BackColor = Color.FromArgb(255, 112, 67);  // Voltar para DeepOrange200
+
 
             pic.Click += async (s, e) =>
             {
@@ -60,14 +62,15 @@ namespace BeLightBible
 
         public void EstilizarPictureBoxAudio(PictureBox pic)
         {
-            pic.BackColor = Color.FromArgb(255, 138, 101); // DeepOrange200
+          pic.BackColor = Color.FromArgb(255, 112, 67); // DeepOrange200
             pic.SizeMode = PictureBoxSizeMode.CenterImage;
             pic.Cursor = Cursors.Hand;
             pic.Padding = new Padding(8);
 
-            pic.MouseEnter += (s, e) => pic.BackColor = Color.FromArgb(255, 112, 67);  // DeepOrange300
+            pic.MouseEnter += (s, e) => pic.BackColor = Color.FromArgb(255, 138, 101);  // DeepOrange300
             pic.MouseDown += (s, e) => pic.BackColor = Color.FromArgb(230, 74, 25);    // DeepOrange700
-            pic.MouseUp += (s, e) => pic.BackColor = Color.FromArgb(255, 112, 67);
+            pic.MouseUp += (s, e) => pic.BackColor = Color.FromArgb(255, 138, 101);
+            pic.MouseLeave += (s, e) => pic.BackColor = Color.FromArgb(255, 112, 67);  // Voltar para DeepOrange200
 
         }
 

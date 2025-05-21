@@ -16,7 +16,7 @@ namespace BeLightBible
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MenuForm());
+            Application.Run(new LoginForm());
         }
     }
 }

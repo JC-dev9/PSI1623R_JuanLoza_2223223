@@ -36,11 +36,21 @@ namespace BeLightBible
         {
             Utilizador user = new Utilizador();
 
-            if (user.Autenticar(txtUsername.Text.Trim(), txtPassword.Text.Trim()))
+            string username = txtUsername.Text.Trim();
+            string password = txtPassword.Text.Trim();
+
+            if (user.Autenticar(username, password))
             {
+                // Salva Informações na sessão
+                Sessao.Username = username;
+                Sessao.UserId = user.ObterUserId(username);
+
+                // Abre a tela principal 
                 var mainForm = new MenuForm();
                 mainForm.Show();
                 this.Hide(); // Esconde o formulário de login
+                MessageBox.Show(Sessao.UserId.ToString());
+
             }
             else
             {

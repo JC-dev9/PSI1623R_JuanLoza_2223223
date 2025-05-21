@@ -81,7 +81,7 @@ namespace BeLightBible
             this.tabPage1.Location = new System.Drawing.Point(4, 31);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(804, 395);
+            this.tabPage1.Size = new System.Drawing.Size(866, 395);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Home";
             // 
@@ -245,7 +245,7 @@ namespace BeLightBible
             this.tabPage3.ImageKey = "notepad-text.png";
             this.tabPage3.Location = new System.Drawing.Point(4, 31);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(804, 395);
+            this.tabPage3.Size = new System.Drawing.Size(866, 395);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Notebook";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -255,7 +255,7 @@ namespace BeLightBible
             this.tabPage4.ImageKey = "bot.png";
             this.tabPage4.Location = new System.Drawing.Point(4, 31);
             this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Size = new System.Drawing.Size(804, 395);
+            this.tabPage4.Size = new System.Drawing.Size(866, 395);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "Settings";
             this.tabPage4.UseVisualStyleBackColor = true;

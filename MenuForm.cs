@@ -10,10 +10,13 @@ using BeLightBible.Services;
 using Newtonsoft.Json;
 using System.Drawing.Drawing2D;
 using BeLightBible.Controls;
+using System.Linq;
 using System.Speech.Synthesis;
+using System.Data.SqlClient;
 
 namespace BeLightBible
 {
+
     public partial class MenuForm : MaterialForm
     {
         private PictureBox picLoading;
@@ -66,6 +69,16 @@ namespace BeLightBible
             estilo.ArredondarControle(picAudio, 10);
         }
 
+        private List<VersiculoSublinhado> ObterGrifosUtilizador(int userId, string livro, int capitulo)
+        {
+            using (var context = new Entities())
+            {
+                return context.VersiculoSublinhado
+                    .Where(v => v.UserId == userId && v.Livro == livro && v.Capitulo == capitulo)
+                    .ToList();
+            }
+        }
+
         private void CarregarLivros()
         {
             var livrosDictionary = livros.ObterLivros();
@@ -103,6 +116,7 @@ namespace BeLightBible
             };
 
             flowLayoutPanelVersiculos.Controls.Add(lblTituloCapitulo);
+            var grifos = ObterGrifosUtilizador(Sessao.UserId, livro, capitulo);
 
             foreach (var versiculo in data.verses)
             {
@@ -119,6 +133,14 @@ namespace BeLightBible
                     ForeColor = Color.White,
                     BackColor = Color.Transparent
                 };
+
+                foreach (var item in grifos)
+                {
+                    if (item.Versiculo == Convert.ToInt32(lbl.Tag))
+                    {
+                        lbl.BackColor = ColorTranslator.FromHtml(item.Cor);
+                    }
+                }
 
                 lbl.MouseClick += VersiculoClicado;
 
@@ -155,7 +177,7 @@ namespace BeLightBible
                 cmbCapitulo.SelectedIndex = 0;
         }
 
-        private void VersiculoClicado(object sender, MouseEventArgs e)
+        private async void VersiculoClicado(object sender, MouseEventArgs e)
         {
             if (sender is Label lbl)
             {
@@ -163,8 +185,34 @@ namespace BeLightBible
                 Versiculo versiculo = new Versiculo(lbl);
 
                 ContextMenuStrip menu = new ContextMenuStrip();
-                menu.Items.Add(new ToolStripMenuItem("Grifar", Image.FromFile("icons/palette.png"), (s, ev) => versiculo.Grifar()));
+                menu.Items.Add(new ToolStripMenuItem("Grifar", Image.FromFile("icons/palette.png"), (s, ev) =>
+                {
+                    int versNumero = Convert.ToInt32(lbl.Tag);
+                    versiculo.Grifar(
+                        Sessao.UserId,
+                        cmbLivro.SelectedItem.ToString(),
+                        int.Parse(cmbCapitulo.SelectedItem.ToString()),
+                        versNumero
+                    );
+                }
+                ));
                 menu.Items.Add(new ToolStripMenuItem("Copiar", Image.FromFile("icons/copy.png"), (s, ev) => versiculo.Copiar()));
+                menu.Items.Add(new ToolStripMenuItem("Anotar", Image.FromFile("icons/notepad.png"), async (s, ev) =>
+                {
+                    int versNumero = Convert.ToInt32(lbl.Tag);
+                    await versiculo.Anotar(
+                        Sessao.UserId,
+                        cmbLivro.SelectedItem.ToString(),
+                        int.Parse(cmbCapitulo.SelectedItem.ToString()),
+                        versNumero,
+                        async () => await BibleTab(cmbLivro.SelectedItem.ToString(), int.Parse(cmbCapitulo.SelectedItem.ToString()))
+                    );
+                }));
+                menu.Items.Add(new ToolStripMenuItem("Chatbot", Image.FromFile("icons/brain.png"), (s, ev) => versiculo.Copiar()));
+                menu.Items.Add(new ToolStripMenuItem("Compartilhar", Image.FromFile("icons/share-2.png"), (s, ev) => versiculo.Copiar()));
+
+
+
 
                 menu.Closed += (s, ev) =>
                 {

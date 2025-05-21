@@ -9,6 +9,11 @@ using BCrypt.Net;
 
 namespace BeLightBible
 {
+    public static class Sessao
+    {
+        public static int UserId { get; set; }
+        public static string Username { get; set; }
+    }
     public class Utilizador
     {
         private static string connectionString = "Server=localhost\\SQLEXPRESS;Database=BeLightBibleDB;Trusted_Connection=True;TrustServerCertificate=True";
@@ -66,6 +71,26 @@ namespace BeLightBible
                     return Utils.VerifyPassword(password, storedHash); // Verifica a senha
                 }
                 return false; // Retorna false se o utilizador não existe
+            }
+        }
+
+        public int ObterUserId(string username)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string query = "SELECT UserId FROM Users WHERE Username = @Username";
+                SqlCommand cmd = new SqlCommand(query, connection);
+                cmd.Parameters.Add("@Username", SqlDbType.NVarChar).Value = username;
+
+                connection.Open();
+                object result = cmd.ExecuteScalar();
+
+                if (result != null && int.TryParse(result.ToString(), out int userId))
+                {
+                    return userId;
+                }
+
+                return -1;
             }
         }
     }
