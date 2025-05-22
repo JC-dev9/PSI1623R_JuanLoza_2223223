@@ -33,46 +33,48 @@ namespace BeLightBible
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MenuForm));
-            this.materialTabControl1 = new MaterialSkin.Controls.MaterialTabControl();
+            this.TabControlPrincipal = new MaterialSkin.Controls.MaterialTabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabBible = new System.Windows.Forms.TabPage();
             this.flowLayoutPanelVersiculos = new System.Windows.Forms.FlowLayoutPanel();
             this.richTextBoxVersiculos = new System.Windows.Forms.RichTextBox();
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.pnlBible = new System.Windows.Forms.Panel();
             this.picAudio = new System.Windows.Forms.PictureBox();
             this.picBtnAnteriorCapitulo = new System.Windows.Forms.PictureBox();
             this.picBtnProximoCapitulo = new System.Windows.Forms.PictureBox();
             this.btnBuscar = new MaterialSkin.Controls.MaterialButton();
             this.cmbLivro = new MaterialSkin.Controls.MaterialComboBox();
             this.cmbCapitulo = new MaterialSkin.Controls.MaterialComboBox();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.tabChatbot = new System.Windows.Forms.TabPage();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
-            this.materialTabControl1.SuspendLayout();
+            this.materialTextBox21 = new MaterialSkin.Controls.MaterialTextBox2();
+            this.btnEnviar = new MaterialSkin.Controls.MaterialButton();
+            this.flowLayoutPanelConversa = new System.Windows.Forms.FlowLayoutPanel();
+            this.TabControlPrincipal.SuspendLayout();
             this.tabBible.SuspendLayout();
             this.flowLayoutPanelVersiculos.SuspendLayout();
-            this.panel1.SuspendLayout();
+            this.pnlBible.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picAudio)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picBtnAnteriorCapitulo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picBtnProximoCapitulo)).BeginInit();
+            this.tabChatbot.SuspendLayout();
             this.SuspendLayout();
             // 
-            // materialTabControl1
+            // TabControlPrincipal
             // 
-            this.materialTabControl1.Controls.Add(this.tabPage1);
-            this.materialTabControl1.Controls.Add(this.tabBible);
-            this.materialTabControl1.Controls.Add(this.tabPage3);
-            this.materialTabControl1.Controls.Add(this.tabPage4);
-            this.materialTabControl1.Depth = 0;
-            this.materialTabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.materialTabControl1.ImageList = this.imageList1;
-            this.materialTabControl1.Location = new System.Drawing.Point(3, 64);
-            this.materialTabControl1.MouseState = MaterialSkin.MouseState.HOVER;
-            this.materialTabControl1.Multiline = true;
-            this.materialTabControl1.Name = "materialTabControl1";
-            this.materialTabControl1.SelectedIndex = 0;
-            this.materialTabControl1.Size = new System.Drawing.Size(874, 430);
-            this.materialTabControl1.TabIndex = 0;
+            this.TabControlPrincipal.Controls.Add(this.tabPage1);
+            this.TabControlPrincipal.Controls.Add(this.tabBible);
+            this.TabControlPrincipal.Controls.Add(this.tabChatbot);
+            this.TabControlPrincipal.Depth = 0;
+            this.TabControlPrincipal.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.TabControlPrincipal.ImageList = this.imageList1;
+            this.TabControlPrincipal.Location = new System.Drawing.Point(3, 64);
+            this.TabControlPrincipal.MouseState = MaterialSkin.MouseState.HOVER;
+            this.TabControlPrincipal.Multiline = true;
+            this.TabControlPrincipal.Name = "TabControlPrincipal";
+            this.TabControlPrincipal.SelectedIndex = 0;
+            this.TabControlPrincipal.Size = new System.Drawing.Size(874, 430);
+            this.TabControlPrincipal.TabIndex = 0;
             // 
             // tabPage1
             // 
@@ -88,7 +90,7 @@ namespace BeLightBible
             // tabBible
             // 
             this.tabBible.Controls.Add(this.flowLayoutPanelVersiculos);
-            this.tabBible.Controls.Add(this.panel1);
+            this.tabBible.Controls.Add(this.pnlBible);
             this.tabBible.ImageKey = "book-marked(1).png";
             this.tabBible.Location = new System.Drawing.Point(4, 31);
             this.tabBible.Name = "tabBible";
@@ -129,21 +131,21 @@ namespace BeLightBible
             this.richTextBoxVersiculos.TabIndex = 0;
             this.richTextBoxVersiculos.Text = "";
             // 
-            // panel1
+            // pnlBible
             // 
-            this.panel1.BackColor = System.Drawing.Color.Transparent;
-            this.panel1.Controls.Add(this.picAudio);
-            this.panel1.Controls.Add(this.picBtnAnteriorCapitulo);
-            this.panel1.Controls.Add(this.picBtnProximoCapitulo);
-            this.panel1.Controls.Add(this.btnBuscar);
-            this.panel1.Controls.Add(this.cmbLivro);
-            this.panel1.Controls.Add(this.cmbCapitulo);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.ForeColor = System.Drawing.SystemColors.GrayText;
-            this.panel1.Location = new System.Drawing.Point(3, 3);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(860, 59);
-            this.panel1.TabIndex = 5;
+            this.pnlBible.BackColor = System.Drawing.Color.Transparent;
+            this.pnlBible.Controls.Add(this.picAudio);
+            this.pnlBible.Controls.Add(this.picBtnAnteriorCapitulo);
+            this.pnlBible.Controls.Add(this.picBtnProximoCapitulo);
+            this.pnlBible.Controls.Add(this.btnBuscar);
+            this.pnlBible.Controls.Add(this.cmbLivro);
+            this.pnlBible.Controls.Add(this.cmbCapitulo);
+            this.pnlBible.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlBible.ForeColor = System.Drawing.SystemColors.GrayText;
+            this.pnlBible.Location = new System.Drawing.Point(3, 3);
+            this.pnlBible.Name = "pnlBible";
+            this.pnlBible.Size = new System.Drawing.Size(860, 59);
+            this.pnlBible.TabIndex = 5;
             // 
             // picAudio
             // 
@@ -240,26 +242,18 @@ namespace BeLightBible
             this.cmbCapitulo.TabIndex = 2;
             this.cmbCapitulo.UseTallSize = false;
             // 
-            // tabPage3
+            // tabChatbot
             // 
-            this.tabPage3.ImageKey = "notepad-text.png";
-            this.tabPage3.Location = new System.Drawing.Point(4, 31);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(866, 395);
-            this.tabPage3.TabIndex = 2;
-            this.tabPage3.Text = "Notebook";
-            this.tabPage3.UseVisualStyleBackColor = true;
-            // 
-            // tabPage4
-            // 
-            this.tabPage4.ImageKey = "bot.png";
-            this.tabPage4.Location = new System.Drawing.Point(4, 31);
-            this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Size = new System.Drawing.Size(866, 395);
-            this.tabPage4.TabIndex = 3;
-            this.tabPage4.Text = "Settings";
-            this.tabPage4.UseVisualStyleBackColor = true;
-            this.tabPage4.Click += new System.EventHandler(this.tabPage4_Click);
+            this.tabChatbot.Controls.Add(this.flowLayoutPanelConversa);
+            this.tabChatbot.Controls.Add(this.btnEnviar);
+            this.tabChatbot.Controls.Add(this.materialTextBox21);
+            this.tabChatbot.ImageKey = "bot.png";
+            this.tabChatbot.Location = new System.Drawing.Point(4, 31);
+            this.tabChatbot.Name = "tabChatbot";
+            this.tabChatbot.Size = new System.Drawing.Size(866, 395);
+            this.tabChatbot.TabIndex = 2;
+            this.tabChatbot.Text = "Chatbot";
+            this.tabChatbot.UseVisualStyleBackColor = true;
             // 
             // imageList1
             // 
@@ -270,45 +264,105 @@ namespace BeLightBible
             this.imageList1.Images.SetKeyName(2, "book-marked(1).png");
             this.imageList1.Images.SetKeyName(3, "house.png");
             // 
+            // materialTextBox21
+            // 
+            this.materialTextBox21.AnimateReadOnly = false;
+            this.materialTextBox21.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.materialTextBox21.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal;
+            this.materialTextBox21.Depth = 0;
+            this.materialTextBox21.Font = new System.Drawing.Font("Roboto", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.materialTextBox21.HideSelection = true;
+            this.materialTextBox21.Hint = "Pergunte qualquer coisa";
+            this.materialTextBox21.LeadingIcon = null;
+            this.materialTextBox21.Location = new System.Drawing.Point(13, 333);
+            this.materialTextBox21.MaxLength = 32767;
+            this.materialTextBox21.MouseState = MaterialSkin.MouseState.OUT;
+            this.materialTextBox21.Name = "materialTextBox21";
+            this.materialTextBox21.PasswordChar = '\0';
+            this.materialTextBox21.PrefixSuffixText = null;
+            this.materialTextBox21.ReadOnly = false;
+            this.materialTextBox21.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.materialTextBox21.SelectedText = "";
+            this.materialTextBox21.SelectionLength = 0;
+            this.materialTextBox21.SelectionStart = 0;
+            this.materialTextBox21.ShortcutsEnabled = true;
+            this.materialTextBox21.Size = new System.Drawing.Size(617, 48);
+            this.materialTextBox21.TabIndex = 0;
+            this.materialTextBox21.TabStop = false;
+            this.materialTextBox21.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.materialTextBox21.TrailingIcon = null;
+            this.materialTextBox21.UseSystemPasswordChar = false;
+            // 
+            // btnEnviar
+            // 
+            this.btnEnviar.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnEnviar.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            this.btnEnviar.Depth = 0;
+            this.btnEnviar.HighEmphasis = true;
+            this.btnEnviar.Icon = null;
+            this.btnEnviar.Location = new System.Drawing.Point(661, 345);
+            this.btnEnviar.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.btnEnviar.MouseState = MaterialSkin.MouseState.HOVER;
+            this.btnEnviar.Name = "btnEnviar";
+            this.btnEnviar.NoAccentTextColor = System.Drawing.Color.Empty;
+            this.btnEnviar.Size = new System.Drawing.Size(73, 36);
+            this.btnEnviar.TabIndex = 5;
+            this.btnEnviar.Text = "Enviar";
+            this.btnEnviar.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnEnviar.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            this.btnEnviar.UseAccentColor = false;
+            this.btnEnviar.UseVisualStyleBackColor = true;
+            // 
+            // flowLayoutPanelConversa
+            // 
+            this.flowLayoutPanelConversa.Location = new System.Drawing.Point(3, 3);
+            this.flowLayoutPanelConversa.Name = "flowLayoutPanelConversa";
+            this.flowLayoutPanelConversa.Size = new System.Drawing.Size(860, 324);
+            this.flowLayoutPanelConversa.TabIndex = 6;
+            // 
             // MenuForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(880, 497);
-            this.Controls.Add(this.materialTabControl1);
+            this.Controls.Add(this.TabControlPrincipal);
             this.DrawerShowIconsWhenHidden = true;
-            this.DrawerTabControl = this.materialTabControl1;
+            this.DrawerTabControl = this.TabControlPrincipal;
             this.Name = "MenuForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "BeLight Bible";
-            this.materialTabControl1.ResumeLayout(false);
+            this.TabControlPrincipal.ResumeLayout(false);
             this.tabBible.ResumeLayout(false);
             this.flowLayoutPanelVersiculos.ResumeLayout(false);
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
+            this.pnlBible.ResumeLayout(false);
+            this.pnlBible.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picAudio)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picBtnAnteriorCapitulo)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picBtnProximoCapitulo)).EndInit();
+            this.tabChatbot.ResumeLayout(false);
+            this.tabChatbot.PerformLayout();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private MaterialSkin.Controls.MaterialTabControl materialTabControl1;
+        private MaterialSkin.Controls.MaterialTabControl TabControlPrincipal;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabBible;
         private System.Windows.Forms.ImageList imageList1;
-        private System.Windows.Forms.TabPage tabPage3;
-        private System.Windows.Forms.TabPage tabPage4;
+        private System.Windows.Forms.TabPage tabChatbot;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanelVersiculos;
         private MaterialSkin.Controls.MaterialComboBox cmbLivro;
         private MaterialSkin.Controls.MaterialButton btnBuscar;
         private MaterialSkin.Controls.MaterialComboBox cmbCapitulo;
         private RichTextBox richTextBoxVersiculos;
-        private Panel panel1;
+        private Panel pnlBible;
         private PictureBox picBtnProximoCapitulo;
         private PictureBox picBtnAnteriorCapitulo;
         private PictureBox picAudio;
+        private MaterialSkin.Controls.MaterialTextBox2 materialTextBox21;
+        private MaterialSkin.Controls.MaterialButton btnEnviar;
+        private FlowLayoutPanel flowLayoutPanelConversa;
     }
 }

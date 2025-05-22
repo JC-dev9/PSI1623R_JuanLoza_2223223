@@ -2,6 +2,7 @@
 using MaterialSkin.Controls;
 using System;
 using System.Windows.Forms;
+using System.Runtime.InteropServices;
 
 namespace BeLightBible
 {
@@ -35,10 +36,14 @@ namespace BeLightBible
         }
 
         private void CriarComponentes(string textoAtual)
-{
-    this.Text = "Anotação";
-    this.Size = new System.Drawing.Size(500, 360);
-    this.StartPosition = FormStartPosition.CenterScreen;
+        {
+            this.Text = "Anotação";
+            this.Size = new System.Drawing.Size(500, 360);
+            this.StartPosition = FormStartPosition.CenterScreen;
+
+            this.FormBorderStyle = FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
 
             txtAnotacao = new MaterialMultiLineTextBox2
             {
@@ -50,38 +55,47 @@ namespace BeLightBible
                 ForeColor = System.Drawing.Color.White
             };
 
-
             btnSalvar = new MaterialButton
-    {
-        Text = "Salvar",
-        Location = new System.Drawing.Point(260, 270),
-        AutoSize = false,
-        Size = new System.Drawing.Size(100, 36)
-    };
-    btnSalvar.Click += BtnSalvar_Click;
+            {
+                Text = "Salvar",
+                Location = new System.Drawing.Point(260, 270),
+                AutoSize = false,
+                Size = new System.Drawing.Size(100, 36)
+            };
+            btnSalvar.Click += BtnSalvar_Click;
 
-    btnCancelar = new MaterialButton
-    {
-        Text = "Cancelar",
-        Location = new System.Drawing.Point(370, 270),
-        AutoSize = false,
-        Size = new System.Drawing.Size(100, 36)
-    };
-    btnCancelar.Click += BtnCancelar_Click;
+            btnCancelar = new MaterialButton
+            {
+                Text = "Cancelar",
+                Location = new System.Drawing.Point(370, 270),
+                AutoSize = false,
+                Size = new System.Drawing.Size(100, 36)
+            };
+            btnCancelar.Click += BtnCancelar_Click;
 
-    Controls.Add(txtAnotacao);
-    Controls.Add(btnSalvar);
-    Controls.Add(btnCancelar);
+            Controls.Add(txtAnotacao);
+            Controls.Add(btnSalvar);
+            Controls.Add(btnCancelar);
 
-    // Remove foco inicial do TextBox
-    this.ActiveControl = btnCancelar; // ou qualquer outro botão
-}
+            this.ActiveControl = btnCancelar;
+            this.Resize += (s, e) => this.Size = new System.Drawing.Size(500, 360);
+        }
 
+        // Impede que a janela seja movida pelo utilizador
+        protected override void WndProc(ref Message m)
+        {
+            const int WM_NCLBUTTONDOWN = 0xA1;
+            const int HTCAPTION = 0x2;
 
+            // Se tentar clicar na barra de título (HTCAPTION), cancela
+            if (m.Msg == WM_NCLBUTTONDOWN && m.WParam.ToInt32() == HTCAPTION)
+                return;
+
+            base.WndProc(ref m);
+        }
 
         private void BtnSalvar_Click(object sender, EventArgs e)
         {
-            // Pergunta ao usuário se quer salvar a anotação
             var resultado = MessageBox.Show(
                 "Tem certeza que deseja salvar a anotação?",
                 "Confirmação",
@@ -96,7 +110,6 @@ namespace BeLightBible
                 this.Close();
             }
         }
-
 
         private void BtnCancelar_Click(object sender, EventArgs e)
         {

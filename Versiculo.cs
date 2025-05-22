@@ -113,12 +113,12 @@ namespace BeLightBible
                         }
 
                         context.SaveChanges();
+                    }
 
-                        // Chama o callback pra recarregar a interface
-                        if (recarregarCallback != null)
-                        {
-                            await recarregarCallback();
-                        }
+                    // Chama o callback pra recarregar a interface
+                    if (recarregarCallback != null)
+                    {
+                        await recarregarCallback();
                     }
                 }
             }
@@ -131,10 +131,9 @@ namespace BeLightBible
             MessageBox.Show("Versículo copiado para a área de transferência.");
         }
 
-        public void AbrirChatbot()
+        public void Explicar(int userId, string livro, int capitulo, int versiculo)
         {
-            // Abrir chatbot relacionado ao versículo
-            MessageBox.Show("Abrindo Chatbot...");
+           
         }
 
         public void Compartilhar()

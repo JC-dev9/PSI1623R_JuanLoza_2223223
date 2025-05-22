@@ -134,7 +134,7 @@ namespace BeLightBible
             this.lblRegisterLink.Name = "lblRegisterLink";
             this.lblRegisterLink.Size = new System.Drawing.Size(231, 19);
             this.lblRegisterLink.TabIndex = 6;
-            this.lblRegisterLink.Text = "Não tem uma conta? Registra-se";
+            this.lblRegisterLink.Text = "Não tem uma conta? Registar-se";
             this.lblRegisterLink.Click += new System.EventHandler(this.lblRegisterLink_Click);
             // 
             // LoginForm

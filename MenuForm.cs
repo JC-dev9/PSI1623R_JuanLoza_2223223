@@ -1,4 +1,5 @@
-﻿using MaterialSkin.Controls;
+﻿// -------------------- IMPORTAÇÕES --------------------
+using MaterialSkin.Controls;
 using MaterialSkin;
 using System;
 using System.Collections.Generic;
@@ -13,25 +14,28 @@ using BeLightBible.Controls;
 using System.Linq;
 using System.Speech.Synthesis;
 using System.Data.SqlClient;
+using System.Text;
 
 namespace BeLightBible
 {
-
     public partial class MenuForm : MaterialForm
     {
+        // -------------------- VARIÁVEIS --------------------
+        private static readonly HttpClient client = new HttpClient();
         private PictureBox picLoading;
         private Livro livros = new Livro();
         private Estilo estilo = new Estilo();
         private Label lblTituloCapitulo;
         private readonly ApiBibleService bibleService = new ApiBibleService();
-
         private SpeechSynthesizer synthesizer = new SpeechSynthesizer();
         private bool isPlaying = false;
 
+        // -------------------- CONSTRUTOR --------------------
         public MenuForm()
         {
             InitializeComponent();
 
+            // Inicialização do PictureBox de loading
             picLoading = new PictureBox
             {
                 Size = new Size(48, 48),
@@ -45,8 +49,24 @@ namespace BeLightBible
             this.Controls.Add(picLoading);
             picLoading.BringToFront();
 
+            // Configurações do flowLayoutPanel
+            flowLayoutPanelVersiculos.Dock = DockStyle.Fill;
+            flowLayoutPanelVersiculos.AutoScroll = true;
+            flowLayoutPanelVersiculos.WrapContents = false;
+            flowLayoutPanelVersiculos.FlowDirection = FlowDirection.TopDown;
+
+            // Configura flowLayoutPanelConversa (se não configurado no Designer)
+            flowLayoutPanelConversa.FlowDirection = FlowDirection.TopDown;
+            flowLayoutPanelConversa.WrapContents = false;
+            flowLayoutPanelConversa.AutoScroll = true;
+
+            // Âncoras
+            cmbLivro.Anchor = AnchorStyles.Top | AnchorStyles.Left;
+            cmbCapitulo.Anchor = AnchorStyles.Top | AnchorStyles.Left;
+
             CarregarLivros();
 
+            // Skin do MaterialSkin
             var skinManager = MaterialSkinManager.Instance;
             skinManager.AddFormToManage(this);
             skinManager.Theme = MaterialSkinManager.Themes.DARK;
@@ -60,6 +80,7 @@ namespace BeLightBible
 
             cmbLivro.SelectedIndexChanged += cmbLivro_SelectedIndexChanged;
 
+            // Estilização dos botões e controles
             estilo.EstilizarPictureBoxComoBotao(picBtnProximoCapitulo, true, cmbLivro, cmbCapitulo, BibleTab);
             estilo.EstilizarPictureBoxComoBotao(picBtnAnteriorCapitulo, false, cmbLivro, cmbCapitulo, BibleTab);
             estilo.EstilizarPictureBoxAudio(picAudio);
@@ -67,8 +88,139 @@ namespace BeLightBible
             estilo.ArredondarControle(picBtnProximoCapitulo, 10);
             estilo.ArredondarControle(picBtnAnteriorCapitulo, 10);
             estilo.ArredondarControle(picAudio, 10);
+
+            this.Resize += MenuForm_Resize;
+            AplicarLayoutResponsivo();
         }
 
+        // -------------------- LAYOUT --------------------
+        private void MenuForm_Resize(object sender, EventArgs e)
+        {
+            AplicarLayoutResponsivo();
+        }
+
+        private void AplicarLayoutResponsivo()
+        {
+            // Centraliza o loading
+            picLoading.Location = new Point(
+                (this.ClientSize.Width - picLoading.Width) / 2,
+                (this.ClientSize.Height - picLoading.Height) / 2);
+
+            // Ajusta largura das labels
+            foreach (Control ctrl in flowLayoutPanelVersiculos.Controls)
+            {
+                if (ctrl is Panel card && card.Controls.Count > 0 && card.Controls[0] is Label lbl)
+                {
+                    lbl.MaximumSize = new Size(flowLayoutPanelVersiculos.ClientSize.Width - 20, 0);
+                }
+                else if (ctrl is Label lblDireto)
+                {
+                    lblDireto.MaximumSize = new Size(flowLayoutPanelVersiculos.ClientSize.Width - 20, 0);
+                }
+            }
+
+            AjustarFonteControles();
+        }
+
+        private void AjustarFonteControles()
+        {
+            float baseWidth = 800f;
+            float scaleFactor = this.ClientSize.Width / baseWidth;
+            float baseFontSize = 16f;
+            float newFontSize = baseFontSize * scaleFactor;
+            float fontSizeLimitada = Math.Min(Math.Max(10f, newFontSize), 20f);
+
+            foreach (Control ctrl in flowLayoutPanelVersiculos.Controls)
+            {
+                if (ctrl is Panel card && card.Controls.Count > 0 && card.Controls[0] is Label lbl)
+                {
+                    lbl.Font = new Font("Segoe UI", fontSizeLimitada, FontStyle.Italic);
+                }
+                else if (ctrl is Label lblDireto)
+                {
+                    lblDireto.Font = new Font("Segoe UI", fontSizeLimitada, FontStyle.Bold);
+                }
+            }
+        }
+
+        // Cria balão de mensagem
+        private Panel CreateMessageBubble(string message, bool isUser)
+        {
+            var panel = new Panel
+            {
+                AutoSize = true,
+                Padding = new Padding(10),
+                Margin = new Padding(5),
+                MaximumSize = new Size(flowLayoutPanelConversa.Width - 30, 0),
+                BackColor = isUser ? Color.FromArgb(33, 150, 243) : Color.FromArgb(97, 97, 97)
+            };
+
+            var label = new Label
+            {
+                Text = message,
+                AutoSize = true,
+                MaximumSize = new Size(panel.MaximumSize.Width - 20, 0),
+                Font = new Font("Segoe UI", 10),
+                ForeColor = Color.White
+            };
+
+            panel.Controls.Add(label);
+
+            // Ajuste da âncora para alinhar direita ou esquerda
+            panel.Anchor = isUser ? AnchorStyles.Right : AnchorStyles.Left;
+
+            return panel;
+        }
+
+        private void AddUserMessage(string text)
+        {
+            var userMsg = CreateMessageBubble(text, true);
+            flowLayoutPanelConversa.Controls.Add(userMsg);
+            flowLayoutPanelConversa.ScrollControlIntoView(userMsg);
+        }
+
+        private void AddBotMessage(string text)
+        {
+            var botMsg = CreateMessageBubble(text, false);
+            flowLayoutPanelConversa.Controls.Add(botMsg);
+            flowLayoutPanelConversa.ScrollControlIntoView(botMsg);
+        }
+
+        
+
+        private async Task<string> EnviarParaOllama(string pergunta)
+        {
+            try
+            {
+                var url = "http://localhost:11434/api/generate"; // API local do Ollama
+                var requestData = new
+                {
+                    model = "mistral:latest",
+                    prompt = pergunta,
+                    stream = false,
+                    options = new
+                    {
+                        max_tokens = 180
+                    }
+                };
+
+                var json = JsonConvert.SerializeObject(requestData);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                var response = await client.PostAsync(url, content);
+                var responseString = await response.Content.ReadAsStringAsync();
+
+                dynamic responseData = JsonConvert.DeserializeObject(responseString);
+                return responseData.response ?? "Erro ao obter resposta do chatbot.";
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Erro ao conectar com o chatbot: " + ex.Message);
+                return "Erro ao conectar com o chatbot: " + ex.Message;
+            }
+        }
+
+        // -------------------- BASE DE DADOS --------------------
         private List<VersiculoSublinhado> ObterGrifosUtilizador(int userId, string livro, int capitulo)
         {
             using (var context = new Entities())
@@ -79,6 +231,7 @@ namespace BeLightBible
             }
         }
 
+        // -------------------- CARREGAMENTO --------------------
         private void CarregarLivros()
         {
             var livrosDictionary = livros.ObterLivros();
@@ -155,9 +308,11 @@ namespace BeLightBible
                 flowLayoutPanelVersiculos.Controls.Add(card);
             }
 
+            AplicarLayoutResponsivo();
             picLoading.Visible = false;
         }
 
+        // -------------------- EVENTOS --------------------
         private void cmbLivro_SelectedIndexChanged(object sender, EventArgs e)
         {
             string nomeLivro = cmbLivro.SelectedItem as string;
@@ -188,31 +343,21 @@ namespace BeLightBible
                 menu.Items.Add(new ToolStripMenuItem("Grifar", Image.FromFile("icons/palette.png"), (s, ev) =>
                 {
                     int versNumero = Convert.ToInt32(lbl.Tag);
-                    versiculo.Grifar(
-                        Sessao.UserId,
-                        cmbLivro.SelectedItem.ToString(),
-                        int.Parse(cmbCapitulo.SelectedItem.ToString()),
-                        versNumero
-                    );
-                }
-                ));
+                    versiculo.Grifar(Sessao.UserId, cmbLivro.SelectedItem.ToString(), int.Parse(cmbCapitulo.SelectedItem.ToString()), versNumero);
+                }));
                 menu.Items.Add(new ToolStripMenuItem("Copiar", Image.FromFile("icons/copy.png"), (s, ev) => versiculo.Copiar()));
                 menu.Items.Add(new ToolStripMenuItem("Anotar", Image.FromFile("icons/notepad.png"), async (s, ev) =>
                 {
                     int versNumero = Convert.ToInt32(lbl.Tag);
-                    await versiculo.Anotar(
-                        Sessao.UserId,
-                        cmbLivro.SelectedItem.ToString(),
-                        int.Parse(cmbCapitulo.SelectedItem.ToString()),
-                        versNumero,
-                        async () => await BibleTab(cmbLivro.SelectedItem.ToString(), int.Parse(cmbCapitulo.SelectedItem.ToString()))
-                    );
+                    await versiculo.Anotar(Sessao.UserId, cmbLivro.SelectedItem.ToString(), int.Parse(cmbCapitulo.SelectedItem.ToString()), versNumero,
+                        async () => await BibleTab(cmbLivro.SelectedItem.ToString(), int.Parse(cmbCapitulo.SelectedItem.ToString())));
                 }));
-                menu.Items.Add(new ToolStripMenuItem("Chatbot", Image.FromFile("icons/brain.png"), (s, ev) => versiculo.Copiar()));
+                menu.Items.Add(new ToolStripMenuItem("Explicar", Image.FromFile("icons/ai.png"), (s, ev) =>
+                {
+                    int versNumero = Convert.ToInt32(lbl.Tag);
+                    versiculo.Explicar(Sessao.UserId, cmbLivro.SelectedItem.ToString(), int.Parse(cmbCapitulo.SelectedItem.ToString()), versNumero);
+                }));
                 menu.Items.Add(new ToolStripMenuItem("Compartilhar", Image.FromFile("icons/share-2.png"), (s, ev) => versiculo.Copiar()));
-
-
-
 
                 menu.Closed += (s, ev) =>
                 {
@@ -250,6 +395,7 @@ namespace BeLightBible
 
         private void tabPage4_Click(object sender, EventArgs e) { }
 
+        // -------------------- ÁUDIO --------------------
         private void picAudio_Click(object sender, EventArgs e)
         {
             if (!isPlaying)
