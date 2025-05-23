@@ -49,7 +49,7 @@ namespace BeLightBible
             this.Controls.Add(picLoading);
             picLoading.BringToFront();
 
-            // Configurações do flowLayoutPanel
+            // Configurações do flowLayoutPanel dos Versiculos
             flowLayoutPanelVersiculos.Dock = DockStyle.Fill;
             flowLayoutPanelVersiculos.AutoScroll = true;
             flowLayoutPanelVersiculos.WrapContents = false;
@@ -186,8 +186,6 @@ namespace BeLightBible
             flowLayoutPanelConversa.ScrollControlIntoView(botMsg);
         }
 
-        
-
         private async Task<string> EnviarParaOllama(string pergunta)
         {
             try
@@ -198,10 +196,6 @@ namespace BeLightBible
                     model = "mistral:latest",
                     prompt = pergunta,
                     stream = false,
-                    options = new
-                    {
-                        max_tokens = 180
-                    }
                 };
 
                 var json = JsonConvert.SerializeObject(requestData);
@@ -215,9 +209,29 @@ namespace BeLightBible
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Erro ao conectar com o chatbot: " + ex.Message);
+                Console.WriteLine("Erro ao conectar com o chatbot: " + ex.ToString());
                 return "Erro ao conectar com o chatbot: " + ex.Message;
             }
+        }
+
+        private async void btnEnviarChatbot_Click(object sender, EventArgs e)
+        {
+            string pergunta = txtPergunta.Text.Trim();
+            txtPergunta.Clear();
+
+            if (string.IsNullOrWhiteSpace(pergunta))
+            {
+                MessageBox.Show("Digite uma pergunta.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            AddUserMessage(pergunta); // mostra mensagem do usuário
+
+            string resposta = await EnviarParaOllama(pergunta);
+
+            AddBotMessage(resposta); // mostra resposta do chatbot
+
+            txtPergunta.Clear();
         }
 
         // -------------------- BASE DE DADOS --------------------
@@ -455,5 +469,7 @@ namespace BeLightBible
 
             return texto.Trim();
         }
+
+        
     }
 }
