@@ -15,6 +15,8 @@ using System.Linq;
 using System.Speech.Synthesis;
 using System.Data.SqlClient;
 using System.Text;
+using System.Runtime.InteropServices;
+using System.IO;
 
 namespace BeLightBible
 {
@@ -29,6 +31,9 @@ namespace BeLightBible
         private readonly ApiBibleService bibleService = new ApiBibleService();
         private SpeechSynthesizer synthesizer = new SpeechSynthesizer();
         private bool isPlaying = false;
+        [DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
+        private static extern IntPtr CreateRoundRectRgn(int nLeft, int nTop, int nRight, int nBottom, int nWidthEllipse, int nHeightEllipse);
+
 
         // -------------------- CONSTRUTOR --------------------
         public MenuForm()
@@ -166,11 +171,18 @@ namespace BeLightBible
 
             panel.Controls.Add(label);
 
-            // Ajuste da âncora para alinhar direita ou esquerda
+            // Definir bordas arredondadas
+            panel.Paint += (s, e) =>
+            {
+                var region = Region.FromHrgn(CreateRoundRectRgn(0, 0, panel.Width, panel.Height, 20, 20));
+                panel.Region = region;
+            };
+
             panel.Anchor = isUser ? AnchorStyles.Right : AnchorStyles.Left;
 
             return panel;
         }
+
 
         private void AddUserMessage(string text)
         {
@@ -186,33 +198,61 @@ namespace BeLightBible
             flowLayoutPanelConversa.ScrollControlIntoView(botMsg);
         }
 
-        private async Task<string> EnviarParaOllama(string pergunta)
+        private async Task EnviarParaOllama(string pergunta)
         {
             try
             {
-                var url = "http://localhost:11434/api/generate"; // API local do Ollama
+                var url = "http://localhost:11434/api/generate";
+
                 var requestData = new
                 {
                     model = "mistral:latest",
                     prompt = pergunta,
-                    stream = false,
+                    stream = true,
                 };
 
                 var json = JsonConvert.SerializeObject(requestData);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-                var response = await client.PostAsync(url, content);
-                var responseString = await response.Content.ReadAsStringAsync();
+                var request = new HttpRequestMessage(HttpMethod.Post, url)
+                {
+                    Content = content
+                };
 
-                dynamic responseData = JsonConvert.DeserializeObject(responseString);
-                return responseData.response ?? "Erro ao obter resposta do chatbot.";
+                var response = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
+                var stream = await response.Content.ReadAsStreamAsync();
+                var reader = new StreamReader(stream);
+
+                // Adiciona bolha vazia e atualiza em tempo real
+                var botBubble = CreateMessageBubble("", false);
+                var botLabel = (Label)botBubble.Controls[0];
+                flowLayoutPanelConversa.Controls.Add(botBubble);
+                flowLayoutPanelConversa.ScrollControlIntoView(botBubble);
+
+                while (!reader.EndOfStream)
+                {
+                    var line = await reader.ReadLineAsync();
+                    if (string.IsNullOrWhiteSpace(line)) continue;
+
+                    // Remove prefixo "data: "
+                    if (line.StartsWith("data: ")) line = line.Substring(6);
+
+                    dynamic obj = JsonConvert.DeserializeObject(line);
+                    string contentPart = obj?.response;
+                    if (contentPart != null)
+                    {
+                        botLabel.Text += contentPart;
+                        botBubble.Width = botLabel.PreferredWidth + 20;
+                        Application.DoEvents();
+                    }
+                }
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Erro ao conectar com o chatbot: " + ex.ToString());
-                return "Erro ao conectar com o chatbot: " + ex.Message;
+                AddBotMessage("Erro: " + ex.Message);
             }
         }
+
 
         private async void btnEnviarChatbot_Click(object sender, EventArgs e)
         {
@@ -225,13 +265,12 @@ namespace BeLightBible
                 return;
             }
 
+
             AddUserMessage(pergunta); // mostra mensagem do usuário
 
-            string resposta = await EnviarParaOllama(pergunta);
-
-            AddBotMessage(resposta); // mostra resposta do chatbot
-
             txtPergunta.Clear();
+            await EnviarParaOllama(pergunta);
+
         }
 
         // -------------------- BASE DE DADOS --------------------
