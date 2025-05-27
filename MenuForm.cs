@@ -63,13 +63,15 @@ namespace BeLightBible
             // Configura flowLayoutPanelConversa (se não configurado no Designer)
             flowLayoutPanelConversa.Dock = DockStyle.Fill;
             flowLayoutPanelConversa.FlowDirection = FlowDirection.TopDown;
+            flowLayoutPanelConversa.WrapContents = false;
             flowLayoutPanelConversa.AutoScroll = true;
+
 
             // Âncoras
             cmbLivro.Anchor = AnchorStyles.Top | AnchorStyles.Left;
             cmbCapitulo.Anchor = AnchorStyles.Top | AnchorStyles.Left;
 
-            
+
 
 
             CarregarLivros();
@@ -117,7 +119,7 @@ namespace BeLightBible
         }
 
 
-    private void AtualizarLarguraDasMensagens()
+        private void AtualizarLarguraDasMensagens()
         {
             int maxWidth = flowLayoutPanelConversa.ClientSize.Width - 30;
 
@@ -201,14 +203,13 @@ namespace BeLightBible
                 Padding = new Padding(10),
                 Margin = new Padding(5),
                 BackColor = isUser ? Color.FromArgb(33, 150, 243) : Color.FromArgb(97, 97, 97),
-                Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right
             };
 
             var label = new Label
             {
                 Text = message,
                 AutoSize = true,
-                Font = new Font("Segoe UI", 12),
+                Font = new Font("Segoe UI", 13),
                 ForeColor = Color.White
             };
 
@@ -229,6 +230,8 @@ namespace BeLightBible
             // Define a região pela primeira vez
             var initialRegion = Region.FromHrgn(CreateRoundRectRgn(0, 0, panel.Width, panel.Height, 20, 20));
             panel.Region = initialRegion;
+
+            panel.Anchor = isUser ? AnchorStyles.Right : AnchorStyles.Left;
 
             return panel;
         }
@@ -455,11 +458,25 @@ namespace BeLightBible
                     await versiculo.Anotar(Sessao.UserId, cmbLivro.SelectedItem.ToString(), int.Parse(cmbCapitulo.SelectedItem.ToString()), versNumero,
                         async () => await BibleTab(cmbLivro.SelectedItem.ToString(), int.Parse(cmbCapitulo.SelectedItem.ToString())));
                 }));
-                menu.Items.Add(new ToolStripMenuItem("Explicar", Image.FromFile("icons/ai.png"), (s, ev) =>
+                menu.Items.Add(new ToolStripMenuItem("Explicar", Image.FromFile("icons/ai.png"), async (s, ev) =>
                 {
                     int versNumero = Convert.ToInt32(lbl.Tag);
-                    versiculo.Explicar(Sessao.UserId, cmbLivro.SelectedItem.ToString(), int.Parse(cmbCapitulo.SelectedItem.ToString()), versNumero);
+                    string livro = cmbLivro.SelectedItem.ToString();
+                    int capitulo = int.Parse(cmbCapitulo.SelectedItem.ToString());
+
+                    // Muda para a aba do chatbot
+                    TabControlPrincipal.SelectedTab = tabChatbot;
+
+                    // Cria o prompt
+                    string prompt = $"explique o contexto desse {livro}, {capitulo} {versNumero}";
+
+                    // Mostra a mensagem do usuário na conversa
+                    AddUserMessage(prompt);
+
+                    // Envia o prompt para o chatbot (aguarda resposta)
+                    await EnviarParaOllama(prompt);
                 }));
+
                 menu.Items.Add(new ToolStripMenuItem("Compartilhar", Image.FromFile("icons/share-2.png"), (s, ev) => versiculo.Copiar()));
 
                 menu.Closed += (s, ev) =>
@@ -559,6 +576,6 @@ namespace BeLightBible
             return texto.Trim();
         }
 
-        
+
     }
 }
