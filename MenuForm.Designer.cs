@@ -46,10 +46,11 @@ namespace BeLightBible
             this.cmbLivro = new MaterialSkin.Controls.MaterialComboBox();
             this.cmbCapitulo = new MaterialSkin.Controls.MaterialComboBox();
             this.tabChatbot = new System.Windows.Forms.TabPage();
-            this.flowLayoutPanelConversa = new System.Windows.Forms.FlowLayoutPanel();
-            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
-            this.txtPergunta = new MaterialSkin.Controls.MaterialTextBox2();
             this.btnEnviarChatbot = new MaterialSkin.Controls.MaterialButton();
+            this.flowLayoutPanelConversa = new System.Windows.Forms.FlowLayoutPanel();
+            this.txtPergunta = new MaterialSkin.Controls.MaterialTextBox2();
+            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+            this.pnlChatbot = new System.Windows.Forms.Panel();
             this.TabControlPrincipal.SuspendLayout();
             this.tabBible.SuspendLayout();
             this.flowLayoutPanelVersiculos.SuspendLayout();
@@ -113,7 +114,7 @@ namespace BeLightBible
             this.flowLayoutPanelVersiculos.Margin = new System.Windows.Forms.Padding(0, 25, 0, 0);
             this.flowLayoutPanelVersiculos.Name = "flowLayoutPanelVersiculos";
             this.flowLayoutPanelVersiculos.Padding = new System.Windows.Forms.Padding(6, 25, 0, 0);
-            this.flowLayoutPanelVersiculos.Size = new System.Drawing.Size(860, 330);
+            this.flowLayoutPanelVersiculos.Size = new System.Drawing.Size(654, 330);
             this.flowLayoutPanelVersiculos.TabIndex = 0;
             this.flowLayoutPanelVersiculos.WrapContents = false;
             // 
@@ -244,9 +245,10 @@ namespace BeLightBible
             // 
             // tabChatbot
             // 
-            this.tabChatbot.Controls.Add(this.btnEnviarChatbot);
-            this.tabChatbot.Controls.Add(this.flowLayoutPanelConversa);
             this.tabChatbot.Controls.Add(this.txtPergunta);
+            this.tabChatbot.Controls.Add(this.btnEnviarChatbot);
+            this.tabChatbot.Controls.Add(this.pnlChatbot);
+            this.tabChatbot.Controls.Add(this.flowLayoutPanelConversa);
             this.tabChatbot.ImageKey = "bot.png";
             this.tabChatbot.Location = new System.Drawing.Point(4, 31);
             this.tabChatbot.Name = "tabChatbot";
@@ -255,21 +257,33 @@ namespace BeLightBible
             this.tabChatbot.Text = "Chatbot";
             this.tabChatbot.UseVisualStyleBackColor = true;
             // 
+            // btnEnviarChatbot
+            // 
+            this.btnEnviarChatbot.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnEnviarChatbot.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            this.btnEnviarChatbot.Depth = 0;
+            this.btnEnviarChatbot.HighEmphasis = true;
+            this.btnEnviarChatbot.Icon = null;
+            this.btnEnviarChatbot.Location = new System.Drawing.Point(652, 345);
+            this.btnEnviarChatbot.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.btnEnviarChatbot.MouseState = MaterialSkin.MouseState.HOVER;
+            this.btnEnviarChatbot.Name = "btnEnviarChatbot";
+            this.btnEnviarChatbot.NoAccentTextColor = System.Drawing.Color.Empty;
+            this.btnEnviarChatbot.Size = new System.Drawing.Size(73, 36);
+            this.btnEnviarChatbot.TabIndex = 7;
+            this.btnEnviarChatbot.Text = "Enviar";
+            this.btnEnviarChatbot.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            this.btnEnviarChatbot.UseAccentColor = false;
+            this.btnEnviarChatbot.UseVisualStyleBackColor = true;
+            this.btnEnviarChatbot.Click += new System.EventHandler(this.btnEnviarChatbot_Click);
+            // 
             // flowLayoutPanelConversa
             // 
+            this.flowLayoutPanelConversa.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flowLayoutPanelConversa.Location = new System.Drawing.Point(3, 3);
             this.flowLayoutPanelConversa.Name = "flowLayoutPanelConversa";
             this.flowLayoutPanelConversa.Size = new System.Drawing.Size(860, 324);
             this.flowLayoutPanelConversa.TabIndex = 6;
-            // 
-            // imageList1
-            // 
-            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
-            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
-            this.imageList1.Images.SetKeyName(0, "notepad-text.png");
-            this.imageList1.Images.SetKeyName(1, "bot.png");
-            this.imageList1.Images.SetKeyName(2, "book-marked(1).png");
-            this.imageList1.Images.SetKeyName(3, "house.png");
             // 
             // txtPergunta
             // 
@@ -300,25 +314,22 @@ namespace BeLightBible
             this.txtPergunta.TrailingIcon = null;
             this.txtPergunta.UseSystemPasswordChar = false;
             // 
-            // btnEnviarChatbot
+            // imageList1
             // 
-            this.btnEnviarChatbot.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.btnEnviarChatbot.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            this.btnEnviarChatbot.Depth = 0;
-            this.btnEnviarChatbot.HighEmphasis = true;
-            this.btnEnviarChatbot.Icon = null;
-            this.btnEnviarChatbot.Location = new System.Drawing.Point(652, 345);
-            this.btnEnviarChatbot.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.btnEnviarChatbot.MouseState = MaterialSkin.MouseState.HOVER;
-            this.btnEnviarChatbot.Name = "btnEnviarChatbot";
-            this.btnEnviarChatbot.NoAccentTextColor = System.Drawing.Color.Empty;
-            this.btnEnviarChatbot.Size = new System.Drawing.Size(73, 36);
-            this.btnEnviarChatbot.TabIndex = 7;
-            this.btnEnviarChatbot.Text = "Enviar";
-            this.btnEnviarChatbot.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
-            this.btnEnviarChatbot.UseAccentColor = false;
-            this.btnEnviarChatbot.UseVisualStyleBackColor = true;
-            this.btnEnviarChatbot.Click += new System.EventHandler(this.btnEnviarChatbot_Click);
+            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
+            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageList1.Images.SetKeyName(0, "notepad-text.png");
+            this.imageList1.Images.SetKeyName(1, "bot.png");
+            this.imageList1.Images.SetKeyName(2, "book-marked(1).png");
+            this.imageList1.Images.SetKeyName(3, "house.png");
+            // 
+            // pnlChatbot
+            // 
+            this.pnlChatbot.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.pnlChatbot.Location = new System.Drawing.Point(0, 328);
+            this.pnlChatbot.Name = "pnlChatbot";
+            this.pnlChatbot.Size = new System.Drawing.Size(866, 67);
+            this.pnlChatbot.TabIndex = 8;
             // 
             // MenuForm
             // 
@@ -364,5 +375,6 @@ namespace BeLightBible
         private FlowLayoutPanel flowLayoutPanelConversa;
         private MaterialSkin.Controls.MaterialTextBox2 txtPergunta;
         private MaterialSkin.Controls.MaterialButton btnEnviarChatbot;
+        private Panel pnlChatbot;
     }
 }

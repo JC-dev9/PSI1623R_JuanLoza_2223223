@@ -61,13 +61,16 @@ namespace BeLightBible
             flowLayoutPanelVersiculos.FlowDirection = FlowDirection.TopDown;
 
             // Configura flowLayoutPanelConversa (se não configurado no Designer)
+            flowLayoutPanelConversa.Dock = DockStyle.Fill;
             flowLayoutPanelConversa.FlowDirection = FlowDirection.TopDown;
-            flowLayoutPanelConversa.WrapContents = false;
             flowLayoutPanelConversa.AutoScroll = true;
 
             // Âncoras
             cmbLivro.Anchor = AnchorStyles.Top | AnchorStyles.Left;
             cmbCapitulo.Anchor = AnchorStyles.Top | AnchorStyles.Left;
+
+            
+
 
             CarregarLivros();
 
@@ -95,16 +98,57 @@ namespace BeLightBible
             estilo.ArredondarControle(picAudio, 10);
 
             this.Resize += MenuForm_Resize;
-            AplicarLayoutResponsivo();
+            flowLayoutPanelConversa.Resize += flowLayoutPanelConversa_Resize;
+            AplicarLayoutResponsivoBible();
+            AtualizarLarguraDasMensagens();
         }
 
         // -------------------- LAYOUT --------------------
         private void MenuForm_Resize(object sender, EventArgs e)
         {
-            AplicarLayoutResponsivo();
+            AplicarLayoutResponsivoBible();
+            AtualizarLarguraDasMensagens();
         }
 
-        private void AplicarLayoutResponsivo()
+        private void SetRoundedRegion(Control control, int radius)
+        {
+            var region = Region.FromHrgn(CreateRoundRectRgn(0, 0, control.Width, control.Height, radius, radius));
+            control.Region = region;
+        }
+
+
+    private void AtualizarLarguraDasMensagens()
+        {
+            int maxWidth = flowLayoutPanelConversa.ClientSize.Width - 30;
+
+            foreach (Panel panel in flowLayoutPanelConversa.Controls.OfType<Panel>())
+            {
+                panel.MaximumSize = new Size(maxWidth, 0);
+                if (panel.Controls.Count > 0 && panel.Controls[0] is Label label)
+                {
+                    label.MaximumSize = new Size(maxWidth - 20, 0);
+                    label.Refresh();
+                }
+                panel.Refresh();
+            }
+        }
+
+        private void flowLayoutPanelConversa_Resize(object sender, EventArgs e)
+        {
+            foreach (Control ctrl in flowLayoutPanelConversa.Controls)
+            {
+                if (ctrl is Panel bubble)
+                {
+                    bubble.MaximumSize = new Size(flowLayoutPanelConversa.Width - 100, 0);
+                    if (bubble.Controls[0] is Label label)
+                    {
+                        label.MaximumSize = new Size(bubble.MaximumSize.Width - 20, 0);
+                    }
+                }
+            }
+        }
+
+        private void AplicarLayoutResponsivoBible()
         {
             // Centraliza o loading
             picLoading.Location = new Point(
@@ -156,29 +200,35 @@ namespace BeLightBible
                 AutoSize = true,
                 Padding = new Padding(10),
                 Margin = new Padding(5),
-                MaximumSize = new Size(flowLayoutPanelConversa.Width - 30, 0),
-                BackColor = isUser ? Color.FromArgb(33, 150, 243) : Color.FromArgb(97, 97, 97)
+                BackColor = isUser ? Color.FromArgb(33, 150, 243) : Color.FromArgb(97, 97, 97),
+                Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right
             };
 
             var label = new Label
             {
                 Text = message,
                 AutoSize = true,
-                MaximumSize = new Size(panel.MaximumSize.Width - 20, 0),
-                Font = new Font("Segoe UI", 10),
+                Font = new Font("Segoe UI", 12),
                 ForeColor = Color.White
             };
 
             panel.Controls.Add(label);
 
-            // Definir bordas arredondadas
-            panel.Paint += (s, e) =>
+            // Definir MaximumSize baseado no flowLayoutPanel atual
+            int maxWidth = flowLayoutPanelConversa.ClientSize.Width - 30;
+            panel.MaximumSize = new Size(maxWidth, 0);
+            label.MaximumSize = new Size(maxWidth - 20, 0);
+
+            // Atualiza a região arredondada sempre que o tamanho mudar
+            panel.SizeChanged += (s, e) =>
             {
                 var region = Region.FromHrgn(CreateRoundRectRgn(0, 0, panel.Width, panel.Height, 20, 20));
                 panel.Region = region;
             };
 
-            panel.Anchor = isUser ? AnchorStyles.Right : AnchorStyles.Left;
+            // Define a região pela primeira vez
+            var initialRegion = Region.FromHrgn(CreateRoundRectRgn(0, 0, panel.Width, panel.Height, 20, 20));
+            panel.Region = initialRegion;
 
             return panel;
         }
@@ -361,7 +411,7 @@ namespace BeLightBible
                 flowLayoutPanelVersiculos.Controls.Add(card);
             }
 
-            AplicarLayoutResponsivo();
+            AplicarLayoutResponsivoBible();
             picLoading.Visible = false;
         }
 
