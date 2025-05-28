@@ -59,6 +59,7 @@ namespace BeLightBible
             ((System.ComponentModel.ISupportInitialize)(this.picBtnAnteriorCapitulo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picBtnProximoCapitulo)).BeginInit();
             this.tabChatbot.SuspendLayout();
+            this.pnlChatbot.SuspendLayout();
             this.SuspendLayout();
             // 
             // TabControlPrincipal
@@ -247,7 +248,6 @@ namespace BeLightBible
             // tabChatbot
             // 
             this.tabChatbot.Controls.Add(this.txtPergunta);
-            this.tabChatbot.Controls.Add(this.btnEnviarChatbot);
             this.tabChatbot.Controls.Add(this.pnlChatbot);
             this.tabChatbot.Controls.Add(this.flowLayoutPanelConversa);
             this.tabChatbot.ImageKey = "bot.png";
@@ -291,14 +291,13 @@ namespace BeLightBible
             // 
             // btnEnviarChatbot
             // 
-            this.btnEnviarChatbot.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnEnviarChatbot.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnEnviarChatbot.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.btnEnviarChatbot.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
             this.btnEnviarChatbot.Depth = 0;
             this.btnEnviarChatbot.HighEmphasis = true;
             this.btnEnviarChatbot.Icon = null;
-            this.btnEnviarChatbot.Location = new System.Drawing.Point(652, 345);
+            this.btnEnviarChatbot.Location = new System.Drawing.Point(696, 17);
             this.btnEnviarChatbot.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnEnviarChatbot.MouseState = MaterialSkin.MouseState.HOVER;
             this.btnEnviarChatbot.Name = "btnEnviarChatbot";
@@ -313,6 +312,7 @@ namespace BeLightBible
             // 
             // pnlChatbot
             // 
+            this.pnlChatbot.Controls.Add(this.btnEnviarChatbot);
             this.pnlChatbot.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.pnlChatbot.Location = new System.Drawing.Point(0, 328);
             this.pnlChatbot.Name = "pnlChatbot";
@@ -356,7 +356,8 @@ namespace BeLightBible
             ((System.ComponentModel.ISupportInitialize)(this.picBtnAnteriorCapitulo)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picBtnProximoCapitulo)).EndInit();
             this.tabChatbot.ResumeLayout(false);
-            this.tabChatbot.PerformLayout();
+            this.pnlChatbot.ResumeLayout(false);
+            this.pnlChatbot.PerformLayout();
             this.ResumeLayout(false);
 
         }

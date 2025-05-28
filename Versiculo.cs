@@ -131,10 +131,11 @@ namespace BeLightBible
             MessageBox.Show("Versículo copiado para a área de transferência.");
         }
 
-        public void Explicar(string livro, int capitulo, int versiculo)
+        public void Explicar(string livro, int capitulo, int versiculo, TabPage tabChatbot, TabControl tabControl, Action<string> exibirMensagem, Func<string, Task> enviarPrompt)
         {
            
         }
+
 
         public void Compartilhar()
         {

@@ -71,9 +71,6 @@ namespace BeLightBible
             cmbLivro.Anchor = AnchorStyles.Top | AnchorStyles.Left;
             cmbCapitulo.Anchor = AnchorStyles.Top | AnchorStyles.Left;
 
-
-
-
             CarregarLivros();
 
             // Skin do MaterialSkin
@@ -177,7 +174,7 @@ namespace BeLightBible
         {
             float baseWidth = 800f;
             float scaleFactor = this.ClientSize.Width / baseWidth;
-            float baseFontSize = 16f;
+            float baseFontSize = 14f;
             float newFontSize = baseFontSize * scaleFactor;
             float fontSizeLimitada = Math.Min(Math.Max(10f, newFontSize), 20f);
 
@@ -200,41 +197,37 @@ namespace BeLightBible
             var panel = new Panel
             {
                 AutoSize = true,
+                AutoSizeMode = AutoSizeMode.GrowAndShrink,
                 Padding = new Padding(10),
                 Margin = new Padding(5),
                 BackColor = isUser ? Color.FromArgb(33, 150, 243) : Color.FromArgb(97, 97, 97),
+                RightToLeft = isUser ? RightToLeft.Yes : RightToLeft.No
             };
 
             var label = new Label
             {
                 Text = message,
                 AutoSize = true,
+                Cursor = Cursors.Hand,
+                MaximumSize = new Size(flowLayoutPanelConversa.ClientSize.Width - 50, 0),
                 Font = new Font("Segoe UI", 13),
-                ForeColor = Color.White
+                ForeColor = Color.White,
+                BackColor = Color.Transparent
             };
 
+
+            label.MouseClick += MensagemClicada;
             panel.Controls.Add(label);
 
-            // Definir MaximumSize baseado no flowLayoutPanel atual
-            int maxWidth = flowLayoutPanelConversa.ClientSize.Width - 30;
-            panel.MaximumSize = new Size(maxWidth, 0);
-            label.MaximumSize = new Size(maxWidth - 20, 0);
-
-            // Atualiza a região arredondada sempre que o tamanho mudar
+            // Arredondar balão
             panel.SizeChanged += (s, e) =>
             {
-                var region = Region.FromHrgn(CreateRoundRectRgn(0, 0, panel.Width, panel.Height, 20, 20));
-                panel.Region = region;
+                panel.Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, panel.Width, panel.Height, 20, 20));
             };
-
-            // Define a região pela primeira vez
-            var initialRegion = Region.FromHrgn(CreateRoundRectRgn(0, 0, panel.Width, panel.Height, 20, 20));
-            panel.Region = initialRegion;
-
-            panel.Anchor = isUser ? AnchorStyles.Right : AnchorStyles.Left;
 
             return panel;
         }
+
 
 
         private void AddUserMessage(string text)
@@ -257,10 +250,15 @@ namespace BeLightBible
             {
                 var url = "http://localhost:11434/api/generate";
 
+                var promptEspecializado =
+"Você é um especialista bíblico do programa Belight Bible. Responda com base na Bíblia Sagrada, de forma clara, fiel e acessível, como um teólogo experiente.\n" +
+$"Pergunta do utilizador:\n{pergunta}";
+
+
                 var requestData = new
                 {
                     model = "mistral:latest",
-                    prompt = pergunta,
+                    prompt = promptEspecializado,
                     stream = true,
                 };
 
@@ -438,6 +436,28 @@ namespace BeLightBible
                 cmbCapitulo.SelectedIndex = 0;
         }
 
+        private async void MensagemClicada(object sender, MouseEventArgs e)
+        {
+
+            if (sender is Label lbl)
+            {
+                lbl.Font = new Font(lbl.Font, lbl.Font.Style | FontStyle.Underline);
+                Versiculo versiculo = new Versiculo(lbl);
+
+                ContextMenuStrip menu = new ContextMenuStrip();
+                
+                menu.Items.Add(new ToolStripMenuItem("Copiar", Image.FromFile("icons/copy.png"), (s, ev) => versiculo.Copiar()));
+              
+                
+                menu.Closed += (s, ev) =>
+                {
+                    lbl.Font = new Font(lbl.Font, lbl.Font.Style & ~FontStyle.Underline);
+                };
+
+                menu.Show(lbl, new Point(e.X, e.Y));
+            }
+        }
+
         private async void VersiculoClicado(object sender, MouseEventArgs e)
         {
             if (sender is Label lbl)
@@ -457,6 +477,15 @@ namespace BeLightBible
                     int versNumero = Convert.ToInt32(lbl.Tag);
                     await versiculo.Anotar(Sessao.UserId, cmbLivro.SelectedItem.ToString(), int.Parse(cmbCapitulo.SelectedItem.ToString()), versNumero,
                         async () => await BibleTab(cmbLivro.SelectedItem.ToString(), int.Parse(cmbCapitulo.SelectedItem.ToString())));
+
+                    estilo.EstilizarPictureBoxComoBotao(picBtnProximoCapitulo, true, cmbLivro, cmbCapitulo, BibleTab);
+                    estilo.EstilizarPictureBoxComoBotao(picBtnAnteriorCapitulo, false, cmbLivro, cmbCapitulo, BibleTab);
+                    estilo.EstilizarPictureBoxAudio(picAudio);
+
+                    estilo.ArredondarControle(picBtnProximoCapitulo, 10);
+                    estilo.ArredondarControle(picBtnAnteriorCapitulo, 10);
+                    estilo.ArredondarControle(picAudio, 10);
+
                 }));
                 menu.Items.Add(new ToolStripMenuItem("Explicar", Image.FromFile("icons/ai.png"), async (s, ev) =>
                 {
@@ -468,7 +497,8 @@ namespace BeLightBible
                     TabControlPrincipal.SelectedTab = tabChatbot;
 
                     // Cria o prompt
-                    string prompt = $"explique o contexto desse {livro}, {capitulo} {versNumero}";
+                    string prompt = $"Você é um especialista bíblico. Explique com clareza e profundidade o contexto histórico, cultural e teológico do versículo {livro} {capitulo}:{versiculo}. Inclua referências relevantes, significado das palavras-chave e aplicação prática para a vida cristã hoje.";
+
 
                     // Mostra a mensagem do usuário na conversa
                     AddUserMessage(prompt);
