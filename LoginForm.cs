@@ -49,7 +49,6 @@ namespace BeLightBible
                 var mainForm = new MenuForm();
                 mainForm.Show();
                 this.Hide(); // Esconde o formulário de login
-                MessageBox.Show(Sessao.UserId.ToString());
 
             }
             else

@@ -17,6 +17,7 @@ using System.Data.SqlClient;
 using System.Text;
 using System.Runtime.InteropServices;
 using System.IO;
+using System.Security.Cryptography.Xml;
 
 namespace BeLightBible
 {
@@ -25,9 +26,10 @@ namespace BeLightBible
         // -------------------- VARIÁVEIS --------------------
         private static readonly HttpClient client = new HttpClient();
         private PictureBox picLoading;
+        private Label lblTituloCapitulo;
+        private Label lblNumeroVersiculo;
         private Livro livros = new Livro();
         private Estilo estilo = new Estilo();
-        private Label lblTituloCapitulo;
         private readonly ApiBibleService bibleService = new ApiBibleService();
         private SpeechSynthesizer synthesizer = new SpeechSynthesizer();
         private bool isPlaying = false;
@@ -39,6 +41,8 @@ namespace BeLightBible
         public MenuForm()
         {
             InitializeComponent();
+            CarregarLivros();
+
 
             // Inicialização do PictureBox de loading
             picLoading = new PictureBox
@@ -51,6 +55,19 @@ namespace BeLightBible
                 BackColor = Color.Transparent
             };
 
+            Label lblTituloCapitulo = new Label
+            {
+                AutoSize = true, // Vai se ajustar ao texto
+                Font = new Font("Segoe UI", 14, FontStyle.Bold),
+                ForeColor = Color.White, // Cor do texto
+                BackColor = Color.Transparent, // Fundo transparente se estiver sobre uma imagem ou painel colorido
+                Margin = new Padding(5), // Espaçamento externo
+                Padding = new Padding(2), // Espaçamento interno
+                Location = new Point(flowLayoutPanelVersiculos.Left, flowLayoutPanelVersiculos.Top),
+                Text = $"Versículo do dia dia"
+            };
+
+
             this.Controls.Add(picLoading);
             picLoading.BringToFront();
 
@@ -61,6 +78,8 @@ namespace BeLightBible
             flowLayoutPanelVersiculos.FlowDirection = FlowDirection.TopDown;
 
             // Configura flowLayoutPanelConversa (se não configurado no Designer)
+            flowLayoutPanelConversa.Padding = new Padding(0, 0, 0, 70); // ajusta conforme altura do painel inferior
+
             flowLayoutPanelConversa.Dock = DockStyle.Fill;
             flowLayoutPanelConversa.FlowDirection = FlowDirection.TopDown;
             flowLayoutPanelConversa.WrapContents = false;
@@ -71,7 +90,6 @@ namespace BeLightBible
             cmbLivro.Anchor = AnchorStyles.Top | AnchorStyles.Left;
             cmbCapitulo.Anchor = AnchorStyles.Top | AnchorStyles.Left;
 
-            CarregarLivros();
 
             // Skin do MaterialSkin
             var skinManager = MaterialSkinManager.Instance;
@@ -96,10 +114,12 @@ namespace BeLightBible
             estilo.ArredondarControle(picBtnAnteriorCapitulo, 10);
             estilo.ArredondarControle(picAudio, 10);
 
+            this.Load += MenuForm_Load;
+
             this.Resize += MenuForm_Resize;
             flowLayoutPanelConversa.Resize += flowLayoutPanelConversa_Resize;
             AplicarLayoutResponsivoBible();
-            AtualizarLarguraDasMensagens();
+            AtualizarLarguraDasMensagens(); 
         }
 
         // -------------------- LAYOUT --------------------
@@ -108,6 +128,152 @@ namespace BeLightBible
             AplicarLayoutResponsivoBible();
             AtualizarLarguraDasMensagens();
         }
+
+        private async void MenuForm_Load(object sender, EventArgs e)
+        {
+            CriarLabelsVersiculoDia();
+            // Carrega o versículo do dia
+            await CarregarVersiculoDiaAsync();
+
+            
+        }
+
+        private void CriarLabelsVersiculoDia()
+        {
+            lblTituloCapitulo = new Label
+            {
+                AutoSize = true,
+                Font = new Font("Segoe UI", 14, FontStyle.Bold),
+                ForeColor = Color.White,
+                BackColor = Color.Transparent,
+                Margin = new Padding(5),
+                Padding = new Padding(2),
+                Text = "Versículo do Dia",
+                Location = new Point(20, 20)
+            };
+
+            lblTextoVersiculo = new Label
+            {
+                AutoSize = true,
+                MaximumSize = new Size(300, 0),
+                Font = new Font("Segoe UI", 12, FontStyle.Regular),
+                ForeColor = Color.White,
+                BackColor = Color.Transparent,
+                Padding = new Padding(2),
+                Location = new Point(20, 60)
+            };
+
+            lblNumeroVersiculo = new Label
+            {
+                AutoSize = true,
+                Font = new Font("Segoe UI", 10, FontStyle.Italic),
+                ForeColor = Color.LightGray,
+                BackColor = Color.Transparent,
+                Location = new Point(20, 130)
+            };
+
+            cardVersiculoDia.Controls.Add(lblTituloCapitulo);
+            cardVersiculoDia.Controls.SetChildIndex(lblTituloCapitulo, 0); // Move para o topo
+
+            cardVersiculoDia.Controls.Add(lblTextoVersiculo);
+            cardVersiculoDia.Controls.Add(lblNumeroVersiculo);
+        }
+
+        private void AtualizarVersiculo(string texto, string referencia)
+        {
+            lblTextoVersiculo.AutoSize = false;
+            lblTextoVersiculo.Width = 300;
+            lblTextoVersiculo.TextAlign = ContentAlignment.TopLeft;
+
+            lblTextoVersiculo.Text = $"\"{texto}\"";
+
+            // Ajusta altura para que o texto quebre linhas corretamente
+            Size textSize = TextRenderer.MeasureText(texto, lblTextoVersiculo.Font, new Size(lblTextoVersiculo.Width, 0), TextFormatFlags.WordBreak);
+            lblTextoVersiculo.Height = textSize.Height + 10;
+
+            // Reposiciona o lblNumeroVersiculo logo abaixo do lblTextoVersiculo
+            lblNumeroVersiculo.Location = new Point(lblTextoVersiculo.Left, lblTextoVersiculo.Top + lblTextoVersiculo.Height + 2);
+            lblNumeroVersiculo.Text = referencia;
+        }
+
+
+        private async Task CarregarVersiculoDiaAsync()
+        {
+            string hoje = DateTime.Now.ToString("yyyy-MM-dd");
+
+            // Verifica se já foi carregado hoje
+            if (Properties.Settings.Default.DataUltimoVersiculo == hoje)
+            {
+                string textoSalvo = Properties.Settings.Default.UltimoVersiculo;
+                string referenciaSalva = Properties.Settings.Default.UltimaReferencia;
+                AtualizarVersiculo(textoSalvo, referenciaSalva);
+                lblNumeroVersiculo.Text = $"{referenciaSalva}";
+                return;
+            }
+
+            // Se não, busca novo versículo
+            var api = new ApiBibleService();
+            dynamic versiculo = await api.BuscarVersiculoAleatorio();
+
+            if (versiculo != null)
+            {
+                string texto = versiculo.text.ToString().Trim();
+                string referencia = $"{versiculo.book_name} {versiculo.chapter}:{versiculo.verse}";
+
+                AtualizarVersiculo(texto, referencia);
+                lblNumeroVersiculo.Text = $"{referencia}";
+
+                // Salva nas configurações
+                Properties.Settings.Default.UltimoVersiculo = texto;
+                Properties.Settings.Default.UltimaReferencia = referencia;
+                Properties.Settings.Default.DataUltimoVersiculo = hoje;
+                Properties.Settings.Default.Save();
+            }
+            else
+            {
+                lblTextoVersiculo.Text = "Não foi possível carregar o versículo do dia.";
+            }
+        }
+
+        private void btnSalvarVersiculo_Click(object sender, EventArgs e)
+        {
+            int userId = Sessao.UserId;
+            string texto = Properties.Settings.Default.UltimoVersiculo;
+            string referencia = Properties.Settings.Default.UltimaReferencia;
+
+            if (string.IsNullOrEmpty(texto) || string.IsNullOrEmpty(referencia))
+            {
+                MessageBox.Show("Nenhum versículo disponível para salvar.");
+                return;
+            }
+
+            Versiculo v = new Versiculo(lblTextoVersiculo); // você pode usar qualquer Label aqui, ou refatorar se não precisar mais dela
+            v.SalvarVersiculoEF(userId, referencia, texto);
+        }
+
+
+        private void AdicionarEspacadorFinal()
+        {
+            // Remove se já houver
+            var existente = flowLayoutPanelConversa.Controls.Cast<Control>().FirstOrDefault(c => c.Tag?.ToString() == "EspacadorFinal");
+            if (existente != null)
+                flowLayoutPanelConversa.Controls.Remove(existente);
+
+            // Cria um painel com altura do espaço desejado
+            var espaco = new Panel()
+            {
+                Height = txtPergunta.Height + btnEnviarChatbot.Height + 20, // espaço extra para evitar sobreposição
+                Width = flowLayoutPanelConversa.ClientSize.Width,
+                Tag = "EspacadorFinal",
+                BackColor = Color.Transparent,
+                Margin = new Padding(0)
+            };
+
+            flowLayoutPanelConversa.Controls.Add(espaco);
+            flowLayoutPanelConversa.ScrollControlIntoView(espaco);
+        }
+
+
 
         private void SetRoundedRegion(Control control, int radius)
         {
@@ -139,7 +305,8 @@ namespace BeLightBible
                 if (ctrl is Panel bubble)
                 {
                     bubble.MaximumSize = new Size(flowLayoutPanelConversa.Width - 100, 0);
-                    if (bubble.Controls[0] is Label label)
+
+                    if (bubble.Controls.Count > 0 && bubble.Controls[0] is Label label)
                     {
                         label.MaximumSize = new Size(bubble.MaximumSize.Width - 20, 0);
                     }
@@ -228,8 +395,6 @@ namespace BeLightBible
             return panel;
         }
 
-
-
         private void AddUserMessage(string text)
         {
             var userMsg = CreateMessageBubble(text, true);
@@ -242,6 +407,7 @@ namespace BeLightBible
             var botMsg = CreateMessageBubble(text, false);
             flowLayoutPanelConversa.Controls.Add(botMsg);
             flowLayoutPanelConversa.ScrollControlIntoView(botMsg);
+            AdicionarEspacadorFinal();
         }
 
         private async Task EnviarParaOllama(string pergunta)
@@ -251,8 +417,11 @@ namespace BeLightBible
                 var url = "http://localhost:11434/api/generate";
 
                 var promptEspecializado =
-"Você é um especialista bíblico do programa Belight Bible. Responda com base na Bíblia Sagrada, de forma clara, fiel e acessível, como um teólogo experiente.\n" +
-$"Pergunta do utilizador:\n{pergunta}";
+      "Você é um especialista bíblico do programa Belight Bible. " +
+      "Responda com base na Bíblia Sagrada, de forma clara, fiel e acessível, como um teólogo experiente. " +
+      "Não faça saudações ou introduções; responda diretamente à pergunta.\n\n" +
+      $"Pergunta do utilizador:\n{pergunta}\n\n" +
+      "Resposta:";
 
 
                 var requestData = new
@@ -445,10 +614,10 @@ $"Pergunta do utilizador:\n{pergunta}";
                 Versiculo versiculo = new Versiculo(lbl);
 
                 ContextMenuStrip menu = new ContextMenuStrip();
-                
+
                 menu.Items.Add(new ToolStripMenuItem("Copiar", Image.FromFile("icons/copy.png"), (s, ev) => versiculo.Copiar()));
-              
-                
+
+
                 menu.Closed += (s, ev) =>
                 {
                     lbl.Font = new Font(lbl.Font, lbl.Font.Style & ~FontStyle.Underline);
@@ -497,7 +666,7 @@ $"Pergunta do utilizador:\n{pergunta}";
                     TabControlPrincipal.SelectedTab = tabChatbot;
 
                     // Cria o prompt
-                    string prompt = $"Você é um especialista bíblico. Explique com clareza e profundidade o contexto histórico, cultural e teológico do versículo {livro} {capitulo}:{versiculo}. Inclua referências relevantes, significado das palavras-chave e aplicação prática para a vida cristã hoje.";
+                    string prompt = $"Você é um especialista bíblico. Explique com clareza e profundidade o contexto histórico, cultural e teológico do versículo {livro} {capitulo}:{versiculo}. Inclua referências relevantes e aplicação prática para a vida cristã hoje.";
 
 
                     // Mostra a mensagem do usuário na conversa
@@ -518,7 +687,7 @@ $"Pergunta do utilizador:\n{pergunta}";
             }
         }
 
-        private async void btnBuscar_Click(object sender, EventArgs e)
+        private async void btnBuscar_Click(object sender, EventArgs e) 
         {
             string livro = cmbLivro.SelectedItem as string;
 
@@ -606,6 +775,27 @@ $"Pergunta do utilizador:\n{pergunta}";
             return texto.Trim();
         }
 
+        private void pnlChatbot_Paint(object sender, PaintEventArgs e)
+        {
 
+
+        }
+
+        private async void tabHome_Click(object sender, EventArgs e)
+        {
+            await CarregarVersiculoDiaAsync();
+        }
+
+        private void lblTextoVersiculo_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void materialCard1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        
     }
 }

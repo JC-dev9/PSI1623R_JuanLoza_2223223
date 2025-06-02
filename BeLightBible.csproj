@@ -93,6 +93,12 @@
     <Compile Include="FormAnotacao.Designer.cs">
       <DependentUpon>FormAnotacao.cs</DependentUpon>
     </Compile>
+    <Compile Include="HomeTab.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="HomeTab.Designer.cs">
+      <DependentUpon>HomeTab.cs</DependentUpon>
+    </Compile>
     <Compile Include="Livro.cs" />
     <Compile Include="MenuForm.cs">
       <SubType>Form</SubType>
@@ -144,11 +150,17 @@
     <Compile Include="VersiculoAnotado.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="VersiculoSalvo.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
     <Compile Include="VersiculoSublinhado.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <EmbeddedResource Include="FormAnotacao.resx">
       <DependentUpon>FormAnotacao.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="HomeTab.resx">
+      <DependentUpon>HomeTab.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MenuForm.resx">
       <DependentUpon>MenuForm.cs</DependentUpon>

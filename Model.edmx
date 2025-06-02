@@ -26,6 +26,18 @@
           <Property Name="Versiculo" Type="int" Nullable="false" />
           <Property Name="Texto" Type="nvarchar" MaxLength="1000" Nullable="false" />
         </EntityType>
+        <EntityType Name="VersiculoSalvo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="Livro" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Capitulo" Type="int" Nullable="false" />
+          <Property Name="Versiculo" Type="int" Nullable="false" />
+          <Property Name="Texto" Type="nvarchar" MaxLength="1000" Nullable="false" />
+          <Property Name="DataSalvo" Type="datetime" Nullable="false" />
+        </EntityType>
         <EntityType Name="VersiculoSublinhado">
           <Key>
             <PropertyRef Name="Id" />
@@ -66,9 +78,24 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__Versiculo__UserI__70DDC3D8">
+          <End Role="Users" Type="Self.Users" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="VersiculoSalvo" Type="Self.VersiculoSalvo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="VersiculoSalvo">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="BeLightBibleDBModelStoreContainer">
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VersiculoAnotado" EntityType="Self.VersiculoAnotado" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="VersiculoSalvo" EntityType="Self.VersiculoSalvo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VersiculoSublinhado" EntityType="Self.VersiculoSublinhado" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK__Versiculo__UserI__5070F446" Association="Self.FK__Versiculo__UserI__5070F446">
             <End Role="Users" EntitySet="Users" />
@@ -77,6 +104,10 @@
           <AssociationSet Name="FK__Versiculo__UserI__5EBF139D" Association="Self.FK__Versiculo__UserI__5EBF139D">
             <End Role="Users" EntitySet="Users" />
             <End Role="VersiculoAnotado" EntitySet="VersiculoAnotado" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Versiculo__UserI__70DDC3D8" Association="Self.FK__Versiculo__UserI__70DDC3D8">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="VersiculoSalvo" EntitySet="VersiculoSalvo" />
           </AssociationSet>
         </EntityContainer>
       </Schema>
@@ -95,6 +126,7 @@
           <Property Name="CreatedAt" Type="DateTime" Precision="3" />
           <NavigationProperty Name="VersiculoSublinhado" Relationship="Self.FK__Versiculo__UserI__5070F446" FromRole="Users" ToRole="VersiculoSublinhado" />
           <NavigationProperty Name="VersiculoAnotado" Relationship="Self.FK__Versiculo__UserI__5EBF139D" FromRole="Users" ToRole="VersiculoAnotado" />
+          <NavigationProperty Name="VersiculoSalvo" Relationship="Self.FK__Versiculo__UserI__70DDC3D8" FromRole="Users" ToRole="VersiculoSalvo" />
         </EntityType>
         <EntityType Name="VersiculoAnotado">
           <Key>
@@ -107,6 +139,19 @@
           <Property Name="Versiculo" Type="Int32" Nullable="false" />
           <Property Name="Texto" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="Users" Relationship="Self.FK__Versiculo__UserI__5EBF139D" FromRole="VersiculoAnotado" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="VersiculoSalvo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="Livro" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Capitulo" Type="Int32" Nullable="false" />
+          <Property Name="Versiculo" Type="Int32" Nullable="false" />
+          <Property Name="Texto" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DataSalvo" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Users" Relationship="Self.FK__Versiculo__UserI__70DDC3D8" FromRole="VersiculoSalvo" ToRole="Users" />
         </EntityType>
         <EntityType Name="VersiculoSublinhado">
           <Key>
@@ -149,9 +194,24 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__Versiculo__UserI__70DDC3D8">
+          <End Role="Users" Type="Self.Users" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="VersiculoSalvo" Type="Self.VersiculoSalvo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="VersiculoSalvo">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Users" EntityType="Self.Users" />
           <EntitySet Name="VersiculoAnotado" EntityType="Self.VersiculoAnotado" />
+          <EntitySet Name="VersiculoSalvo" EntityType="Self.VersiculoSalvo" />
           <EntitySet Name="VersiculoSublinhado" EntityType="Self.VersiculoSublinhado" />
           <AssociationSet Name="FK__Versiculo__UserI__5070F446" Association="Self.FK__Versiculo__UserI__5070F446">
             <End Role="Users" EntitySet="Users" />
@@ -160,6 +220,10 @@
           <AssociationSet Name="FK__Versiculo__UserI__5EBF139D" Association="Self.FK__Versiculo__UserI__5EBF139D">
             <End Role="Users" EntitySet="Users" />
             <End Role="VersiculoAnotado" EntitySet="VersiculoAnotado" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Versiculo__UserI__70DDC3D8" Association="Self.FK__Versiculo__UserI__70DDC3D8">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="VersiculoSalvo" EntitySet="VersiculoSalvo" />
           </AssociationSet>
         </EntityContainer>
       </Schema>
@@ -188,6 +252,19 @@
                 <ScalarProperty Name="Capitulo" ColumnName="Capitulo" />
                 <ScalarProperty Name="Versiculo" ColumnName="Versiculo" />
                 <ScalarProperty Name="Texto" ColumnName="Texto" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VersiculoSalvo">
+            <EntityTypeMapping TypeName="BeLightBibleDBModel.VersiculoSalvo">
+              <MappingFragment StoreEntitySet="VersiculoSalvo">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Livro" ColumnName="Livro" />
+                <ScalarProperty Name="Capitulo" ColumnName="Capitulo" />
+                <ScalarProperty Name="Versiculo" ColumnName="Versiculo" />
+                <ScalarProperty Name="Texto" ColumnName="Texto" />
+                <ScalarProperty Name="DataSalvo" ColumnName="DataSalvo" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

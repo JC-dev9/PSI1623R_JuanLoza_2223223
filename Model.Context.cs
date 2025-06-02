@@ -27,6 +27,7 @@ namespace BeLightBible
     
         public virtual DbSet<Users> Users { get; set; }
         public virtual DbSet<VersiculoAnotado> VersiculoAnotado { get; set; }
+        public virtual DbSet<VersiculoSalvo> VersiculoSalvo { get; set; }
         public virtual DbSet<VersiculoSublinhado> VersiculoSublinhado { get; set; }
     }
 }

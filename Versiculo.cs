@@ -21,6 +21,55 @@ namespace BeLightBible
             lbl = label;
         }
 
+        public void SalvarVersiculoEF(int userId, string referencia, string texto)
+        {
+            try
+            {
+                // Exemplo: "Salmos 37:5"
+                string[] partes = referencia.Split(' ');
+                string livro = partes[0];
+                string[] capVers = partes[1].Split(':');
+                int capitulo = int.Parse(capVers[0]);
+                int versiculo = int.Parse(capVers[1]);
+
+                using (var context = new Entities()) // Substitua pelo nome do seu DbContext
+                {
+                    bool jaExiste = context.VersiculoSalvo.Any(v =>
+                        v.UserId == userId &&
+                        v.Livro == livro &&
+                        v.Capitulo == capitulo &&
+                        v.Versiculo == versiculo
+                    );
+
+                    if (!jaExiste)
+                    {
+                        var versiculoSalvo = new VersiculoSalvo
+                        {
+                            UserId = userId,
+                            Livro = livro,
+                            Capitulo = capitulo,
+                            Versiculo = versiculo,
+                            Texto = texto,
+                            DataSalvo = DateTime.Now
+                        };
+
+                        context.VersiculoSalvo.Add(versiculoSalvo);
+                        context.SaveChanges();
+                        MessageBox.Show("Versículo salvo com sucesso!");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Versículo já salvo anteriormente.");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro ao salvar o versículo: " + ex.Message);
+            }
+        }
+
+
         private void SalvarGrifo(int userId, string livro, int capitulo, int versiculo, string corHex)
         {
             using (var context = new Entities())

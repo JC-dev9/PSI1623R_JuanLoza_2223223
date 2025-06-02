@@ -19,6 +19,7 @@ namespace BeLightBible
         {
             this.VersiculoSublinhado = new HashSet<VersiculoSublinhado>();
             this.VersiculoAnotado = new HashSet<VersiculoAnotado>();
+            this.VersiculoSalvo = new HashSet<VersiculoSalvo>();
         }
     
         public int UserId { get; set; }
@@ -31,5 +32,7 @@ namespace BeLightBible
         public virtual ICollection<VersiculoSublinhado> VersiculoSublinhado { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<VersiculoAnotado> VersiculoAnotado { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<VersiculoSalvo> VersiculoSalvo { get; set; }
     }
 }

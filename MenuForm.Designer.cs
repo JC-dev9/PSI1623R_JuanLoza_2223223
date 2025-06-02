@@ -34,7 +34,15 @@ namespace BeLightBible
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MenuForm));
             this.TabControlPrincipal = new MaterialSkin.Controls.MaterialTabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tabHome = new System.Windows.Forms.TabPage();
+            this.materialCard2 = new MaterialSkin.Controls.MaterialCard();
+            this.materialButton3 = new MaterialSkin.Controls.MaterialButton();
+            this.materialLabel5 = new MaterialSkin.Controls.MaterialLabel();
+            this.materialLabel4 = new MaterialSkin.Controls.MaterialLabel();
+            this.cardVersiculoDia = new MaterialSkin.Controls.MaterialCard();
+            this.lblTextoVersiculo = new System.Windows.Forms.Label();
+            this.materialButton2 = new MaterialSkin.Controls.MaterialButton();
+            this.btnSalvarVersiculo = new MaterialSkin.Controls.MaterialButton();
             this.tabBible = new System.Windows.Forms.TabPage();
             this.flowLayoutPanelVersiculos = new System.Windows.Forms.FlowLayoutPanel();
             this.richTextBoxVersiculos = new System.Windows.Forms.RichTextBox();
@@ -47,11 +55,14 @@ namespace BeLightBible
             this.cmbCapitulo = new MaterialSkin.Controls.MaterialComboBox();
             this.tabChatbot = new System.Windows.Forms.TabPage();
             this.txtPergunta = new MaterialSkin.Controls.MaterialTextBox2();
-            this.btnEnviarChatbot = new MaterialSkin.Controls.MaterialButton();
             this.pnlChatbot = new System.Windows.Forms.Panel();
+            this.btnEnviarChatbot = new MaterialSkin.Controls.MaterialButton();
             this.flowLayoutPanelConversa = new System.Windows.Forms.FlowLayoutPanel();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.TabControlPrincipal.SuspendLayout();
+            this.tabHome.SuspendLayout();
+            this.materialCard2.SuspendLayout();
+            this.cardVersiculoDia.SuspendLayout();
             this.tabBible.SuspendLayout();
             this.flowLayoutPanelVersiculos.SuspendLayout();
             this.pnlBible.SuspendLayout();
@@ -64,7 +75,7 @@ namespace BeLightBible
             // 
             // TabControlPrincipal
             // 
-            this.TabControlPrincipal.Controls.Add(this.tabPage1);
+            this.TabControlPrincipal.Controls.Add(this.tabHome);
             this.TabControlPrincipal.Controls.Add(this.tabBible);
             this.TabControlPrincipal.Controls.Add(this.tabChatbot);
             this.TabControlPrincipal.Depth = 0;
@@ -78,16 +89,144 @@ namespace BeLightBible
             this.TabControlPrincipal.Size = new System.Drawing.Size(874, 430);
             this.TabControlPrincipal.TabIndex = 0;
             // 
-            // tabPage1
+            // tabHome
             // 
-            this.tabPage1.BackColor = System.Drawing.Color.White;
-            this.tabPage1.ImageKey = "house.png";
-            this.tabPage1.Location = new System.Drawing.Point(4, 31);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(866, 395);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Home";
+            this.tabHome.BackColor = System.Drawing.Color.White;
+            this.tabHome.Controls.Add(this.materialCard2);
+            this.tabHome.Controls.Add(this.cardVersiculoDia);
+            this.tabHome.ImageKey = "house.png";
+            this.tabHome.Location = new System.Drawing.Point(4, 31);
+            this.tabHome.Name = "tabHome";
+            this.tabHome.Padding = new System.Windows.Forms.Padding(3);
+            this.tabHome.Size = new System.Drawing.Size(866, 395);
+            this.tabHome.TabIndex = 0;
+            this.tabHome.Text = "Home";
+            this.tabHome.Click += new System.EventHandler(this.tabHome_Click);
+            // 
+            // materialCard2
+            // 
+            this.materialCard2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.materialCard2.Controls.Add(this.materialButton3);
+            this.materialCard2.Controls.Add(this.materialLabel5);
+            this.materialCard2.Controls.Add(this.materialLabel4);
+            this.materialCard2.Depth = 0;
+            this.materialCard2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.materialCard2.Location = new System.Drawing.Point(474, 210);
+            this.materialCard2.Margin = new System.Windows.Forms.Padding(14);
+            this.materialCard2.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialCard2.Name = "materialCard2";
+            this.materialCard2.Padding = new System.Windows.Forms.Padding(14);
+            this.materialCard2.Size = new System.Drawing.Size(322, 145);
+            this.materialCard2.TabIndex = 1;
+            // 
+            // materialButton3
+            // 
+            this.materialButton3.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.materialButton3.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            this.materialButton3.Depth = 0;
+            this.materialButton3.HighEmphasis = true;
+            this.materialButton3.Icon = null;
+            this.materialButton3.Location = new System.Drawing.Point(183, 93);
+            this.materialButton3.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.materialButton3.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialButton3.Name = "materialButton3";
+            this.materialButton3.NoAccentTextColor = System.Drawing.Color.Empty;
+            this.materialButton3.Size = new System.Drawing.Size(97, 36);
+            this.materialButton3.TabIndex = 2;
+            this.materialButton3.Text = "Retornar";
+            this.materialButton3.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            this.materialButton3.UseAccentColor = false;
+            this.materialButton3.UseVisualStyleBackColor = true;
+            // 
+            // materialLabel5
+            // 
+            this.materialLabel5.AutoSize = true;
+            this.materialLabel5.Depth = 0;
+            this.materialLabel5.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.materialLabel5.Location = new System.Drawing.Point(17, 58);
+            this.materialLabel5.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialLabel5.Name = "materialLabel5";
+            this.materialLabel5.Size = new System.Drawing.Size(107, 19);
+            this.materialLabel5.TabIndex = 1;
+            this.materialLabel5.Text = "materialLabel5";
+            // 
+            // materialLabel4
+            // 
+            this.materialLabel4.AutoSize = true;
+            this.materialLabel4.Depth = 0;
+            this.materialLabel4.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.materialLabel4.Location = new System.Drawing.Point(18, 18);
+            this.materialLabel4.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialLabel4.Name = "materialLabel4";
+            this.materialLabel4.Size = new System.Drawing.Size(107, 19);
+            this.materialLabel4.TabIndex = 0;
+            this.materialLabel4.Text = "materialLabel4";
+            // 
+            // cardVersiculoDia
+            // 
+            this.cardVersiculoDia.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.cardVersiculoDia.Controls.Add(this.lblTextoVersiculo);
+            this.cardVersiculoDia.Controls.Add(this.materialButton2);
+            this.cardVersiculoDia.Controls.Add(this.btnSalvarVersiculo);
+            this.cardVersiculoDia.Depth = 0;
+            this.cardVersiculoDia.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.cardVersiculoDia.Location = new System.Drawing.Point(17, 17);
+            this.cardVersiculoDia.Margin = new System.Windows.Forms.Padding(14);
+            this.cardVersiculoDia.MouseState = MaterialSkin.MouseState.HOVER;
+            this.cardVersiculoDia.Name = "cardVersiculoDia";
+            this.cardVersiculoDia.Padding = new System.Windows.Forms.Padding(14);
+            this.cardVersiculoDia.Size = new System.Drawing.Size(429, 338);
+            this.cardVersiculoDia.TabIndex = 0;
+            this.cardVersiculoDia.Paint += new System.Windows.Forms.PaintEventHandler(this.materialCard1_Paint);
+            // 
+            // lblTextoVersiculo
+            // 
+            this.lblTextoVersiculo.AutoSize = true;
+            this.lblTextoVersiculo.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTextoVersiculo.Location = new System.Drawing.Point(11, 74);
+            this.lblTextoVersiculo.MaximumSize = new System.Drawing.Size(400, 0);
+            this.lblTextoVersiculo.Name = "lblTextoVersiculo";
+            this.lblTextoVersiculo.Size = new System.Drawing.Size(0, 20);
+            this.lblTextoVersiculo.TabIndex = 1;
+            // 
+            // materialButton2
+            // 
+            this.materialButton2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.materialButton2.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            this.materialButton2.Depth = 0;
+            this.materialButton2.HighEmphasis = true;
+            this.materialButton2.Icon = null;
+            this.materialButton2.Location = new System.Drawing.Point(208, 244);
+            this.materialButton2.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.materialButton2.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialButton2.Name = "materialButton2";
+            this.materialButton2.NoAccentTextColor = System.Drawing.Color.Empty;
+            this.materialButton2.Size = new System.Drawing.Size(137, 36);
+            this.materialButton2.TabIndex = 4;
+            this.materialButton2.Text = "Compartiilhar";
+            this.materialButton2.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            this.materialButton2.UseAccentColor = false;
+            this.materialButton2.UseVisualStyleBackColor = true;
+            // 
+            // btnSalvarVersiculo
+            // 
+            this.btnSalvarVersiculo.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnSalvarVersiculo.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            this.btnSalvarVersiculo.Depth = 0;
+            this.btnSalvarVersiculo.HighEmphasis = true;
+            this.btnSalvarVersiculo.Icon = null;
+            this.btnSalvarVersiculo.Location = new System.Drawing.Point(55, 244);
+            this.btnSalvarVersiculo.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.btnSalvarVersiculo.MouseState = MaterialSkin.MouseState.HOVER;
+            this.btnSalvarVersiculo.Name = "btnSalvarVersiculo";
+            this.btnSalvarVersiculo.NoAccentTextColor = System.Drawing.Color.Empty;
+            this.btnSalvarVersiculo.Size = new System.Drawing.Size(76, 36);
+            this.btnSalvarVersiculo.TabIndex = 3;
+            this.btnSalvarVersiculo.Text = "Salvar";
+            this.btnSalvarVersiculo.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            this.btnSalvarVersiculo.UseAccentColor = false;
+            this.btnSalvarVersiculo.UseVisualStyleBackColor = true;
+            this.btnSalvarVersiculo.Click += new System.EventHandler(this.btnSalvarVersiculo_Click);
             // 
             // tabBible
             // 
@@ -289,6 +428,15 @@ namespace BeLightBible
             this.txtPergunta.TrailingIcon = null;
             this.txtPergunta.UseSystemPasswordChar = false;
             // 
+            // pnlChatbot
+            // 
+            this.pnlChatbot.Controls.Add(this.btnEnviarChatbot);
+            this.pnlChatbot.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.pnlChatbot.Location = new System.Drawing.Point(0, 328);
+            this.pnlChatbot.Name = "pnlChatbot";
+            this.pnlChatbot.Size = new System.Drawing.Size(866, 67);
+            this.pnlChatbot.TabIndex = 8;
+            // 
             // btnEnviarChatbot
             // 
             this.btnEnviarChatbot.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
@@ -309,15 +457,6 @@ namespace BeLightBible
             this.btnEnviarChatbot.UseAccentColor = false;
             this.btnEnviarChatbot.UseVisualStyleBackColor = true;
             this.btnEnviarChatbot.Click += new System.EventHandler(this.btnEnviarChatbot_Click);
-            // 
-            // pnlChatbot
-            // 
-            this.pnlChatbot.Controls.Add(this.btnEnviarChatbot);
-            this.pnlChatbot.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.pnlChatbot.Location = new System.Drawing.Point(0, 328);
-            this.pnlChatbot.Name = "pnlChatbot";
-            this.pnlChatbot.Size = new System.Drawing.Size(866, 67);
-            this.pnlChatbot.TabIndex = 8;
             // 
             // flowLayoutPanelConversa
             // 
@@ -348,6 +487,11 @@ namespace BeLightBible
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "BeLight Bible";
             this.TabControlPrincipal.ResumeLayout(false);
+            this.tabHome.ResumeLayout(false);
+            this.materialCard2.ResumeLayout(false);
+            this.materialCard2.PerformLayout();
+            this.cardVersiculoDia.ResumeLayout(false);
+            this.cardVersiculoDia.PerformLayout();
             this.tabBible.ResumeLayout(false);
             this.flowLayoutPanelVersiculos.ResumeLayout(false);
             this.pnlBible.ResumeLayout(false);
@@ -365,7 +509,7 @@ namespace BeLightBible
         #endregion
 
         private MaterialSkin.Controls.MaterialTabControl TabControlPrincipal;
-        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabPage tabHome;
         private System.Windows.Forms.TabPage tabBible;
         private System.Windows.Forms.ImageList imageList1;
         private System.Windows.Forms.TabPage tabChatbot;
@@ -382,5 +526,13 @@ namespace BeLightBible
         private MaterialSkin.Controls.MaterialTextBox2 txtPergunta;
         private MaterialSkin.Controls.MaterialButton btnEnviarChatbot;
         private Panel pnlChatbot;
+        private MaterialSkin.Controls.MaterialCard materialCard2;
+        private MaterialSkin.Controls.MaterialButton materialButton3;
+        private MaterialSkin.Controls.MaterialLabel materialLabel5;
+        private MaterialSkin.Controls.MaterialLabel materialLabel4;
+        private MaterialSkin.Controls.MaterialCard cardVersiculoDia;
+        private MaterialSkin.Controls.MaterialButton materialButton2;
+        private MaterialSkin.Controls.MaterialButton btnSalvarVersiculo;
+        private Label lblTextoVersiculo;
     }
 }
