@@ -41,7 +41,7 @@ namespace BeLightBible
             this.materialLabel4 = new MaterialSkin.Controls.MaterialLabel();
             this.cardVersiculoDia = new MaterialSkin.Controls.MaterialCard();
             this.lblTextoVersiculo = new System.Windows.Forms.Label();
-            this.materialButton2 = new MaterialSkin.Controls.MaterialButton();
+            this.btnCompartilharVersiculo = new MaterialSkin.Controls.MaterialButton();
             this.btnSalvarVersiculo = new MaterialSkin.Controls.MaterialButton();
             this.tabBible = new System.Windows.Forms.TabPage();
             this.flowLayoutPanelVersiculos = new System.Windows.Forms.FlowLayoutPanel();
@@ -101,7 +101,6 @@ namespace BeLightBible
             this.tabHome.Size = new System.Drawing.Size(866, 395);
             this.tabHome.TabIndex = 0;
             this.tabHome.Text = "Home";
-            this.tabHome.Click += new System.EventHandler(this.tabHome_Click);
             // 
             // materialCard2
             // 
@@ -166,7 +165,7 @@ namespace BeLightBible
             // 
             this.cardVersiculoDia.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.cardVersiculoDia.Controls.Add(this.lblTextoVersiculo);
-            this.cardVersiculoDia.Controls.Add(this.materialButton2);
+            this.cardVersiculoDia.Controls.Add(this.btnCompartilharVersiculo);
             this.cardVersiculoDia.Controls.Add(this.btnSalvarVersiculo);
             this.cardVersiculoDia.Depth = 0;
             this.cardVersiculoDia.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
@@ -177,7 +176,6 @@ namespace BeLightBible
             this.cardVersiculoDia.Padding = new System.Windows.Forms.Padding(14);
             this.cardVersiculoDia.Size = new System.Drawing.Size(429, 338);
             this.cardVersiculoDia.TabIndex = 0;
-            this.cardVersiculoDia.Paint += new System.Windows.Forms.PaintEventHandler(this.materialCard1_Paint);
             // 
             // lblTextoVersiculo
             // 
@@ -189,24 +187,25 @@ namespace BeLightBible
             this.lblTextoVersiculo.Size = new System.Drawing.Size(0, 20);
             this.lblTextoVersiculo.TabIndex = 1;
             // 
-            // materialButton2
+            // btnCompartilharVersiculo
             // 
-            this.materialButton2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.materialButton2.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            this.materialButton2.Depth = 0;
-            this.materialButton2.HighEmphasis = true;
-            this.materialButton2.Icon = null;
-            this.materialButton2.Location = new System.Drawing.Point(208, 244);
-            this.materialButton2.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.materialButton2.MouseState = MaterialSkin.MouseState.HOVER;
-            this.materialButton2.Name = "materialButton2";
-            this.materialButton2.NoAccentTextColor = System.Drawing.Color.Empty;
-            this.materialButton2.Size = new System.Drawing.Size(137, 36);
-            this.materialButton2.TabIndex = 4;
-            this.materialButton2.Text = "Compartiilhar";
-            this.materialButton2.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
-            this.materialButton2.UseAccentColor = false;
-            this.materialButton2.UseVisualStyleBackColor = true;
+            this.btnCompartilharVersiculo.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnCompartilharVersiculo.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            this.btnCompartilharVersiculo.Depth = 0;
+            this.btnCompartilharVersiculo.HighEmphasis = true;
+            this.btnCompartilharVersiculo.Icon = null;
+            this.btnCompartilharVersiculo.Location = new System.Drawing.Point(229, 277);
+            this.btnCompartilharVersiculo.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.btnCompartilharVersiculo.MouseState = MaterialSkin.MouseState.HOVER;
+            this.btnCompartilharVersiculo.Name = "btnCompartilharVersiculo";
+            this.btnCompartilharVersiculo.NoAccentTextColor = System.Drawing.Color.Empty;
+            this.btnCompartilharVersiculo.Size = new System.Drawing.Size(137, 36);
+            this.btnCompartilharVersiculo.TabIndex = 4;
+            this.btnCompartilharVersiculo.Text = "Compartiilhar";
+            this.btnCompartilharVersiculo.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            this.btnCompartilharVersiculo.UseAccentColor = false;
+            this.btnCompartilharVersiculo.UseVisualStyleBackColor = true;
+            this.btnCompartilharVersiculo.Click += new System.EventHandler(this.btnCompartilharVersiculo_Click);
             // 
             // btnSalvarVersiculo
             // 
@@ -215,7 +214,7 @@ namespace BeLightBible
             this.btnSalvarVersiculo.Depth = 0;
             this.btnSalvarVersiculo.HighEmphasis = true;
             this.btnSalvarVersiculo.Icon = null;
-            this.btnSalvarVersiculo.Location = new System.Drawing.Point(55, 244);
+            this.btnSalvarVersiculo.Location = new System.Drawing.Point(101, 277);
             this.btnSalvarVersiculo.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnSalvarVersiculo.MouseState = MaterialSkin.MouseState.HOVER;
             this.btnSalvarVersiculo.Name = "btnSalvarVersiculo";
@@ -531,7 +530,7 @@ namespace BeLightBible
         private MaterialSkin.Controls.MaterialLabel materialLabel5;
         private MaterialSkin.Controls.MaterialLabel materialLabel4;
         private MaterialSkin.Controls.MaterialCard cardVersiculoDia;
-        private MaterialSkin.Controls.MaterialButton materialButton2;
+        private MaterialSkin.Controls.MaterialButton btnCompartilharVersiculo;
         private MaterialSkin.Controls.MaterialButton btnSalvarVersiculo;
         private Label lblTextoVersiculo;
     }

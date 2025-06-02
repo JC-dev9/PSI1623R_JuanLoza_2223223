@@ -119,7 +119,7 @@ namespace BeLightBible
             this.Resize += MenuForm_Resize;
             flowLayoutPanelConversa.Resize += flowLayoutPanelConversa_Resize;
             AplicarLayoutResponsivoBible();
-            AtualizarLarguraDasMensagens(); 
+            AtualizarLarguraDasMensagens();
         }
 
         // -------------------- LAYOUT --------------------
@@ -131,126 +131,10 @@ namespace BeLightBible
 
         private async void MenuForm_Load(object sender, EventArgs e)
         {
-            CriarLabelsVersiculoDia();
-            // Carrega o versículo do dia
-            await CarregarVersiculoDiaAsync();
+            CriarLabelsVersiculoDia(); 
+            await CarregarVersiculoDiaAsync(); // Carrega o versículo do dia na tela inicial
 
-            
         }
-
-        private void CriarLabelsVersiculoDia()
-        {
-            lblTituloCapitulo = new Label
-            {
-                AutoSize = true,
-                Font = new Font("Segoe UI", 14, FontStyle.Bold),
-                ForeColor = Color.White,
-                BackColor = Color.Transparent,
-                Margin = new Padding(5),
-                Padding = new Padding(2),
-                Text = "Versículo do Dia",
-                Location = new Point(20, 20)
-            };
-
-            lblTextoVersiculo = new Label
-            {
-                AutoSize = true,
-                MaximumSize = new Size(300, 0),
-                Font = new Font("Segoe UI", 12, FontStyle.Regular),
-                ForeColor = Color.White,
-                BackColor = Color.Transparent,
-                Padding = new Padding(2),
-                Location = new Point(20, 60)
-            };
-
-            lblNumeroVersiculo = new Label
-            {
-                AutoSize = true,
-                Font = new Font("Segoe UI", 10, FontStyle.Italic),
-                ForeColor = Color.LightGray,
-                BackColor = Color.Transparent,
-                Location = new Point(20, 130)
-            };
-
-            cardVersiculoDia.Controls.Add(lblTituloCapitulo);
-            cardVersiculoDia.Controls.SetChildIndex(lblTituloCapitulo, 0); // Move para o topo
-
-            cardVersiculoDia.Controls.Add(lblTextoVersiculo);
-            cardVersiculoDia.Controls.Add(lblNumeroVersiculo);
-        }
-
-        private void AtualizarVersiculo(string texto, string referencia)
-        {
-            lblTextoVersiculo.AutoSize = false;
-            lblTextoVersiculo.Width = 300;
-            lblTextoVersiculo.TextAlign = ContentAlignment.TopLeft;
-
-            lblTextoVersiculo.Text = $"\"{texto}\"";
-
-            // Ajusta altura para que o texto quebre linhas corretamente
-            Size textSize = TextRenderer.MeasureText(texto, lblTextoVersiculo.Font, new Size(lblTextoVersiculo.Width, 0), TextFormatFlags.WordBreak);
-            lblTextoVersiculo.Height = textSize.Height + 10;
-
-            // Reposiciona o lblNumeroVersiculo logo abaixo do lblTextoVersiculo
-            lblNumeroVersiculo.Location = new Point(lblTextoVersiculo.Left, lblTextoVersiculo.Top + lblTextoVersiculo.Height + 2);
-            lblNumeroVersiculo.Text = referencia;
-        }
-
-
-        private async Task CarregarVersiculoDiaAsync()
-        {
-            string hoje = DateTime.Now.ToString("yyyy-MM-dd");
-
-            // Verifica se já foi carregado hoje
-            if (Properties.Settings.Default.DataUltimoVersiculo == hoje)
-            {
-                string textoSalvo = Properties.Settings.Default.UltimoVersiculo;
-                string referenciaSalva = Properties.Settings.Default.UltimaReferencia;
-                AtualizarVersiculo(textoSalvo, referenciaSalva);
-                lblNumeroVersiculo.Text = $"{referenciaSalva}";
-                return;
-            }
-
-            // Se não, busca novo versículo
-            var api = new ApiBibleService();
-            dynamic versiculo = await api.BuscarVersiculoAleatorio();
-
-            if (versiculo != null)
-            {
-                string texto = versiculo.text.ToString().Trim();
-                string referencia = $"{versiculo.book_name} {versiculo.chapter}:{versiculo.verse}";
-
-                AtualizarVersiculo(texto, referencia);
-                lblNumeroVersiculo.Text = $"{referencia}";
-
-                // Salva nas configurações
-                Properties.Settings.Default.UltimoVersiculo = texto;
-                Properties.Settings.Default.UltimaReferencia = referencia;
-                Properties.Settings.Default.DataUltimoVersiculo = hoje;
-                Properties.Settings.Default.Save();
-            }
-            else
-            {
-                lblTextoVersiculo.Text = "Não foi possível carregar o versículo do dia.";
-            }
-        }
-
-        private void btnSalvarVersiculo_Click(object sender, EventArgs e)
-        {
-            int userId = Sessao.UserId;
-            string texto = Properties.Settings.Default.UltimoVersiculo;
-            string referencia = Properties.Settings.Default.UltimaReferencia;
-
-            if (string.IsNullOrEmpty(texto) || string.IsNullOrEmpty(referencia))
-            {
-                MessageBox.Show("Nenhum versículo disponível para salvar.");
-                return;
-            }
-
-            Versiculo v = new Versiculo(lblTextoVersiculo); // você pode usar qualquer Label aqui, ou refatorar se não precisar mais dela
-            v.SalvarVersiculoEF(userId, referencia, texto);
-        }
-
 
         private void AdicionarEspacadorFinal()
         {
@@ -273,14 +157,11 @@ namespace BeLightBible
             flowLayoutPanelConversa.ScrollControlIntoView(espaco);
         }
 
-
-
         private void SetRoundedRegion(Control control, int radius)
         {
             var region = Region.FromHrgn(CreateRoundRectRgn(0, 0, control.Width, control.Height, radius, radius));
             control.Region = region;
         }
-
 
         private void AtualizarLarguraDasMensagens()
         {
@@ -687,7 +568,7 @@ namespace BeLightBible
             }
         }
 
-        private async void btnBuscar_Click(object sender, EventArgs e) 
+        private async void btnBuscar_Click(object sender, EventArgs e)
         {
             string livro = cmbLivro.SelectedItem as string;
 
@@ -775,27 +656,198 @@ namespace BeLightBible
             return texto.Trim();
         }
 
-        private void pnlChatbot_Paint(object sender, PaintEventArgs e)
+        // ----------------------------------------------------------------
+        // -------------------- TELA INICIAL ------------------------------
+        // ----------------------------------------------------------------
+
+        private void CriarLabelsVersiculoDia()
         {
+            lblTituloCapitulo = new Label
+            {
+                AutoSize = true,
+                Font = new Font("Segoe UI", 14, FontStyle.Bold),
+                ForeColor = Color.White,
+                BackColor = Color.Transparent,
+                Margin = new Padding(5),
+                Padding = new Padding(2),
+                Text = "Versículo do Dia",
+                Location = new Point(20, 20)
+            };
 
+            lblTextoVersiculo = new Label
+            {
+                AutoSize = true,
+                MaximumSize = new Size(300, 0),
+                Font = new Font("Segoe UI", 12, FontStyle.Regular),
+                ForeColor = Color.White,
+                BackColor = Color.Transparent,
+                Padding = new Padding(2),
+                Location = new Point(20, 60)
+            };
 
+            lblNumeroVersiculo = new Label
+            {
+                AutoSize = true,
+                Font = new Font("Segoe UI", 10, FontStyle.Italic),
+                ForeColor = Color.LightGray,
+                BackColor = Color.Transparent,
+                Location = new Point(20, 130)
+            };
+
+            cardVersiculoDia.Controls.Add(lblTituloCapitulo);
+            cardVersiculoDia.Controls.SetChildIndex(lblTituloCapitulo, 0); // Move para o topo
+
+            cardVersiculoDia.Controls.Add(lblTextoVersiculo);
+            cardVersiculoDia.Controls.Add(lblNumeroVersiculo);
         }
 
-        private async void tabHome_Click(object sender, EventArgs e)
+        private void AtualizarVersiculo(string texto, string referencia)
         {
-            await CarregarVersiculoDiaAsync();
+            lblTextoVersiculo.AutoSize = false;
+            lblTextoVersiculo.Width = 300;
+            lblTextoVersiculo.TextAlign = ContentAlignment.TopLeft;
+
+            lblTextoVersiculo.Text = $"\"{texto}\"";
+
+            // Ajusta altura para que o texto quebre linhas corretamente
+            Size textSize = TextRenderer.MeasureText(texto, lblTextoVersiculo.Font, new Size(lblTextoVersiculo.Width, 0), TextFormatFlags.WordBreak);
+            lblTextoVersiculo.Height = textSize.Height + 10;
+
+            // Reposiciona o lblNumeroVersiculo logo abaixo do lblTextoVersiculo
+            lblNumeroVersiculo.Location = new Point(lblTextoVersiculo.Left, lblTextoVersiculo.Top + lblTextoVersiculo.Height + 2);
+            lblNumeroVersiculo.Text = referencia;
         }
 
-        private void lblTextoVersiculo_Click(object sender, EventArgs e)
-        {
+        // -------------------- GERAR VERSÍCULO --------------------
 
+        private async Task CarregarVersiculoDiaAsync()
+        {
+            string hoje = DateTime.Now.ToString("yyyy-MM-dd");
+
+            // Verifica se já foi carregado hoje
+            if (Properties.Settings.Default.DataUltimoVersiculo == hoje)
+            {
+                string textoSalvo = Properties.Settings.Default.UltimoVersiculo;
+                string referenciaSalva = Properties.Settings.Default.UltimaReferencia;
+                AtualizarVersiculo(textoSalvo, referenciaSalva);
+                lblNumeroVersiculo.Text = $"{referenciaSalva}";
+                return;
+            }
+
+            // Se não, busca novo versículo
+            var api = new ApiBibleService();
+            dynamic versiculo = await api.BuscarVersiculoAleatorio();
+
+            if (versiculo != null)
+            {
+                string texto = versiculo.text.ToString().Trim();
+                string referencia = $"{versiculo.book_name} {versiculo.chapter}:{versiculo.verse}";
+
+                AtualizarVersiculo(texto, referencia);
+                lblNumeroVersiculo.Text = $"{referencia}";
+
+                // Salva nas configurações
+                Properties.Settings.Default.UltimoVersiculo = texto;
+                Properties.Settings.Default.UltimaReferencia = referencia;
+                Properties.Settings.Default.DataUltimoVersiculo = hoje;
+                Properties.Settings.Default.Save();
+            }
+            else
+            {
+                lblTextoVersiculo.Text = "Não foi possível carregar o versículo do dia.";
+            }
         }
 
-        private void materialCard1_Paint(object sender, PaintEventArgs e)
+        // -------------------- SALVAR VERSICULO --------------------
+        private void btnSalvarVersiculo_Click(object sender, EventArgs e)
         {
+            int userId = Sessao.UserId;
+            string texto = Properties.Settings.Default.UltimoVersiculo;
+            string referencia = Properties.Settings.Default.UltimaReferencia;
 
+            if (string.IsNullOrEmpty(texto) || string.IsNullOrEmpty(referencia))
+            {
+                MessageBox.Show("Nenhum versículo disponível para salvar.");
+                return;
+            }
+
+            Versiculo v = new Versiculo(lblTextoVersiculo); // você pode usar qualquer Label aqui, ou refatorar se não precisar mais dela
+            v.SalvarVersiculoEF(userId, referencia, texto);
         }
 
-        
+        // -------------------- COMPARTILHAR VERSÍCULO --------------------
+
+        private void btnCompartilharVersiculo_Click(object sender, EventArgs e)
+        {
+            string mensagem = ObterMensagemVersiculo();
+
+            if (mensagem == null)
+            {
+                MessageBox.Show("Nenhum versículo para compartilhar.");
+                return;
+            }
+
+            ContextMenuStrip menu = new ContextMenuStrip();
+
+            // Item: Copiar para área de transferência
+            ToolStripMenuItem copiarItem = new ToolStripMenuItem("Copiar");
+            copiarItem.Image = Image.FromFile("icons/copy.png");
+            copiarItem.Click += (s, ev) =>
+            {
+                Clipboard.SetText(mensagem);
+                MessageBox.Show("Versículo copiado para a área de transferência!");
+            };
+
+            // Item: Compartilhar via WhatsApp
+            ToolStripMenuItem whatsappItem = new ToolStripMenuItem("Compartilhar via WhatsApp");
+            whatsappItem.Image = Image.FromFile("icons/whatsapp.png");
+            whatsappItem.Click += (s, ev) =>
+            {
+                string url = $"https://wa.me/?text={Uri.EscapeDataString(mensagem)}";
+                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                {
+                    FileName = url,
+                    UseShellExecute = true
+                });
+            };
+
+            // Item: Compartilhar por Email
+            ToolStripMenuItem emailItem = new ToolStripMenuItem("Compartilhar por Email");
+            emailItem.Click += (s, ev) =>
+            {
+                string assunto = Uri.EscapeDataString("Versículo do Dia");
+                string corpo = Uri.EscapeDataString(mensagem);
+                string url = $"mailto:?subject={assunto}&body={corpo}";
+                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                {
+                    FileName = url,
+                    UseShellExecute = true
+                });
+            };
+
+            // Adiciona os itens ao menu
+            menu.Items.Add(copiarItem);
+            menu.Items.Add(whatsappItem);
+            menu.Items.Add(emailItem);
+
+            // Mostra o menu abaixo do botão
+            menu.Show(btnCompartilharVersiculo, new Point(0, btnCompartilharVersiculo.Height));
+        }
+
+        private string ObterMensagemVersiculo()
+        {
+            string texto = Properties.Settings.Default.UltimoVersiculo;
+            string referencia = Properties.Settings.Default.UltimaReferencia;
+
+            if (string.IsNullOrWhiteSpace(texto) || string.IsNullOrWhiteSpace(referencia))
+            {
+                return null;
+            }
+
+            return $"\"{texto}\"\n— {referencia}";
+        }
+
+
+
     }
 }
