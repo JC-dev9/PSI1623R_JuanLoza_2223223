@@ -131,6 +131,8 @@ namespace BeLightBible
 
         private async void MenuForm_Load(object sender, EventArgs e)
         {
+            CriarCardUltimoPonto();
+            CarregarUltimoPonto();
             CriarLabelsVersiculoDia(); 
             await CarregarVersiculoDiaAsync(); // Carrega o versículo do dia na tela inicial
 
@@ -239,7 +241,9 @@ namespace BeLightBible
             }
         }
 
-        // Cria balão de mensagem
+        // ----------------------------------------------------------------
+        // -------------------- CHATBOT LLM ------------------------------
+        // ----------------------------------------------------------------
         private Panel CreateMessageBubble(string message, bool isUser)
         {
             var panel = new Panel
@@ -354,7 +358,6 @@ namespace BeLightBible
             }
         }
 
-
         private async void btnEnviarChatbot_Click(object sender, EventArgs e)
         {
             string pergunta = txtPergunta.Text.Trim();
@@ -371,7 +374,28 @@ namespace BeLightBible
 
             txtPergunta.Clear();
             await EnviarParaOllama(pergunta);
+        }
 
+        private async void MensagemClicada(object sender, MouseEventArgs e)
+        {
+
+            if (sender is Label lbl)
+            {
+                lbl.Font = new Font(lbl.Font, lbl.Font.Style | FontStyle.Underline);
+                Versiculo versiculo = new Versiculo(lbl);
+
+                ContextMenuStrip menu = new ContextMenuStrip();
+
+                menu.Items.Add(new ToolStripMenuItem("Copiar", Image.FromFile("icons/copy.png"), (s, ev) => versiculo.Copiar()));
+
+
+                menu.Closed += (s, ev) =>
+                {
+                    lbl.Font = new Font(lbl.Font, lbl.Font.Style & ~FontStyle.Underline);
+                };
+
+                menu.Show(lbl, new Point(e.X, e.Y));
+            }
         }
 
         // -------------------- BASE DE DADOS --------------------
@@ -462,8 +486,10 @@ namespace BeLightBible
                 flowLayoutPanelVersiculos.Controls.Add(card);
             }
 
+
             AplicarLayoutResponsivoBible();
             picLoading.Visible = false;
+            Versiculo.SalvarUltimoPonto(Sessao.UserId, livro, capitulo);
         }
 
         // -------------------- EVENTOS --------------------
@@ -484,28 +510,6 @@ namespace BeLightBible
 
             if (cmbCapitulo.Items.Count > 0)
                 cmbCapitulo.SelectedIndex = 0;
-        }
-
-        private async void MensagemClicada(object sender, MouseEventArgs e)
-        {
-
-            if (sender is Label lbl)
-            {
-                lbl.Font = new Font(lbl.Font, lbl.Font.Style | FontStyle.Underline);
-                Versiculo versiculo = new Versiculo(lbl);
-
-                ContextMenuStrip menu = new ContextMenuStrip();
-
-                menu.Items.Add(new ToolStripMenuItem("Copiar", Image.FromFile("icons/copy.png"), (s, ev) => versiculo.Copiar()));
-
-
-                menu.Closed += (s, ev) =>
-                {
-                    lbl.Font = new Font(lbl.Font, lbl.Font.Style & ~FontStyle.Underline);
-                };
-
-                menu.Show(lbl, new Point(e.X, e.Y));
-            }
         }
 
         private async void VersiculoClicado(object sender, MouseEventArgs e)
@@ -847,7 +851,86 @@ namespace BeLightBible
             return $"\"{texto}\"\n— {referencia}";
         }
 
+        // -------------------- RETORNAR AO ÚLTIMO VERSÍCULO --------------------
+
+        private Label lblTituloUltimoPonto;
+        private Label lblLivroCapitulo;
+
+        private void CriarCardUltimoPonto()
+        {
+            lblTituloUltimoPonto = new Label
+            {
+                AutoSize = true,
+                Font = new Font("Segoe UI", 14, FontStyle.Bold),
+                ForeColor = Color.White,
+                BackColor = Color.Transparent,
+                Text = "Última Leitura",
+                Location = new Point(20, 20)
+            };
+
+            lblLivroCapitulo = new Label
+            {
+                AutoSize = true,
+                Font = new Font("Segoe UI", 12),
+                ForeColor = Color.White,
+                BackColor = Color.Transparent,
+                Text = "Nenhuma leitura registrada.",
+                Location = new Point(20, 60)
+            };
 
 
+            // Adiciona ao card
+            cardUltimaLeitura.Controls.Add(lblTituloUltimoPonto);
+            cardUltimaLeitura.Controls.Add(lblLivroCapitulo);
+            cardUltimaLeitura.Controls.Add(btnRetomarLeitura);
+        }
+        private void CarregarUltimoPonto()
+        {
+            var ponto = Versiculo.ObterUltimoPonto(Sessao.UserId);
+
+            if (lblLivroCapitulo == null)
+            {
+                MessageBox.Show("lblLivroCapitulo é null!");
+                return;
+            }
+
+            if (ponto.HasValue)
+            {
+                lblLivroCapitulo.Text = $"{ponto.Value.Livro} {ponto.Value.Capitulo}";
+                btnRetomarLeitura.Enabled = true;
+            }
+            else
+            {
+                lblLivroCapitulo.Text = "Nenhuma leitura registrada.";
+                btnRetomarLeitura.Enabled = false;
+            }
+        }
+
+
+        private async void btnRetomarLeitura_Click(object sender, EventArgs e)
+        {
+            var ultimoPonto = Versiculo.ObterUltimoPonto(Sessao.UserId);
+
+            if (ultimoPonto.HasValue)
+            {
+
+                string livro = ultimoPonto.Value.Livro;
+                int capitulo = ultimoPonto.Value.Capitulo;
+
+                // Atualizar os combo boxes para refletir o livro e capítulo
+                cmbLivro.SelectedItem = livro;
+
+                // Selecionar capítulo no combo
+                cmbCapitulo.SelectedItem = capitulo.ToString();
+
+                TabControlPrincipal.SelectedTab = tabBible;
+
+                await BibleTab(livro, capitulo);
+            }
+            else
+            {
+                MessageBox.Show("Nenhum ponto de leitura encontrado.");
+            }
+        }
     }
 }

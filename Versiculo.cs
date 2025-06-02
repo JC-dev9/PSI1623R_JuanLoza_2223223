@@ -21,6 +21,47 @@ namespace BeLightBible
             lbl = label;
         }
 
+        public static (string Livro, int Capitulo)? ObterUltimoPonto(int userId)
+        {
+            using (var context = new Entities())
+            {
+                var ultimo = context.UltimoPontoLeitura.SingleOrDefault(x => x.UserId == userId);
+                if (ultimo != null)
+                {
+                    return (ultimo.Livro, ultimo.Capitulo);
+                }
+                return null;
+            }
+        }
+
+        public static void SalvarUltimoPonto(int userId, string livro, int capitulo)
+        {
+            using (var context = new Entities())
+            {
+                var ultimo = context.UltimoPontoLeitura.SingleOrDefault(x => x.UserId == userId);
+
+                if (ultimo != null)
+                {
+                    ultimo.Livro = livro;
+                    ultimo.Capitulo = capitulo;
+                    ultimo.DataAtualizacao = DateTime.Now;
+                }
+                else
+                {
+                    context.UltimoPontoLeitura.Add(new UltimoPontoLeitura
+                    {
+                        UserId = userId,
+                        Livro = livro,
+                        Capitulo = capitulo,
+                        DataAtualizacao = DateTime.Now
+                    });
+                }
+
+                context.SaveChanges();
+            }
+        }
+
+
         public void SalvarVersiculoEF(int userId, string referencia, string texto)
         {
             try
@@ -172,8 +213,6 @@ namespace BeLightBible
                 }
             }
         }
-
-
         public void Copiar()
         {
             Clipboard.SetText(lbl.Text);
@@ -182,7 +221,7 @@ namespace BeLightBible
 
         public void Explicar(string livro, int capitulo, int versiculo, TabPage tabChatbot, TabControl tabControl, Action<string> exibirMensagem, Func<string, Task> enviarPrompt)
         {
-           
+
         }
 
 

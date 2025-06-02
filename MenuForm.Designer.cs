@@ -35,10 +35,8 @@ namespace BeLightBible
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MenuForm));
             this.TabControlPrincipal = new MaterialSkin.Controls.MaterialTabControl();
             this.tabHome = new System.Windows.Forms.TabPage();
-            this.materialCard2 = new MaterialSkin.Controls.MaterialCard();
-            this.materialButton3 = new MaterialSkin.Controls.MaterialButton();
-            this.materialLabel5 = new MaterialSkin.Controls.MaterialLabel();
-            this.materialLabel4 = new MaterialSkin.Controls.MaterialLabel();
+            this.cardUltimaLeitura = new MaterialSkin.Controls.MaterialCard();
+            this.btnRetomarLeitura = new MaterialSkin.Controls.MaterialButton();
             this.cardVersiculoDia = new MaterialSkin.Controls.MaterialCard();
             this.lblTextoVersiculo = new System.Windows.Forms.Label();
             this.btnCompartilharVersiculo = new MaterialSkin.Controls.MaterialButton();
@@ -61,7 +59,7 @@ namespace BeLightBible
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.TabControlPrincipal.SuspendLayout();
             this.tabHome.SuspendLayout();
-            this.materialCard2.SuspendLayout();
+            this.cardUltimaLeitura.SuspendLayout();
             this.cardVersiculoDia.SuspendLayout();
             this.tabBible.SuspendLayout();
             this.flowLayoutPanelVersiculos.SuspendLayout();
@@ -92,7 +90,7 @@ namespace BeLightBible
             // tabHome
             // 
             this.tabHome.BackColor = System.Drawing.Color.White;
-            this.tabHome.Controls.Add(this.materialCard2);
+            this.tabHome.Controls.Add(this.cardUltimaLeitura);
             this.tabHome.Controls.Add(this.cardVersiculoDia);
             this.tabHome.ImageKey = "house.png";
             this.tabHome.Location = new System.Drawing.Point(4, 31);
@@ -102,64 +100,39 @@ namespace BeLightBible
             this.tabHome.TabIndex = 0;
             this.tabHome.Text = "Home";
             // 
-            // materialCard2
+            // cardUltimaLeitura
             // 
-            this.materialCard2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.materialCard2.Controls.Add(this.materialButton3);
-            this.materialCard2.Controls.Add(this.materialLabel5);
-            this.materialCard2.Controls.Add(this.materialLabel4);
-            this.materialCard2.Depth = 0;
-            this.materialCard2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.materialCard2.Location = new System.Drawing.Point(474, 210);
-            this.materialCard2.Margin = new System.Windows.Forms.Padding(14);
-            this.materialCard2.MouseState = MaterialSkin.MouseState.HOVER;
-            this.materialCard2.Name = "materialCard2";
-            this.materialCard2.Padding = new System.Windows.Forms.Padding(14);
-            this.materialCard2.Size = new System.Drawing.Size(322, 145);
-            this.materialCard2.TabIndex = 1;
+            this.cardUltimaLeitura.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.cardUltimaLeitura.Controls.Add(this.btnRetomarLeitura);
+            this.cardUltimaLeitura.Depth = 0;
+            this.cardUltimaLeitura.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.cardUltimaLeitura.Location = new System.Drawing.Point(474, 210);
+            this.cardUltimaLeitura.Margin = new System.Windows.Forms.Padding(14);
+            this.cardUltimaLeitura.MouseState = MaterialSkin.MouseState.HOVER;
+            this.cardUltimaLeitura.Name = "cardUltimaLeitura";
+            this.cardUltimaLeitura.Padding = new System.Windows.Forms.Padding(14);
+            this.cardUltimaLeitura.Size = new System.Drawing.Size(322, 145);
+            this.cardUltimaLeitura.TabIndex = 1;
             // 
-            // materialButton3
+            // btnRetomarLeitura
             // 
-            this.materialButton3.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.materialButton3.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            this.materialButton3.Depth = 0;
-            this.materialButton3.HighEmphasis = true;
-            this.materialButton3.Icon = null;
-            this.materialButton3.Location = new System.Drawing.Point(183, 93);
-            this.materialButton3.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.materialButton3.MouseState = MaterialSkin.MouseState.HOVER;
-            this.materialButton3.Name = "materialButton3";
-            this.materialButton3.NoAccentTextColor = System.Drawing.Color.Empty;
-            this.materialButton3.Size = new System.Drawing.Size(97, 36);
-            this.materialButton3.TabIndex = 2;
-            this.materialButton3.Text = "Retornar";
-            this.materialButton3.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
-            this.materialButton3.UseAccentColor = false;
-            this.materialButton3.UseVisualStyleBackColor = true;
-            // 
-            // materialLabel5
-            // 
-            this.materialLabel5.AutoSize = true;
-            this.materialLabel5.Depth = 0;
-            this.materialLabel5.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.materialLabel5.Location = new System.Drawing.Point(17, 58);
-            this.materialLabel5.MouseState = MaterialSkin.MouseState.HOVER;
-            this.materialLabel5.Name = "materialLabel5";
-            this.materialLabel5.Size = new System.Drawing.Size(107, 19);
-            this.materialLabel5.TabIndex = 1;
-            this.materialLabel5.Text = "materialLabel5";
-            // 
-            // materialLabel4
-            // 
-            this.materialLabel4.AutoSize = true;
-            this.materialLabel4.Depth = 0;
-            this.materialLabel4.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.materialLabel4.Location = new System.Drawing.Point(18, 18);
-            this.materialLabel4.MouseState = MaterialSkin.MouseState.HOVER;
-            this.materialLabel4.Name = "materialLabel4";
-            this.materialLabel4.Size = new System.Drawing.Size(107, 19);
-            this.materialLabel4.TabIndex = 0;
-            this.materialLabel4.Text = "materialLabel4";
+            this.btnRetomarLeitura.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnRetomarLeitura.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            this.btnRetomarLeitura.Depth = 0;
+            this.btnRetomarLeitura.HighEmphasis = true;
+            this.btnRetomarLeitura.Icon = null;
+            this.btnRetomarLeitura.Location = new System.Drawing.Point(183, 93);
+            this.btnRetomarLeitura.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.btnRetomarLeitura.MouseState = MaterialSkin.MouseState.HOVER;
+            this.btnRetomarLeitura.Name = "btnRetomarLeitura";
+            this.btnRetomarLeitura.NoAccentTextColor = System.Drawing.Color.Empty;
+            this.btnRetomarLeitura.Size = new System.Drawing.Size(97, 36);
+            this.btnRetomarLeitura.TabIndex = 2;
+            this.btnRetomarLeitura.Text = "Retornar";
+            this.btnRetomarLeitura.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            this.btnRetomarLeitura.UseAccentColor = false;
+            this.btnRetomarLeitura.UseVisualStyleBackColor = true;
+            this.btnRetomarLeitura.Click += new System.EventHandler(this.btnRetomarLeitura_Click);
             // 
             // cardVersiculoDia
             // 
@@ -487,8 +460,8 @@ namespace BeLightBible
             this.Text = "BeLight Bible";
             this.TabControlPrincipal.ResumeLayout(false);
             this.tabHome.ResumeLayout(false);
-            this.materialCard2.ResumeLayout(false);
-            this.materialCard2.PerformLayout();
+            this.cardUltimaLeitura.ResumeLayout(false);
+            this.cardUltimaLeitura.PerformLayout();
             this.cardVersiculoDia.ResumeLayout(false);
             this.cardVersiculoDia.PerformLayout();
             this.tabBible.ResumeLayout(false);
@@ -525,10 +498,8 @@ namespace BeLightBible
         private MaterialSkin.Controls.MaterialTextBox2 txtPergunta;
         private MaterialSkin.Controls.MaterialButton btnEnviarChatbot;
         private Panel pnlChatbot;
-        private MaterialSkin.Controls.MaterialCard materialCard2;
-        private MaterialSkin.Controls.MaterialButton materialButton3;
-        private MaterialSkin.Controls.MaterialLabel materialLabel5;
-        private MaterialSkin.Controls.MaterialLabel materialLabel4;
+        private MaterialSkin.Controls.MaterialCard cardUltimaLeitura;
+        private MaterialSkin.Controls.MaterialButton btnRetomarLeitura;
         private MaterialSkin.Controls.MaterialCard cardVersiculoDia;
         private MaterialSkin.Controls.MaterialButton btnCompartilharVersiculo;
         private MaterialSkin.Controls.MaterialButton btnSalvarVersiculo;

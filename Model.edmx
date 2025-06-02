@@ -5,6 +5,15 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
       <Schema Namespace="BeLightBibleDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="UltimoPontoLeitura">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="Livro" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Capitulo" Type="int" Nullable="false" />
+          <Property Name="DataAtualizacao" Type="datetime" />
+        </EntityType>
         <EntityType Name="Users">
           <Key>
             <PropertyRef Name="UserId" />
@@ -50,6 +59,20 @@
           <Property Name="Cor" Type="nvarchar" MaxLength="20" Nullable="false" />
           <Property Name="DataCriado" Type="datetime" />
         </EntityType>
+        <Association Name="FK__UltimoPon__UserI__74AE54BC">
+          <End Role="Users" Type="Self.Users" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="UltimoPontoLeitura" Type="Self.UltimoPontoLeitura" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="UltimoPontoLeitura">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__Versiculo__UserI__5070F446">
           <End Role="Users" Type="Self.Users" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -93,10 +116,15 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="BeLightBibleDBModelStoreContainer">
+          <EntitySet Name="UltimoPontoLeitura" EntityType="Self.UltimoPontoLeitura" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VersiculoAnotado" EntityType="Self.VersiculoAnotado" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VersiculoSalvo" EntityType="Self.VersiculoSalvo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VersiculoSublinhado" EntityType="Self.VersiculoSublinhado" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__UltimoPon__UserI__74AE54BC" Association="Self.FK__UltimoPon__UserI__74AE54BC">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UltimoPontoLeitura" EntitySet="UltimoPontoLeitura" />
+          </AssociationSet>
           <AssociationSet Name="FK__Versiculo__UserI__5070F446" Association="Self.FK__Versiculo__UserI__5070F446">
             <End Role="Users" EntitySet="Users" />
             <End Role="VersiculoSublinhado" EntitySet="VersiculoSublinhado" />
@@ -115,6 +143,16 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="BeLightBibleDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="UltimoPontoLeitura">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="Livro" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Capitulo" Type="Int32" Nullable="false" />
+          <Property Name="DataAtualizacao" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Users" Relationship="Self.FK__UltimoPon__UserI__74AE54BC" FromRole="UltimoPontoLeitura" ToRole="Users" />
+        </EntityType>
         <EntityType Name="Users">
           <Key>
             <PropertyRef Name="UserId" />
@@ -124,6 +162,7 @@
           <Property Name="Email" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="PasswordHash" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="CreatedAt" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="UltimoPontoLeitura" Relationship="Self.FK__UltimoPon__UserI__74AE54BC" FromRole="Users" ToRole="UltimoPontoLeitura" />
           <NavigationProperty Name="VersiculoSublinhado" Relationship="Self.FK__Versiculo__UserI__5070F446" FromRole="Users" ToRole="VersiculoSublinhado" />
           <NavigationProperty Name="VersiculoAnotado" Relationship="Self.FK__Versiculo__UserI__5EBF139D" FromRole="Users" ToRole="VersiculoAnotado" />
           <NavigationProperty Name="VersiculoSalvo" Relationship="Self.FK__Versiculo__UserI__70DDC3D8" FromRole="Users" ToRole="VersiculoSalvo" />
@@ -166,6 +205,20 @@
           <Property Name="DataCriado" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Users" Relationship="Self.FK__Versiculo__UserI__5070F446" FromRole="VersiculoSublinhado" ToRole="Users" />
         </EntityType>
+        <Association Name="FK__UltimoPon__UserI__74AE54BC">
+          <End Role="Users" Type="Self.Users" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="UltimoPontoLeitura" Type="Self.UltimoPontoLeitura" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="UltimoPontoLeitura">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__Versiculo__UserI__5070F446">
           <End Role="Users" Type="Self.Users" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -209,10 +262,15 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="UltimoPontoLeitura" EntityType="Self.UltimoPontoLeitura" />
           <EntitySet Name="Users" EntityType="Self.Users" />
           <EntitySet Name="VersiculoAnotado" EntityType="Self.VersiculoAnotado" />
           <EntitySet Name="VersiculoSalvo" EntityType="Self.VersiculoSalvo" />
           <EntitySet Name="VersiculoSublinhado" EntityType="Self.VersiculoSublinhado" />
+          <AssociationSet Name="FK__UltimoPon__UserI__74AE54BC" Association="Self.FK__UltimoPon__UserI__74AE54BC">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UltimoPontoLeitura" EntitySet="UltimoPontoLeitura" />
+          </AssociationSet>
           <AssociationSet Name="FK__Versiculo__UserI__5070F446" Association="Self.FK__Versiculo__UserI__5070F446">
             <End Role="Users" EntitySet="Users" />
             <End Role="VersiculoSublinhado" EntitySet="VersiculoSublinhado" />
@@ -232,6 +290,16 @@
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="BeLightBibleDBModelStoreContainer" CdmEntityContainer="Entities">
+          <EntitySetMapping Name="UltimoPontoLeitura">
+            <EntityTypeMapping TypeName="BeLightBibleDBModel.UltimoPontoLeitura">
+              <MappingFragment StoreEntitySet="UltimoPontoLeitura">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Livro" ColumnName="Livro" />
+                <ScalarProperty Name="Capitulo" ColumnName="Capitulo" />
+                <ScalarProperty Name="DataAtualizacao" ColumnName="DataAtualizacao" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="BeLightBibleDBModel.Users">
               <MappingFragment StoreEntitySet="Users">

@@ -25,6 +25,7 @@ namespace BeLightBible
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<UltimoPontoLeitura> UltimoPontoLeitura { get; set; }
         public virtual DbSet<Users> Users { get; set; }
         public virtual DbSet<VersiculoAnotado> VersiculoAnotado { get; set; }
         public virtual DbSet<VersiculoSalvo> VersiculoSalvo { get; set; }

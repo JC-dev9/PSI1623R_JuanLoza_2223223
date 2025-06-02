@@ -28,6 +28,7 @@ namespace BeLightBible
         public string PasswordHash { get; set; }
         public Nullable<System.DateTime> CreatedAt { get; set; }
     
+        public virtual UltimoPontoLeitura UltimoPontoLeitura { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<VersiculoSublinhado> VersiculoSublinhado { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

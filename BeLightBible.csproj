@@ -127,6 +127,9 @@
     <Compile Include="tabChatbot.Designer.cs">
       <DependentUpon>tabChatbot.cs</DependentUpon>
     </Compile>
+    <Compile Include="UltimoPontoLeitura.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
     <Compile Include="Users.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
