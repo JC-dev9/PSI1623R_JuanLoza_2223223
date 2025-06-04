@@ -253,7 +253,6 @@ namespace BeLightBible
                 Padding = new Padding(10),
                 Margin = new Padding(5),
                 BackColor = isUser ? Color.FromArgb(33, 150, 243) : Color.FromArgb(97, 97, 97),
-                RightToLeft = isUser ? RightToLeft.Yes : RightToLeft.No
             };
 
             var label = new Label
@@ -302,7 +301,7 @@ namespace BeLightBible
                 var url = "http://localhost:11434/api/generate";
 
                 var promptEspecializado =
-      "Você é um especialista bíblico do programa Belight Bible. " +
+      
       "Responda com base na Bíblia Sagrada, de forma clara, fiel e acessível, como um teólogo experiente. " +
       "Não faça saudações ou introduções; responda diretamente à pergunta.\n\n" +
       $"Pergunta do utilizador:\n{pergunta}\n\n" +
@@ -311,7 +310,7 @@ namespace BeLightBible
 
                 var requestData = new
                 {
-                    model = "mistral:latest",
+                    model = "gemma3:4b-it-qat",
                     prompt = promptEspecializado,
                     stream = true,
                 };
@@ -905,7 +904,6 @@ namespace BeLightBible
                 btnRetomarLeitura.Enabled = false;
             }
         }
-
 
         private async void btnRetomarLeitura_Click(object sender, EventArgs e)
         {
