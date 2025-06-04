@@ -57,7 +57,8 @@ namespace BeLightBible
             this.btnEnviarChatbot = new MaterialSkin.Controls.MaterialButton();
             this.flowLayoutPanelConversa = new System.Windows.Forms.FlowLayoutPanel();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
-            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tabAnotacoes = new System.Windows.Forms.TabPage();
+            this.flowLayoutPanelAnotacoes = new System.Windows.Forms.FlowLayoutPanel();
             this.TabControlPrincipal.SuspendLayout();
             this.tabHome.SuspendLayout();
             this.cardUltimaLeitura.SuspendLayout();
@@ -70,6 +71,7 @@ namespace BeLightBible
             ((System.ComponentModel.ISupportInitialize)(this.picBtnProximoCapitulo)).BeginInit();
             this.tabChatbot.SuspendLayout();
             this.pnlChatbot.SuspendLayout();
+            this.tabAnotacoes.SuspendLayout();
             this.SuspendLayout();
             // 
             // TabControlPrincipal
@@ -77,7 +79,7 @@ namespace BeLightBible
             this.TabControlPrincipal.Controls.Add(this.tabHome);
             this.TabControlPrincipal.Controls.Add(this.tabBible);
             this.TabControlPrincipal.Controls.Add(this.tabChatbot);
-            this.TabControlPrincipal.Controls.Add(this.tabPage1);
+            this.TabControlPrincipal.Controls.Add(this.tabAnotacoes);
             this.TabControlPrincipal.Depth = 0;
             this.TabControlPrincipal.Dock = System.Windows.Forms.DockStyle.Fill;
             this.TabControlPrincipal.ImageList = this.imageList1;
@@ -450,16 +452,25 @@ namespace BeLightBible
             this.imageList1.Images.SetKeyName(3, "house.png");
             this.imageList1.Images.SetKeyName(4, "bookmark.png");
             // 
-            // tabPage1
+            // tabAnotacoes
             // 
-            this.tabPage1.ImageKey = "bookmark.png";
-            this.tabPage1.Location = new System.Drawing.Point(4, 31);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(866, 395);
-            this.tabPage1.TabIndex = 3;
-            this.tabPage1.Text = "tabPage1";
-            this.tabPage1.UseVisualStyleBackColor = true;
+            this.tabAnotacoes.Controls.Add(this.flowLayoutPanelAnotacoes);
+            this.tabAnotacoes.ImageKey = "bookmark.png";
+            this.tabAnotacoes.Location = new System.Drawing.Point(4, 31);
+            this.tabAnotacoes.Name = "tabAnotacoes";
+            this.tabAnotacoes.Padding = new System.Windows.Forms.Padding(3);
+            this.tabAnotacoes.Size = new System.Drawing.Size(866, 395);
+            this.tabAnotacoes.TabIndex = 3;
+            this.tabAnotacoes.Text = "Anotações";
+            this.tabAnotacoes.UseVisualStyleBackColor = true;
+            // 
+            // flowLayoutPanelAnotacoes
+            // 
+            this.flowLayoutPanelAnotacoes.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flowLayoutPanelAnotacoes.Location = new System.Drawing.Point(3, 3);
+            this.flowLayoutPanelAnotacoes.Name = "flowLayoutPanelAnotacoes";
+            this.flowLayoutPanelAnotacoes.Size = new System.Drawing.Size(860, 389);
+            this.flowLayoutPanelAnotacoes.TabIndex = 0;
             // 
             // MenuForm
             // 
@@ -488,6 +499,7 @@ namespace BeLightBible
             this.tabChatbot.ResumeLayout(false);
             this.pnlChatbot.ResumeLayout(false);
             this.pnlChatbot.PerformLayout();
+            this.tabAnotacoes.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -518,6 +530,7 @@ namespace BeLightBible
         private MaterialSkin.Controls.MaterialButton btnCompartilharVersiculo;
         private MaterialSkin.Controls.MaterialButton btnSalvarVersiculo;
         private Label lblTextoVersiculo;
-        private TabPage tabPage1;
+        private TabPage tabAnotacoes;
+        private FlowLayoutPanel flowLayoutPanelAnotacoes;
     }
 }

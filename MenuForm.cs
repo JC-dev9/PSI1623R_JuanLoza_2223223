@@ -87,6 +87,13 @@ namespace BeLightBible
             flowLayoutPanelConversa.AutoScroll = true;
 
 
+            // Configurações do FlowLayoutPanel das anotações de versículos
+            flowLayoutPanelAnotacoes.Dock = DockStyle.Fill;
+            flowLayoutPanelAnotacoes.FlowDirection = FlowDirection.TopDown;
+            flowLayoutPanelAnotacoes.WrapContents = false;
+            flowLayoutPanelAnotacoes.AutoScroll = true;
+
+
             // Âncoras
             cmbLivro.Anchor = AnchorStyles.Top | AnchorStyles.Left;
             cmbCapitulo.Anchor = AnchorStyles.Top | AnchorStyles.Left;
@@ -118,6 +125,8 @@ namespace BeLightBible
             this.Load += MenuForm_Load;
 
             this.Resize += MenuForm_Resize;
+            this.Resize += (s, e) => AtualizarLarguraDosCards();
+
             flowLayoutPanelConversa.Resize += flowLayoutPanelConversa_Resize;
             AplicarLayoutResponsivoBible();
             AtualizarLarguraDasMensagens();
@@ -137,7 +146,57 @@ namespace BeLightBible
             CriarLabelsVersiculoDia();
             await CarregarVersiculoDiaAsync(); // Carrega o versículo do dia na tela inicial
 
+            CarregarAnotacoes();
+
         }
+
+        private void AtualizarLarguraDosCards()
+        {
+            foreach (Control control in flowLayoutPanelAnotacoes.Controls)
+            {
+                if (control is MaterialCard card)
+                {
+                    card.Width = flowLayoutPanelAnotacoes.ClientSize.Width - 30;
+                }
+            }
+        }
+
+        private void AjustarFonteCards()
+        {
+            float baseWidth = 800f; // largura base para o design original
+            float scaleFactor = this.ClientSize.Width / baseWidth;
+
+            float baseFontSizeReferencia = 10f;
+            float baseFontSizeTexto = 11f;
+            float baseFontSizeBtn = 9f;
+
+            // limita o tamanho para não ficar muito pequeno nem muito grande
+            float fontSizeReferencia = Math.Min(Math.Max(8f, baseFontSizeReferencia * scaleFactor), 16f);
+            float fontSizeTexto = Math.Min(Math.Max(9f, baseFontSizeTexto * scaleFactor), 18f);
+            float fontSizeBtn = Math.Min(Math.Max(7f, baseFontSizeBtn * scaleFactor), 14f);
+
+            foreach (Control ctrl in flowLayoutPanelAnotacoes.Controls)
+            {
+                if (ctrl is MaterialCard card)
+                {
+                    foreach (Control child in card.Controls)
+                    {
+                        if (child is Label lbl)
+                        {
+                            if (lbl.Font.Style == FontStyle.Bold)
+                                lbl.Font = new Font("Segoe UI", fontSizeReferencia, FontStyle.Bold);
+                            else
+                                lbl.Font = new Font("Segoe UI", fontSizeTexto, FontStyle.Regular);
+                        }
+                        else if (child is Button btn)
+                        {
+                            btn.Font = new Font("Segoe UI", fontSizeBtn, FontStyle.Regular);
+                        }
+                    }
+                }
+            }
+        }
+
 
         private void AdicionarEspacadorFinal()
         {
@@ -993,5 +1052,97 @@ namespace BeLightBible
                 MessageBox.Show("Nenhum ponto de leitura encontrado.");
             }
         }
+
+        private void CriarCardsAnotacoes(List<VersiculoAnotado> anotacoes, FlowLayoutPanel flowPanelAnotacoes)
+        {
+            flowPanelAnotacoes.Controls.Clear();
+
+            foreach (var anotacao in anotacoes)
+            {
+                var card = new MaterialCard
+                {
+                    Padding = new Padding(10),
+                    Margin = new Padding(10),
+                    Width = flowPanelAnotacoes.ClientSize.Width - 30,
+                    AutoSize = true,
+                    AutoSizeMode = AutoSizeMode.GrowAndShrink,
+                    BackColor = Color.White,
+                    ForeColor = Color.Black,
+                    Font = new Font("Segoe UI", 10),
+                };
+
+
+                Label lblReferencia = new Label
+                {
+                    Text = $"{anotacao.Livro} {anotacao.Capitulo}:{anotacao.Versiculo} - {anotacao.DataSalvo.ToShortDateString()}",
+                    Font = new Font("Segoe UI", 10, FontStyle.Bold),
+                    ForeColor = Color.LightBlue,
+                    AutoSize = true
+                };
+
+                Label lblTexto = new Label
+                {
+                    Text = anotacao.Texto,
+                    Font = new Font("Segoe UI", 11),
+                    ForeColor = Color.White,
+                    MaximumSize = new Size(card.Width - 20, 0),
+                    AutoSize = true,
+                    Location = new Point(0, lblReferencia.Bottom + 5)
+                };
+
+                // Botão Editar
+                Button btnEditar = new Button
+                {
+                    Text = "Editar",
+                    AutoSize = true,
+                    BackColor = Color.FromArgb(63, 81, 181),
+                    ForeColor = Color.White,
+                    FlatStyle = FlatStyle.Flat,
+                    Location = new Point(card.Width - 160, card.Height - 35),
+                    Anchor = AnchorStyles.Bottom | AnchorStyles.Right
+                };
+
+                // Botão Excluir
+                Button btnExcluir = new Button
+                {
+                    Text = "Excluir",
+                    AutoSize = true,
+                    BackColor = Color.FromArgb(244, 67, 54),
+                    ForeColor = Color.White,
+                    FlatStyle = FlatStyle.Flat,
+                    Location = new Point(card.Width - 80, card.Height - 35),
+                    Anchor = AnchorStyles.Bottom | AnchorStyles.Right
+                };
+
+                // Adiciona ações (event handlers) — você pode ajustar:
+                btnEditar.Click += (s, e) =>
+                {
+                    // Lógica para editar
+                };
+
+                btnExcluir.Click += (s, e) =>
+                {
+                    // Lógica para excluir
+                };
+
+
+                card.Controls.Add(lblReferencia);
+                card.Controls.Add(lblTexto);
+                card.Controls.Add(btnEditar);
+                card.Controls.Add(btnExcluir);
+
+                flowPanelAnotacoes.Controls.Add(card);
+            }
+        }
+
+        private void CarregarAnotacoes()
+        {
+            var anotacoes = Versiculo.ObterAnotacoes(Sessao.UserId);
+            CriarCardsAnotacoes(anotacoes, flowLayoutPanelAnotacoes); // flowLayoutPanelAnotacoes dentro do tab "save"
+        }
+
+
+
+
     }
 }
