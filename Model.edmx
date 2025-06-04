@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="BeLightBibleDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="BeLightBibleDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="UltimoPontoLeitura">
           <Key>
             <PropertyRef Name="UserId" />
@@ -34,6 +34,7 @@
           <Property Name="Capitulo" Type="int" Nullable="false" />
           <Property Name="Versiculo" Type="int" Nullable="false" />
           <Property Name="Texto" Type="nvarchar" MaxLength="1000" Nullable="false" />
+          <Property Name="DataSalvo" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="VersiculoSalvo">
           <Key>
@@ -138,8 +139,7 @@
             <End Role="VersiculoSalvo" EntitySet="VersiculoSalvo" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="BeLightBibleDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -178,6 +178,7 @@
           <Property Name="Versiculo" Type="Int32" Nullable="false" />
           <Property Name="Texto" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="Users" Relationship="Self.FK__Versiculo__UserI__5EBF139D" FromRole="VersiculoAnotado" ToRole="Users" />
+          <Property Name="DataSalvo" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
         <EntityType Name="VersiculoSalvo">
           <Key>
@@ -314,6 +315,7 @@
           <EntitySetMapping Name="VersiculoAnotado">
             <EntityTypeMapping TypeName="BeLightBibleDBModel.VersiculoAnotado">
               <MappingFragment StoreEntitySet="VersiculoAnotado">
+                <ScalarProperty Name="DataSalvo" ColumnName="DataSalvo" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="Livro" ColumnName="Livro" />

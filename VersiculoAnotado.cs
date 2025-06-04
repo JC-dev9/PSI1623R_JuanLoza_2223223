@@ -20,6 +20,7 @@ namespace BeLightBible
         public int Capitulo { get; set; }
         public int Versiculo { get; set; }
         public string Texto { get; set; }
+        public System.DateTime DataSalvo { get; set; }
     
         public virtual Users Users { get; set; }
     }

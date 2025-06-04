@@ -9,6 +9,15 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using iText.Kernel.Pdf;
+using iText.Layout;
+using iText.Layout.Element;
+using iText.Layout.Properties;
+using iText.Kernel.Colors;
+using iText.IO.Image;
+using iText.IO.Font;
+using iText.Kernel.Font;
+using System.IO;
 
 namespace BeLightBible
 {
@@ -19,6 +28,82 @@ namespace BeLightBible
         public Versiculo(Label label)
         {
             lbl = label;
+        }
+
+        public static void SalvarVersiculoComoPdf(string mensagem, string livro, int capitulo, int versiculo)
+        {
+            SaveFileDialog saveDialog = new SaveFileDialog
+            {
+                Filter = "PDF File|*.pdf",
+                FileName = "versiculo.pdf"
+            };
+
+            if (saveDialog.ShowDialog() == DialogResult.OK)
+            {
+                string caminho = saveDialog.FileName;
+
+                try
+                {
+                    var writer = new PdfWriter(caminho);
+                    var pdf = new PdfDocument(writer);
+                    var doc = new Document(pdf);
+
+                    // Fonte padrão (Helvetica)
+                    PdfFont font = PdfFontFactory.CreateFont(iText.IO.Font.Constants.StandardFonts.HELVETICA);
+                    PdfFont fontBold = PdfFontFactory.CreateFont(iText.IO.Font.Constants.StandardFonts.HELVETICA_BOLD);
+                    PdfFont fontItalic = PdfFontFactory.CreateFont(iText.IO.Font.Constants.StandardFonts.HELVETICA_OBLIQUE);
+
+                    // Logo (opcional)
+                    string logoPath = "icons/logo.jpg";
+                    if (File.Exists(logoPath))
+                    {
+                        var img = new iText.Layout.Element.Image(ImageDataFactory.Create(logoPath));
+                        img.SetHorizontalAlignment(iText.Layout.Properties.HorizontalAlignment.CENTER);
+                        img.SetMaxHeight(100);
+                        doc.Add(img);
+                    }
+
+                    // Título
+                    doc.Add(new Paragraph("Versículo do Dia")
+                        .SetFont(fontBold)
+                        .SetFontSize(20)
+                        .SetTextAlignment(TextAlignment.CENTER)
+                        .SetMarginBottom(10));
+
+                    // Subtítulo com referência bíblica
+                    string referencia = $"{livro} {capitulo}:{versiculo}";
+                    doc.Add(new Paragraph(referencia)
+                        .SetFont(fontItalic)
+                        .SetFontSize(14)
+                        .SetFontColor(ColorConstants.GRAY)
+                        .SetTextAlignment(TextAlignment.CENTER)
+                        .SetMarginBottom(20));
+
+                    // Corpo com o versículo
+                    doc.Add(new Paragraph(mensagem)
+                        .SetFont(font)
+                        .SetFontSize(16)
+                        .SetTextAlignment(TextAlignment.JUSTIFIED));
+
+                    doc.Close();
+                    MessageBox.Show("PDF salvo com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Erro ao salvar PDF: " + ex.Message);
+                }
+            }
+        }
+
+        public static List<VersiculoSalvo> ObterVersiculosSalvos(int userId)
+        {
+            using (var context = new Entities())
+            {
+                return context.VersiculoSalvo
+                    .Where(v => v.UserId == userId)
+                    .OrderByDescending(v => v.DataSalvo)
+                    .ToList();
+            }
         }
 
         public static (string Livro, int Capitulo)? ObterUltimoPonto(int userId)
@@ -96,11 +181,11 @@ namespace BeLightBible
 
                         context.VersiculoSalvo.Add(versiculoSalvo);
                         context.SaveChanges();
-                        MessageBox.Show("Versículo salvo com sucesso!");
+                        MessageBox.Show("Versículo salvo com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                     else
                     {
-                        MessageBox.Show("Versículo já salvo anteriormente.");
+                        MessageBox.Show("Versículo já salvo anteriormente.", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                 }
             }
@@ -110,6 +195,15 @@ namespace BeLightBible
             }
         }
 
+        public static List<VersiculoSublinhado> ObterGrifosUtilizador(int userId, string livro, int capitulo)
+        {
+            using (var context = new Entities())
+            {
+                return context.VersiculoSublinhado
+                    .Where(v => v.UserId == userId && v.Livro == livro && v.Capitulo == capitulo)
+                    .ToList();
+            }
+        }
 
         private void SalvarGrifo(int userId, string livro, int capitulo, int versiculo, string corHex)
         {
@@ -138,8 +232,6 @@ namespace BeLightBible
                 context.SaveChanges();
             }
         }
-
-
         public void Grifar(int userId, string livro, int capitulo, int versiculo)
         {
 
@@ -173,6 +265,17 @@ namespace BeLightBible
             MessageBox.Show("Versículo salvo!");
         }
 
+        public static List<VersiculoAnotado> ObterAnotacoes(int userId)
+        {
+            using (var context = new Entities())
+            {
+                return context.VersiculoAnotado
+                    .Where(v => v.UserId == userId)
+                    .OrderByDescending(v => v.DataSalvo)
+                    .ToList();
+            }
+        }
+
         public async Task Anotar(int userId, string livro, int capitulo, int versiculo, Func<Task> recarregarCallback)
         {
             using (var context = new Entities())
@@ -198,7 +301,8 @@ namespace BeLightBible
                                 Livro = livro,
                                 Capitulo = capitulo,
                                 Versiculo = versiculo,
-                                Texto = form.TextoAnotacao
+                                Texto = form.TextoAnotacao,
+                                DataSalvo = DateTime.Now
                             });
                         }
 

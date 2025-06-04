@@ -19,6 +19,7 @@ using System.Runtime.InteropServices;
 using System.IO;
 using System.Security.Cryptography.Xml;
 
+
 namespace BeLightBible
 {
     public partial class MenuForm : MaterialForm
@@ -133,7 +134,7 @@ namespace BeLightBible
         {
             CriarCardUltimoPonto();
             CarregarUltimoPonto();
-            CriarLabelsVersiculoDia(); 
+            CriarLabelsVersiculoDia();
             await CarregarVersiculoDiaAsync(); // Carrega o versículo do dia na tela inicial
 
         }
@@ -301,7 +302,7 @@ namespace BeLightBible
                 var url = "http://localhost:11434/api/generate";
 
                 var promptEspecializado =
-      
+
       "Responda com base na Bíblia Sagrada, de forma clara, fiel e acessível, como um teólogo experiente. " +
       "Não faça saudações ou introduções; responda diretamente à pergunta.\n\n" +
       $"Pergunta do utilizador:\n{pergunta}\n\n" +
@@ -397,17 +398,6 @@ namespace BeLightBible
             }
         }
 
-        // -------------------- BASE DE DADOS --------------------
-        private List<VersiculoSublinhado> ObterGrifosUtilizador(int userId, string livro, int capitulo)
-        {
-            using (var context = new Entities())
-            {
-                return context.VersiculoSublinhado
-                    .Where(v => v.UserId == userId && v.Livro == livro && v.Capitulo == capitulo)
-                    .ToList();
-            }
-        }
-
         // -------------------- CARREGAMENTO --------------------
         private void CarregarLivros()
         {
@@ -446,7 +436,7 @@ namespace BeLightBible
             };
 
             flowLayoutPanelVersiculos.Controls.Add(lblTituloCapitulo);
-            var grifos = ObterGrifosUtilizador(Sessao.UserId, livro, capitulo);
+            var grifos = Versiculo.ObterGrifosUtilizador(Sessao.UserId, livro, capitulo);
 
             foreach (var versiculo in data.verses)
             {
@@ -816,6 +806,7 @@ namespace BeLightBible
 
             // Item: Compartilhar por Email
             ToolStripMenuItem emailItem = new ToolStripMenuItem("Compartilhar por Email");
+            emailItem.Image = Image.FromFile("icons/email.png");
             emailItem.Click += (s, ev) =>
             {
                 string assunto = Uri.EscapeDataString("Versículo do Dia");
@@ -828,10 +819,71 @@ namespace BeLightBible
                 });
             };
 
+            // Item: Salvar Imagem
+            ToolStripMenuItem salvarImagemItem = new ToolStripMenuItem("Salvar como Imagem");
+            salvarImagemItem.Image = Image.FromFile("icons/image.png");
+            salvarImagemItem.Click += (s, ev) =>
+            {
+                Bitmap bmp = new Bitmap(600, 200); // ajuste tamanho
+                using (Graphics g = Graphics.FromImage(bmp))
+                {
+                    g.Clear(Color.White);
+                    g.DrawString(mensagem, new Font("Arial", 16), Brushes.Black, new RectangleF(10, 10, 580, 180));
+                }
+
+                SaveFileDialog saveDialog = new SaveFileDialog
+                {
+                    Filter = "Imagem PNG|*.png",
+                    FileName = "versiculo.png"
+                };
+
+                if (saveDialog.ShowDialog() == DialogResult.OK)
+                {
+                    bmp.Save(saveDialog.FileName, System.Drawing.Imaging.ImageFormat.Png);
+                    MessageBox.Show("Imagem salva com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            };
+
+            // Item: Salvar Versículo em PDF
+            ToolStripMenuItem salvarPdfItem = new ToolStripMenuItem("Salvar como PDF");
+            salvarPdfItem.Image = Image.FromFile("icons/pdf.png");
+            salvarPdfItem.Click += (s, ev) =>
+            {
+                string texto = ObterTextoVersiculo();
+                string referencia = ObterReferenciaVersiculo();
+
+                if (string.IsNullOrEmpty(texto) || string.IsNullOrEmpty(referencia))
+                {
+                    MessageBox.Show("Nenhum versículo para salvar.");
+                    return;
+                }
+
+                try
+                {
+                    string[] partes = referencia.Split(' ');
+                    string livro = partes[0];
+                    string[] capVers = partes[1].Split(':');
+                    int capitulo = int.Parse(capVers[0]);
+                    int versiculo = int.Parse(capVers[1]);
+
+                    // Chama a função que gera o PDF (que abre o SaveFileDialog)
+                    Versiculo.SalvarVersiculoComoPdf(texto, livro, capitulo, versiculo);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Formato da referência inválido: " + ex.Message);
+                }
+
+            };
+
+
+
             // Adiciona os itens ao menu
             menu.Items.Add(copiarItem);
             menu.Items.Add(whatsappItem);
             menu.Items.Add(emailItem);
+            menu.Items.Add(salvarPdfItem);
+            menu.Items.Add(salvarImagemItem);
 
             // Mostra o menu abaixo do botão
             menu.Show(btnCompartilharVersiculo, new Point(0, btnCompartilharVersiculo.Height));
@@ -849,6 +901,17 @@ namespace BeLightBible
 
             return $"\"{texto}\"\n— {referencia}";
         }
+
+        private string ObterTextoVersiculo()
+        {
+            return Properties.Settings.Default.UltimoVersiculo; // só o texto
+        }
+
+        private string ObterReferenciaVersiculo()
+        {
+            return Properties.Settings.Default.UltimaReferencia; // só a referência tipo "Salmos 23:1"
+        }
+
 
         // -------------------- RETORNAR AO ÚLTIMO VERSÍCULO --------------------
 

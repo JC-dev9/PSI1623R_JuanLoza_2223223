@@ -57,6 +57,7 @@ namespace BeLightBible
             this.btnEnviarChatbot = new MaterialSkin.Controls.MaterialButton();
             this.flowLayoutPanelConversa = new System.Windows.Forms.FlowLayoutPanel();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+            this.tabPage1 = new System.Windows.Forms.TabPage();
             this.TabControlPrincipal.SuspendLayout();
             this.tabHome.SuspendLayout();
             this.cardUltimaLeitura.SuspendLayout();
@@ -76,6 +77,7 @@ namespace BeLightBible
             this.TabControlPrincipal.Controls.Add(this.tabHome);
             this.TabControlPrincipal.Controls.Add(this.tabBible);
             this.TabControlPrincipal.Controls.Add(this.tabChatbot);
+            this.TabControlPrincipal.Controls.Add(this.tabPage1);
             this.TabControlPrincipal.Depth = 0;
             this.TabControlPrincipal.Dock = System.Windows.Forms.DockStyle.Fill;
             this.TabControlPrincipal.ImageList = this.imageList1;
@@ -446,6 +448,18 @@ namespace BeLightBible
             this.imageList1.Images.SetKeyName(1, "bot.png");
             this.imageList1.Images.SetKeyName(2, "book-marked(1).png");
             this.imageList1.Images.SetKeyName(3, "house.png");
+            this.imageList1.Images.SetKeyName(4, "bookmark.png");
+            // 
+            // tabPage1
+            // 
+            this.tabPage1.ImageKey = "bookmark.png";
+            this.tabPage1.Location = new System.Drawing.Point(4, 31);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(866, 395);
+            this.tabPage1.TabIndex = 3;
+            this.tabPage1.Text = "tabPage1";
+            this.tabPage1.UseVisualStyleBackColor = true;
             // 
             // MenuForm
             // 
@@ -504,5 +518,6 @@ namespace BeLightBible
         private MaterialSkin.Controls.MaterialButton btnCompartilharVersiculo;
         private MaterialSkin.Controls.MaterialButton btnSalvarVersiculo;
         private Label lblTextoVersiculo;
+        private TabPage tabPage1;
     }
 }
