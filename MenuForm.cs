@@ -131,6 +131,13 @@ namespace BeLightBible
                 AjustarFonteCards();
             };
 
+            TabControlPrincipal.SelectedIndexChanged += (s, e) =>
+            {
+                AtualizarLarguraDosCards();
+                AjustarFonteCards();
+
+            };
+
             flowLayoutPanelConversa.Resize += flowLayoutPanelConversa_Resize;
             AplicarLayoutResponsivoBible();
             AtualizarLarguraDasMensagens();
@@ -175,9 +182,8 @@ namespace BeLightBible
             float baseFontSizeBtn = 9f;
 
             // limita o tamanho para não ficar muito pequeno nem muito grande
-            float fontSizeReferencia = Math.Min(Math.Max(8f, baseFontSizeReferencia * scaleFactor), 16f);
-            float fontSizeTexto = Math.Min(Math.Max(9f, baseFontSizeTexto * scaleFactor), 18f);
-            float fontSizeBtn = Math.Min(Math.Max(7f, baseFontSizeBtn * scaleFactor), 14f);
+            float fontSizeReferencia = Math.Min(Math.Max(11f, baseFontSizeReferencia * scaleFactor), 14f);
+            float fontSizeTexto = Math.Min(Math.Max(11f, baseFontSizeTexto * scaleFactor), 16f);
 
             foreach (Control ctrl in flowLayoutPanelAnotacoes.Controls)
             {
@@ -192,16 +198,11 @@ namespace BeLightBible
                             else
                                 lbl.Font = new Font("Segoe UI", fontSizeTexto, FontStyle.Regular);
                         }
-                        else if (child is Button btn)
-                        {
-                            btn.Font = new Font("Segoe UI", fontSizeBtn, FontStyle.Regular);
-                        }
+
                     }
                 }
             }
         }
-
-
         private void AdicionarEspacadorFinal()
         {
             // Remove se já houver
@@ -591,6 +592,8 @@ namespace BeLightBible
                     estilo.ArredondarControle(picBtnProximoCapitulo, 10);
                     estilo.ArredondarControle(picBtnAnteriorCapitulo, 10);
                     estilo.ArredondarControle(picAudio, 10);
+
+                    CarregarAnotacoes();
 
                 }));
                 menu.Items.Add(new ToolStripMenuItem("Explicar", Image.FromFile("icons/ai.png"), async (s, ev) =>
@@ -1073,6 +1076,7 @@ namespace BeLightBible
                     BackColor = Color.White,
                     ForeColor = Color.Black,
                     Font = new Font("Segoe UI", 10),
+                    Tag = anotacao
                 };
 
 
@@ -1118,17 +1122,8 @@ namespace BeLightBible
                     Anchor = AnchorStyles.Bottom | AnchorStyles.Right
                 };
 
-                // Adiciona ações (event handlers) — você pode ajustar:
-                btnEditar.Click += (s, e) =>
-                {
-                    // Lógica para editar
-                };
-
-                btnExcluir.Click += (s, e) =>
-                {
-                    // Lógica para excluir
-                };
-
+                btnEditar.Click += BtnEditar_Click;
+                btnExcluir.Click += BtnExcluir_Click;
 
                 card.Controls.Add(lblReferencia);
                 card.Controls.Add(lblTexto);
@@ -1143,6 +1138,101 @@ namespace BeLightBible
         {
             var anotacoes = Versiculo.ObterAnotacoes(Sessao.UserId);
             CriarCardsAnotacoes(anotacoes, flowLayoutPanelAnotacoes); // flowLayoutPanelAnotacoes dentro do tab "save"
+        }
+
+        private async void BtnEditar_Click(object sender, EventArgs e)
+        {
+            if (sender is Button btn && btn.Parent is MaterialCard card)
+            {
+                // Aqui você precisa acessar os dados da anotação correspondente,
+                // por exemplo, guardar uma referência ou ID na Tag do card ou botão.
+                // Vou supor que você guardou o objeto anotacao na Tag do card:
+
+                if (card.Tag is VersiculoAnotado anotacao)
+                {
+                    using (var context = new Entities())
+                    {
+                        // Recarregar a anotação do banco para garantir estado atualizado
+                        var anotacaoExistente = context.VersiculoAnotado
+                            .FirstOrDefault(v => v.Id == anotacao.Id);
+
+                        string textoAtual = anotacaoExistente?.Texto ?? "";
+
+                        using (FormAnotacao form = new FormAnotacao(textoAtual))
+                        {
+                            if (form.ShowDialog(this) == DialogResult.OK)
+                            {
+                                if (anotacaoExistente != null)
+                                {
+                                    anotacaoExistente.Texto = form.TextoAnotacao;
+                                }
+                                else
+                                {
+                                    // Pode criar nova anotação aqui se quiser (normalmente não no editar)
+                                }
+
+                                context.SaveChanges();
+                            }
+                        }
+                    }
+
+                    // Depois de salvar, recarrega as anotações na interface:
+
+                    CarregarAnotacoes();
+                    AtualizarLarguraDosCards();
+                    AjustarFonteCards();
+
+                    estilo.EstilizarPictureBoxComoBotao(picBtnProximoCapitulo, true, cmbLivro, cmbCapitulo, BibleTab);
+                    estilo.EstilizarPictureBoxComoBotao(picBtnAnteriorCapitulo, false, cmbLivro, cmbCapitulo, BibleTab);
+                    estilo.EstilizarPictureBoxAudio(picAudio);
+
+                    estilo.ArredondarControle(picBtnProximoCapitulo, 10);
+                    estilo.ArredondarControle(picBtnAnteriorCapitulo, 10);
+                    estilo.ArredondarControle(picAudio, 10);
+                }
+            }
+        }
+
+        private async void BtnExcluir_Click(object sender, EventArgs e)
+        {
+            if (sender is Button btn && btn.Parent is MaterialCard card)
+            {
+                // Supondo que o objeto VersiculoAnotado esteja na Tag do card
+                if (card.Tag is VersiculoAnotado anotacao)
+                {
+                    var confirmResult = MessageBox.Show(
+                        "Tem certeza que deseja excluir esta anotação?",
+                        "Confirmar Exclusão",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Warning
+                    );
+
+                    if (confirmResult == DialogResult.Yes)
+                    {
+                        using (var context = new Entities())
+                        {
+                            var anotacaoExistente = context.VersiculoAnotado
+                                .FirstOrDefault(v => v.Id == anotacao.Id);
+
+                            if (anotacaoExistente != null)
+                            {
+                                context.VersiculoAnotado.Remove(anotacaoExistente);
+                                context.SaveChanges();
+
+                                // remover o card da interface
+                                var parent = card.Parent;
+                                parent?.Controls.Remove(card);
+
+                                MessageBox.Show("Anotação excluída com sucesso.", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            }
+                            else
+                            {
+                                MessageBox.Show("Anotação não encontrada na base de dados.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            }
+                        }
+                    }
+                }
+            }
         }
 
 
