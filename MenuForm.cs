@@ -125,7 +125,11 @@ namespace BeLightBible
             this.Load += MenuForm_Load;
 
             this.Resize += MenuForm_Resize;
-            this.Resize += (s, e) => AtualizarLarguraDosCards();
+            this.Resize += (s, e) =>
+            {
+                AtualizarLarguraDosCards();
+                AjustarFonteCards();
+            };
 
             flowLayoutPanelConversa.Resize += flowLayoutPanelConversa_Resize;
             AplicarLayoutResponsivoBible();
