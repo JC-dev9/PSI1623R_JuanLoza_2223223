@@ -136,6 +136,9 @@ namespace BeLightBible
                 AtualizarLarguraDosCards();
                 AjustarFonteCards();
 
+                AplicarLayoutResponsivoBible();
+                AtualizarLarguraDasMensagens();
+
             };
 
             flowLayoutPanelConversa.Resize += flowLayoutPanelConversa_Resize;
@@ -595,6 +598,12 @@ namespace BeLightBible
 
                     CarregarAnotacoes();
 
+                    //Renovar tela inicial
+                    CriarCardUltimoPonto();
+                    CarregarUltimoPonto();
+                    CriarLabelsVersiculoDia();
+                    await CarregarVersiculoDiaAsync();
+
                 }));
                 menu.Items.Add(new ToolStripMenuItem("Explicar", Image.FromFile("icons/ai.png"), async (s, ev) =>
                 {
@@ -721,6 +730,8 @@ namespace BeLightBible
 
         private void CriarLabelsVersiculoDia()
         {
+            cardVersiculoDia.Controls.Clear();
+
             lblTituloCapitulo = new Label
             {
                 AutoSize = true,
@@ -758,6 +769,8 @@ namespace BeLightBible
 
             cardVersiculoDia.Controls.Add(lblTextoVersiculo);
             cardVersiculoDia.Controls.Add(lblNumeroVersiculo);
+            cardVersiculoDia.Controls.Add(btnCompartilharVersiculo);
+            cardVersiculoDia.Controls.Add(btnSalvarVersiculo);
         }
 
         private void AtualizarVersiculo(string texto, string referencia)
@@ -942,8 +955,6 @@ namespace BeLightBible
 
             };
 
-
-
             // Adiciona os itens ao menu
             menu.Items.Add(copiarItem);
             menu.Items.Add(whatsappItem);
@@ -986,6 +997,8 @@ namespace BeLightBible
 
         private void CriarCardUltimoPonto()
         {
+            cardUltimaLeitura.Controls.Clear();
+
             lblTituloUltimoPonto = new Label
             {
                 AutoSize = true,
@@ -1060,6 +1073,10 @@ namespace BeLightBible
             }
         }
 
+        // ------------------------------------------------------------------------------------
+        // -------------------- TELA DAS ANOTAÇÕES DE UTILIZADOR ------------------------------
+        // ------------------------------------------------------------------------------------
+
         private void CriarCardsAnotacoes(List<VersiculoAnotado> anotacoes, FlowLayoutPanel flowPanelAnotacoes)
         {
             flowPanelAnotacoes.Controls.Clear();
@@ -1093,7 +1110,7 @@ namespace BeLightBible
                     Text = anotacao.Texto,
                     Font = new Font("Segoe UI", 11),
                     ForeColor = Color.White,
-                    MaximumSize = new Size(card.Width - 20, 0),
+                    MaximumSize = new Size(370, 0),
                     AutoSize = true,
                     Location = new Point(0, lblReferencia.Bottom + 5)
                 };
@@ -1178,10 +1195,17 @@ namespace BeLightBible
 
                     // Depois de salvar, recarrega as anotações na interface:
 
-                    CarregarAnotacoes();
-                    AtualizarLarguraDosCards();
-                    AjustarFonteCards();
+                    CarregarAnotacoes(); 
+                    AtualizarLarguraDosCards(); //Responsivo
+                    AjustarFonteCards(); //Responsivo
 
+                    //Renovar tela inicial
+                    CriarCardUltimoPonto(); 
+                    CarregarUltimoPonto();
+                    CriarLabelsVersiculoDia();
+                    await CarregarVersiculoDiaAsync();
+
+                    //Renovar Estilos
                     estilo.EstilizarPictureBoxComoBotao(picBtnProximoCapitulo, true, cmbLivro, cmbCapitulo, BibleTab);
                     estilo.EstilizarPictureBoxComoBotao(picBtnAnteriorCapitulo, false, cmbLivro, cmbCapitulo, BibleTab);
                     estilo.EstilizarPictureBoxAudio(picAudio);

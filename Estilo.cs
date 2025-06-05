@@ -19,13 +19,18 @@ namespace BeLightBible
             pic.Cursor = Cursors.Hand;
             pic.Padding = new Padding(8);
 
+            // EVENTOS VISUAIS (sem problema em acumular)
             pic.MouseEnter += (s, e) => pic.BackColor = Color.FromArgb(255, 138, 101);  // DeepOrange300
             pic.MouseDown += (s, e) => pic.BackColor = Color.FromArgb(230, 74, 25);    // DeepOrange700
             pic.MouseUp += (s, e) => pic.BackColor = Color.FromArgb(255, 138, 101);
             pic.MouseLeave += (s, e) => pic.BackColor = Color.FromArgb(255, 112, 67);  // Voltar para DeepOrange200
 
+            // REMOVER EVENTOS DE CLICK ANTERIORES
+            if (pic.Tag is EventHandler handlerAntigo)
+                pic.Click -= handlerAntigo;
 
-            pic.Click += async (s, e) =>
+            // CRIAR E ARMAZENAR NOVO HANDLER
+            EventHandler handlerNovo = async (s, e) =>
             {
                 if (cmbCapitulo.Items.Count == 0)
                 {
@@ -58,11 +63,14 @@ namespace BeLightBible
                     }
                 }
             };
+
+            pic.Click += handlerNovo;
+            pic.Tag = handlerNovo; // Guardar referência para remover depois, se necessário
         }
 
         public void EstilizarPictureBoxAudio(PictureBox pic)
         {
-          pic.BackColor = Color.FromArgb(255, 112, 67); // DeepOrange200
+            pic.BackColor = Color.FromArgb(255, 112, 67); // DeepOrange200
             pic.SizeMode = PictureBoxSizeMode.CenterImage;
             pic.Cursor = Cursors.Hand;
             pic.Padding = new Padding(8);
