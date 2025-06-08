@@ -20,11 +20,18 @@ using System.IO;
 using System.Security.Cryptography.Xml;
 
 
+
+
 namespace BeLightBible
 {
+
     public partial class MenuForm : MaterialForm
     {
         // -------------------- VARIÁVEIS --------------------
+
+        private List<MenuForm> historiasKids;
+        private int indiceAtualKids = 0;
+
         private static readonly HttpClient client = new HttpClient();
         private PictureBox picLoading;
         private Label lblTituloCapitulo;
@@ -74,6 +81,7 @@ namespace BeLightBible
 
             // Configurações do flowLayoutPanel dos Versiculos
             flowLayoutPanelVersiculos.Dock = DockStyle.Fill;
+            flowLayoutPanelVersiculos.AutoScrollMargin = new Size(0, 3000);
             flowLayoutPanelVersiculos.AutoScroll = true;
             flowLayoutPanelVersiculos.WrapContents = false;
             flowLayoutPanelVersiculos.FlowDirection = FlowDirection.TopDown;
@@ -92,7 +100,7 @@ namespace BeLightBible
             flowLayoutPanelAnotacoes.FlowDirection = FlowDirection.TopDown;
             flowLayoutPanelAnotacoes.WrapContents = false;
             flowLayoutPanelAnotacoes.AutoScroll = true;
-
+            flowLayoutPanelAnotacoes.AutoScrollMargin = new Size(0, 100); // Espaço extra para rolagem suave
 
             // Âncoras
             cmbLivro.Anchor = AnchorStyles.Top | AnchorStyles.Left;
@@ -113,7 +121,7 @@ namespace BeLightBible
 
             cmbLivro.SelectedIndexChanged += cmbLivro_SelectedIndexChanged;
 
-            // Estilização dos botões e controles
+            // Estilização dos botões e controles (Bible)
             estilo.EstilizarPictureBoxComoBotao(picBtnProximoCapitulo, true, cmbLivro, cmbCapitulo, BibleTab);
             estilo.EstilizarPictureBoxComoBotao(picBtnAnteriorCapitulo, false, cmbLivro, cmbCapitulo, BibleTab);
             estilo.EstilizarPictureBoxAudio(picAudio);
@@ -122,7 +130,15 @@ namespace BeLightBible
             estilo.ArredondarControle(picBtnAnteriorCapitulo, 10);
             estilo.ArredondarControle(picAudio, 10);
 
+            // Estilização dos botões e controles (Bible Kids)
+            estilo.EstilizarPictureBoxComoBotao(picBtnProximaHistoria);
+            estilo.EstilizarPictureBoxComoBotao(picBtnVoltarHistoria);
+
+            estilo.ArredondarControle(picBtnProximaHistoria, 10);
+            estilo.ArredondarControle(picBtnVoltarHistoria, 10);
+
             this.Load += MenuForm_Load;
+            this.Load += FormPrincipal_Load;
 
             this.Resize += MenuForm_Resize;
             this.Resize += (s, e) =>
@@ -138,7 +154,6 @@ namespace BeLightBible
 
                 AplicarLayoutResponsivoBible();
                 AtualizarLarguraDasMensagens();
-
             };
 
             flowLayoutPanelConversa.Resize += flowLayoutPanelConversa_Resize;
@@ -153,6 +168,14 @@ namespace BeLightBible
             AtualizarLarguraDasMensagens();
         }
 
+        private HistoriasKidsTab historiasTab;
+
+        private void FormPrincipal_Load(object sender, EventArgs e)
+        {
+            historiasTab = new HistoriasKidsTab(tabBibleKids, pnlBibleKidPrincipal, picBtnProximaHistoria, picBtnVoltarHistoria, cardTextoHistoria, pictureBoxImagemHistoria);
+            TabControlPrincipal.SelectedTab = tabBibleKids;
+
+        }
         private async void MenuForm_Load(object sender, EventArgs e)
         {
             CriarCardUltimoPonto();
@@ -208,25 +231,23 @@ namespace BeLightBible
         }
         private void AdicionarEspacadorFinal()
         {
-            // Remove se já houver
-            var existente = flowLayoutPanelConversa.Controls.Cast<Control>().FirstOrDefault(c => c.Tag?.ToString() == "EspacadorFinal");
-            if (existente != null)
-                flowLayoutPanelConversa.Controls.Remove(existente);
-
-            // Cria um painel com altura do espaço desejado
-            var espaco = new Panel()
+            // Remove espaçadores antigos
+            foreach (Control ctrl in flowLayoutPanelConversa.Controls.OfType<Panel>().Where(p => p.Tag?.ToString() == "espacador").ToList())
             {
-                Height = txtPergunta.Height + btnEnviarChatbot.Height + 20, // espaço extra para evitar sobreposição
-                Width = flowLayoutPanelConversa.ClientSize.Width,
-                Tag = "EspacadorFinal",
+                flowLayoutPanelConversa.Controls.Remove(ctrl);
+            }
+
+            var espacador = new Panel
+            {
+                Height = 50,
+                Width = 0,
                 BackColor = Color.Transparent,
-                Margin = new Padding(0)
+                Margin = new Padding(0),
+                Tag = "espacador"
             };
 
-            flowLayoutPanelConversa.Controls.Add(espaco);
-            flowLayoutPanelConversa.ScrollControlIntoView(espaco);
+            flowLayoutPanelConversa.Controls.Add(espacador);
         }
-
         private void SetRoundedRegion(Control control, int radius)
         {
             var region = Region.FromHrgn(CreateRoundRectRgn(0, 0, control.Width, control.Height, radius, radius));
@@ -369,18 +390,19 @@ namespace BeLightBible
                 var url = "http://localhost:11434/api/generate";
 
                 var promptEspecializado =
-
-      "Responda com base na Bíblia Sagrada, de forma clara, fiel e acessível, como um teólogo experiente. " +
-      "Não faça saudações ou introduções; responda diretamente à pergunta.\n\n" +
-      $"Pergunta do utilizador:\n{pergunta}\n\n" +
-      "Resposta:";
-
+       "Responda com base na Bíblia Sagrada, de forma clara, fiel e acessível, como um teólogo experiente. " +
+       "Não faça saudações ou introduções; responda diretamente à pergunta. " +
+       "Limite sua resposta a 10 tokens.\n\n" +
+       $"Pergunta do utilizador:\n{pergunta}\n\n" +
+       "Resposta:";
 
                 var requestData = new
                 {
-                    model = "gemma3:4b-it-qat",
+                    model = "llama3.2",
                     prompt = promptEspecializado,
                     stream = true,
+
+                    max_tokens = 10,
                 };
 
                 var json = JsonConvert.SerializeObject(requestData);
@@ -542,6 +564,15 @@ namespace BeLightBible
                 flowLayoutPanelVersiculos.Controls.Add(card);
             }
 
+            var espacoAbaixo = new Panel
+            {
+                Height = 50,
+                Width = 0,
+                BackColor = Color.Transparent,
+                Margin = new Padding(0)
+            };
+
+            flowLayoutPanelVersiculos.Controls.Add(espacoAbaixo);
 
             AplicarLayoutResponsivoBible();
             picLoading.Visible = false;
@@ -1174,6 +1205,9 @@ namespace BeLightBible
                             .FirstOrDefault(v => v.Id == anotacao.Id);
 
                         string textoAtual = anotacaoExistente?.Texto ?? "";
+                        MenuForm menu = this.FindForm() as MenuForm; // ou passe como parâmetro
+
+                        menu?.Hide();
 
                         using (FormAnotacao form = new FormAnotacao(textoAtual))
                         {
@@ -1191,19 +1225,26 @@ namespace BeLightBible
                                 context.SaveChanges();
                             }
                         }
+
+                        menu?.Show();
                     }
 
                     // Depois de salvar, recarrega as anotações na interface:
 
-                    CarregarAnotacoes(); 
+                    CarregarAnotacoes();
                     AtualizarLarguraDosCards(); //Responsivo
                     AjustarFonteCards(); //Responsivo
 
                     //Renovar tela inicial
-                    CriarCardUltimoPonto(); 
+                    CriarCardUltimoPonto();
                     CarregarUltimoPonto();
                     CriarLabelsVersiculoDia();
                     await CarregarVersiculoDiaAsync();
+
+                    //Renovar tela Bible
+                    historiasTab = new HistoriasKidsTab(tabBibleKids, pnlBibleKidPrincipal, picBtnProximaHistoria, picBtnVoltarHistoria, cardTextoHistoria, pictureBoxImagemHistoria);
+                    historiasTab.CriarComponentes(); // ✔️ certo
+
 
                     //Renovar Estilos
                     estilo.EstilizarPictureBoxComoBotao(picBtnProximoCapitulo, true, cmbLivro, cmbCapitulo, BibleTab);
@@ -1213,6 +1254,13 @@ namespace BeLightBible
                     estilo.ArredondarControle(picBtnProximoCapitulo, 10);
                     estilo.ArredondarControle(picBtnAnteriorCapitulo, 10);
                     estilo.ArredondarControle(picAudio, 10);
+
+                    // Estilização dos botões e controles (Bible Kids)
+                    estilo.EstilizarPictureBoxComoBotao(picBtnProximaHistoria);
+                    estilo.EstilizarPictureBoxComoBotao(picBtnVoltarHistoria);
+
+                    estilo.ArredondarControle(picBtnProximaHistoria, 10);
+                    estilo.ArredondarControle(picBtnVoltarHistoria, 10);
                 }
             }
         }
@@ -1259,7 +1307,14 @@ namespace BeLightBible
             }
         }
 
+        // ------------------------------------------------------------------------------------
+        // -------------------- TELA DO BIBLE KIDS --------------------------------------
+        // ------------------------------------------------------------------------------------
 
+        private void picBtnProximaHistoria_Click(object sender, EventArgs e)
+        {
+
+        }
 
 
     }

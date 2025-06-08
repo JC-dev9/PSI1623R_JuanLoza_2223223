@@ -159,6 +159,7 @@
     <Compile Include="FormAnotacao.Designer.cs">
       <DependentUpon>FormAnotacao.cs</DependentUpon>
     </Compile>
+    <Compile Include="HistoriasKidsTab.cs" />
     <Compile Include="HomeTab.cs">
       <SubType>UserControl</SubType>
     </Compile>
