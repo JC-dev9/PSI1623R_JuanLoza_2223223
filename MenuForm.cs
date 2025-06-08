@@ -172,7 +172,7 @@ namespace BeLightBible
 
         private void FormPrincipal_Load(object sender, EventArgs e)
         {
-            historiasTab = new HistoriasKidsTab(tabBibleKids, pnlBibleKidPrincipal, picBtnProximaHistoria, picBtnVoltarHistoria, cardTextoHistoria, pictureBoxImagemHistoria);
+            historiasTab = new HistoriasKidsTab(tabBibleKids, pnlBibleKidPrincipal, picBtnProximaHistoria, picBtnVoltarHistoria, cardTextoHistoria, pictureBoxImagemHistoria, pnlBibleKids);
             TabControlPrincipal.SelectedTab = tabBibleKids;
 
         }
@@ -1108,9 +1108,33 @@ namespace BeLightBible
         // -------------------- TELA DAS ANOTAÇÕES DE UTILIZADOR ------------------------------
         // ------------------------------------------------------------------------------------
 
+        private void cmbCategoriaVersiculos_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string categoriaSelecionada = cmbCategoriaAnotacoes.SelectedItem.ToString();
+
+            switch (categoriaSelecionada)
+            {
+                case "Anotações":
+                    CarregarAnotacoes(); // já existe
+                    break;
+
+                case "Grifos":
+                    //CarregarGrifos(); // você precisará criar essa função
+                    break;
+
+                case "Versículos do Dia":
+                    //CarregarVersiculosDoDia(); // você também cria essa função
+                    break;
+            }
+        }
+
+
         private void CriarCardsAnotacoes(List<VersiculoAnotado> anotacoes, FlowLayoutPanel flowPanelAnotacoes)
         {
+            pnlAnotacoes.ForeColor = Color.Red;
             flowPanelAnotacoes.Controls.Clear();
+
+            flowPanelAnotacoes.Padding = new Padding(10, 50, 10, 10);
 
             foreach (var anotacao in anotacoes)
             {
@@ -1242,8 +1266,10 @@ namespace BeLightBible
                     await CarregarVersiculoDiaAsync();
 
                     //Renovar tela Bible
-                    historiasTab = new HistoriasKidsTab(tabBibleKids, pnlBibleKidPrincipal, picBtnProximaHistoria, picBtnVoltarHistoria, cardTextoHistoria, pictureBoxImagemHistoria);
+                    historiasTab = new HistoriasKidsTab(tabBibleKids, pnlBibleKidPrincipal, picBtnProximaHistoria, picBtnVoltarHistoria, cardTextoHistoria, pictureBoxImagemHistoria, pnlBibleKids);
                     historiasTab.CriarComponentes(); // ✔️ certo
+                    historiasTab.InicializarHistorias();
+
 
 
                     //Renovar Estilos
@@ -1308,13 +1334,8 @@ namespace BeLightBible
         }
 
         // ------------------------------------------------------------------------------------
-        // -------------------- TELA DO BIBLE KIDS --------------------------------------
+        // -------------------- TELA DOS VERSÍCULOS SALVOS --------------------------------------
         // ------------------------------------------------------------------------------------
-
-        private void picBtnProximaHistoria_Click(object sender, EventArgs e)
-        {
-
-        }
 
 
     }

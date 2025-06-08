@@ -305,6 +305,8 @@
     <Content Include="icons\share-2.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Imagens\adaoEva.png" />
+    <Content Include="Imagens\noe.png" />
     <Content Include="loading.gif">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

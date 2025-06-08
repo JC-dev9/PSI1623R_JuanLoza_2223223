@@ -58,14 +58,17 @@ namespace BeLightBible
             this.flowLayoutPanelConversa = new System.Windows.Forms.FlowLayoutPanel();
             this.tabAnotacoes = new System.Windows.Forms.TabPage();
             this.flowLayoutPanelAnotacoes = new System.Windows.Forms.FlowLayoutPanel();
-            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.tabBibleKids = new System.Windows.Forms.TabPage();
-            this.pnlBibleKids = new System.Windows.Forms.Panel();
-            this.picBtnVoltarHistoria = new System.Windows.Forms.PictureBox();
-            this.picBtnProximaHistoria = new System.Windows.Forms.PictureBox();
             this.pnlBibleKidPrincipal = new System.Windows.Forms.Panel();
             this.cardTextoHistoria = new MaterialSkin.Controls.MaterialCard();
             this.pictureBoxImagemHistoria = new System.Windows.Forms.PictureBox();
+            this.pnlBibleKids = new System.Windows.Forms.Panel();
+            this.picBtnVoltarHistoria = new System.Windows.Forms.PictureBox();
+            this.picBtnProximaHistoria = new System.Windows.Forms.PictureBox();
+            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+            this.pnlAnotacoes = new System.Windows.Forms.Panel();
+            this.brn = new MaterialSkin.Controls.MaterialButton();
+            this.cmbCategoriaAnotacoes = new MaterialSkin.Controls.MaterialComboBox();
             this.TabControlPrincipal.SuspendLayout();
             this.tabHome.SuspendLayout();
             this.cardUltimaLeitura.SuspendLayout();
@@ -80,11 +83,12 @@ namespace BeLightBible
             this.pnlChatbot.SuspendLayout();
             this.tabAnotacoes.SuspendLayout();
             this.tabBibleKids.SuspendLayout();
+            this.pnlBibleKidPrincipal.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxImagemHistoria)).BeginInit();
             this.pnlBibleKids.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picBtnVoltarHistoria)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picBtnProximaHistoria)).BeginInit();
-            this.pnlBibleKidPrincipal.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxImagemHistoria)).BeginInit();
+            this.pnlAnotacoes.SuspendLayout();
             this.SuspendLayout();
             // 
             // TabControlPrincipal
@@ -458,6 +462,7 @@ namespace BeLightBible
             // 
             // tabAnotacoes
             // 
+            this.tabAnotacoes.Controls.Add(this.pnlAnotacoes);
             this.tabAnotacoes.Controls.Add(this.flowLayoutPanelAnotacoes);
             this.tabAnotacoes.ImageKey = "bookmark.png";
             this.tabAnotacoes.Location = new System.Drawing.Point(4, 31);
@@ -476,17 +481,6 @@ namespace BeLightBible
             this.flowLayoutPanelAnotacoes.Size = new System.Drawing.Size(860, 389);
             this.flowLayoutPanelAnotacoes.TabIndex = 0;
             // 
-            // imageList1
-            // 
-            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
-            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
-            this.imageList1.Images.SetKeyName(0, "notepad-text.png");
-            this.imageList1.Images.SetKeyName(1, "bot.png");
-            this.imageList1.Images.SetKeyName(2, "book-marked(1).png");
-            this.imageList1.Images.SetKeyName(3, "house.png");
-            this.imageList1.Images.SetKeyName(4, "bookmark.png");
-            this.imageList1.Images.SetKeyName(5, "baby.png");
-            // 
             // tabBibleKids
             // 
             this.tabBibleKids.Controls.Add(this.pnlBibleKidPrincipal);
@@ -499,6 +493,38 @@ namespace BeLightBible
             this.tabBibleKids.TabIndex = 4;
             this.tabBibleKids.Text = "Bíblia (crianças)";
             this.tabBibleKids.UseVisualStyleBackColor = true;
+            // 
+            // pnlBibleKidPrincipal
+            // 
+            this.pnlBibleKidPrincipal.Controls.Add(this.cardTextoHistoria);
+            this.pnlBibleKidPrincipal.Controls.Add(this.pictureBoxImagemHistoria);
+            this.pnlBibleKidPrincipal.ForeColor = System.Drawing.Color.White;
+            this.pnlBibleKidPrincipal.Location = new System.Drawing.Point(3, 68);
+            this.pnlBibleKidPrincipal.Name = "pnlBibleKidPrincipal";
+            this.pnlBibleKidPrincipal.Size = new System.Drawing.Size(860, 321);
+            this.pnlBibleKidPrincipal.TabIndex = 8;
+            // 
+            // cardTextoHistoria
+            // 
+            this.cardTextoHistoria.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.cardTextoHistoria.Depth = 0;
+            this.cardTextoHistoria.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.cardTextoHistoria.Location = new System.Drawing.Point(30, 23);
+            this.cardTextoHistoria.Margin = new System.Windows.Forms.Padding(14);
+            this.cardTextoHistoria.MouseState = MaterialSkin.MouseState.HOVER;
+            this.cardTextoHistoria.Name = "cardTextoHistoria";
+            this.cardTextoHistoria.Padding = new System.Windows.Forms.Padding(14);
+            this.cardTextoHistoria.Size = new System.Drawing.Size(605, 287);
+            this.cardTextoHistoria.TabIndex = 1;
+            // 
+            // pictureBoxImagemHistoria
+            // 
+            this.pictureBoxImagemHistoria.Location = new System.Drawing.Point(664, 48);
+            this.pictureBoxImagemHistoria.Name = "pictureBoxImagemHistoria";
+            this.pictureBoxImagemHistoria.Size = new System.Drawing.Size(160, 213);
+            this.pictureBoxImagemHistoria.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBoxImagemHistoria.TabIndex = 0;
+            this.pictureBoxImagemHistoria.TabStop = false;
             // 
             // pnlBibleKids
             // 
@@ -515,7 +541,7 @@ namespace BeLightBible
             // picBtnVoltarHistoria
             // 
             this.picBtnVoltarHistoria.Image = ((System.Drawing.Image)(resources.GetObject("picBtnVoltarHistoria.Image")));
-            this.picBtnVoltarHistoria.Location = new System.Drawing.Point(17, 5);
+            this.picBtnVoltarHistoria.Location = new System.Drawing.Point(30, 5);
             this.picBtnVoltarHistoria.Name = "picBtnVoltarHistoria";
             this.picBtnVoltarHistoria.Size = new System.Drawing.Size(77, 47);
             this.picBtnVoltarHistoria.TabIndex = 6;
@@ -530,36 +556,76 @@ namespace BeLightBible
             this.picBtnProximaHistoria.TabIndex = 5;
             this.picBtnProximaHistoria.TabStop = false;
             // 
-            // pnlBibleKidPrincipal
+            // imageList1
             // 
-            this.pnlBibleKidPrincipal.Controls.Add(this.cardTextoHistoria);
-            this.pnlBibleKidPrincipal.Controls.Add(this.pictureBoxImagemHistoria);
-            this.pnlBibleKidPrincipal.Location = new System.Drawing.Point(3, 68);
-            this.pnlBibleKidPrincipal.Name = "pnlBibleKidPrincipal";
-            this.pnlBibleKidPrincipal.Size = new System.Drawing.Size(860, 321);
-            this.pnlBibleKidPrincipal.TabIndex = 8;
+            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
+            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageList1.Images.SetKeyName(0, "notepad-text.png");
+            this.imageList1.Images.SetKeyName(1, "bot.png");
+            this.imageList1.Images.SetKeyName(2, "book-marked(1).png");
+            this.imageList1.Images.SetKeyName(3, "house.png");
+            this.imageList1.Images.SetKeyName(4, "bookmark.png");
+            this.imageList1.Images.SetKeyName(5, "baby.png");
             // 
-            // cardTextoHistoria
+            // pnlAnotacoes
             // 
-            this.cardTextoHistoria.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.cardTextoHistoria.Depth = 0;
-            this.cardTextoHistoria.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.cardTextoHistoria.Location = new System.Drawing.Point(30, 23);
-            this.cardTextoHistoria.Margin = new System.Windows.Forms.Padding(14);
-            this.cardTextoHistoria.MouseState = MaterialSkin.MouseState.HOVER;
-            this.cardTextoHistoria.Name = "cardTextoHistoria";
-            this.cardTextoHistoria.Padding = new System.Windows.Forms.Padding(14);
-            this.cardTextoHistoria.Size = new System.Drawing.Size(655, 287);
-            this.cardTextoHistoria.TabIndex = 1;
+            this.pnlAnotacoes.BackColor = System.Drawing.Color.Transparent;
+            this.pnlAnotacoes.Controls.Add(this.brn);
+            this.pnlAnotacoes.Controls.Add(this.cmbCategoriaAnotacoes);
+            this.pnlAnotacoes.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlAnotacoes.ForeColor = System.Drawing.SystemColors.GrayText;
+            this.pnlAnotacoes.Location = new System.Drawing.Point(3, 3);
+            this.pnlAnotacoes.Name = "pnlAnotacoes";
+            this.pnlAnotacoes.Size = new System.Drawing.Size(860, 59);
+            this.pnlAnotacoes.TabIndex = 8;
             // 
-            // pictureBoxImagemHistoria
+            // brn
             // 
-            this.pictureBoxImagemHistoria.Location = new System.Drawing.Point(702, 23);
-            this.pictureBoxImagemHistoria.Name = "pictureBoxImagemHistoria";
-            this.pictureBoxImagemHistoria.Size = new System.Drawing.Size(121, 170);
-            this.pictureBoxImagemHistoria.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBoxImagemHistoria.TabIndex = 0;
-            this.pictureBoxImagemHistoria.TabStop = false;
+            this.brn.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.brn.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            this.brn.Depth = 0;
+            this.brn.ForeColor = System.Drawing.SystemColors.GrayText;
+            this.brn.HighEmphasis = true;
+            this.brn.Icon = null;
+            this.brn.Location = new System.Drawing.Point(291, 11);
+            this.brn.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.brn.MouseState = MaterialSkin.MouseState.HOVER;
+            this.brn.Name = "brn";
+            this.brn.NoAccentTextColor = System.Drawing.Color.Empty;
+            this.brn.Size = new System.Drawing.Size(77, 36);
+            this.brn.TabIndex = 7;
+            this.brn.Text = "Buscar";
+            this.brn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.brn.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            this.brn.UseAccentColor = false;
+            this.brn.UseVisualStyleBackColor = true;
+            // 
+            // cmbCategoriaAnotacoes
+            // 
+            this.cmbCategoriaAnotacoes.AutoResize = false;
+            this.cmbCategoriaAnotacoes.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.cmbCategoriaAnotacoes.Depth = 0;
+            this.cmbCategoriaAnotacoes.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
+            this.cmbCategoriaAnotacoes.DropDownHeight = 118;
+            this.cmbCategoriaAnotacoes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbCategoriaAnotacoes.DropDownWidth = 121;
+            this.cmbCategoriaAnotacoes.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.cmbCategoriaAnotacoes.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.cmbCategoriaAnotacoes.FormattingEnabled = true;
+            this.cmbCategoriaAnotacoes.IntegralHeight = false;
+            this.cmbCategoriaAnotacoes.ItemHeight = 29;
+            this.cmbCategoriaAnotacoes.Items.AddRange(new object[] {
+            "Anotações",
+            "Versículos",
+            "Grifos"});
+            this.cmbCategoriaAnotacoes.Location = new System.Drawing.Point(14, 12);
+            this.cmbCategoriaAnotacoes.MaxDropDownItems = 4;
+            this.cmbCategoriaAnotacoes.MouseState = MaterialSkin.MouseState.OUT;
+            this.cmbCategoriaAnotacoes.Name = "cmbCategoriaAnotacoes";
+            this.cmbCategoriaAnotacoes.Size = new System.Drawing.Size(253, 35);
+            this.cmbCategoriaAnotacoes.StartIndex = 0;
+            this.cmbCategoriaAnotacoes.TabIndex = 5;
+            this.cmbCategoriaAnotacoes.UseTallSize = false;
             // 
             // MenuForm
             // 
@@ -590,11 +656,13 @@ namespace BeLightBible
             this.pnlChatbot.PerformLayout();
             this.tabAnotacoes.ResumeLayout(false);
             this.tabBibleKids.ResumeLayout(false);
+            this.pnlBibleKidPrincipal.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxImagemHistoria)).EndInit();
             this.pnlBibleKids.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.picBtnVoltarHistoria)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picBtnProximaHistoria)).EndInit();
-            this.pnlBibleKidPrincipal.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxImagemHistoria)).EndInit();
+            this.pnlAnotacoes.ResumeLayout(false);
+            this.pnlAnotacoes.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -634,5 +702,8 @@ namespace BeLightBible
         private Panel pnlBibleKids;
         private PictureBox picBtnVoltarHistoria;
         private PictureBox picBtnProximaHistoria;
+        private Panel pnlAnotacoes;
+        private MaterialSkin.Controls.MaterialButton brn;
+        private MaterialSkin.Controls.MaterialComboBox cmbCategoriaAnotacoes;
     }
 }
