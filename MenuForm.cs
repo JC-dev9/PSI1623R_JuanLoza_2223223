@@ -149,8 +149,14 @@ namespace BeLightBible
                 AtualizarLarguraDosCards();
                 AjustarFonteCards();
 
+                CarregarUltimoPonto();
+
                 AplicarLayoutResponsivoBible();
                 AtualizarLarguraDasMensagens();
+
+                CarregarAnotacoes();
+
+                CarregarGrifos();
             };
 
             flowLayoutPanelConversa.Resize += flowLayoutPanelConversa_Resize;
@@ -389,7 +395,7 @@ namespace BeLightBible
                 var promptEspecializado =
        "Responda com base na Bíblia Sagrada, de forma clara, fiel e acessível, como um teólogo experiente. " +
        "Não faça saudações ou introduções; responda diretamente à pergunta. " +
-       "Limite sua resposta a 10 tokens.\n\n" +
+       "Limite sua resposta a 70 tokens.\n\n" +
        $"Pergunta do utilizador:\n{pergunta}\n\n" +
        "Resposta:";
 
@@ -1112,11 +1118,16 @@ namespace BeLightBible
             switch (categoriaSelecionada)
             {
                 case "Anotações":
-                    CarregarAnotacoes(); // já existe
+                    CarregarAnotacoes();
+                    AtualizarLarguraDosCards();
+                    AjustarFonteCards();// já existe
                     break;
 
                 case "Grifos":
-                    CarregarGrifos(); // você precisará criar essa função
+                    CarregarGrifos();
+                    AtualizarLarguraDosCards();
+                    AjustarFonteCards();
+                    // você precisará criar essa função
                     break;
 
                 case "Versículos do Dia":
@@ -1364,10 +1375,12 @@ namespace BeLightBible
                     Text = grifo.Texto,
                     Font = new Font("Segoe UI", 11),
                     ForeColor = Color.White,
-                    MaximumSize = new Size(370, 0),
-                    AutoSize = true,
+                    AutoSize = false,
+                    Width = card.Width - 150, // ou outro valor que encaixe no card
+                    Height = 60, // altura limitada para mostrar só parte do texto
+                    AutoEllipsis = true, // ativa os "..."
                     Cursor = Cursors.Hand,
-                    Location = new Point(0, lblReferencia.Bottom + 5),
+                    Location = new Point(10, lblReferencia.Bottom + 5),
                     Tag = grifo
                 };
 
@@ -1384,36 +1397,36 @@ namespace BeLightBible
 
                 btnExcluirGrifo.Click += (s, e) =>
                 {
-                    var resultado = MessageBox.Show(
-                        "Deseja realmente excluir este grifo?",
-                        "Confirmar exclusão",
-                        MessageBoxButtons.YesNo,
-                        MessageBoxIcon.Warning
-                    );
+                    var resultado = MessageBox.Show("Deseja realmente excluir este grifo?", "Confirmar exclusão", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 
                     if (resultado == DialogResult.Yes)
                     {
                         var grifoExcluir = (VersiculoSublinhado)card.Tag;
 
                         Versiculo.ExcluirGrifo(grifoExcluir.UserId, grifoExcluir.Livro, grifoExcluir.Capitulo, grifoExcluir.Versiculo);
-
                         flowPanelAnotacoes.Controls.Remove(card);
 
-                        MessageBox.Show("Grifo excluído com sucesso!", "Excluído", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MostrarSnackbar("Grifo excluído com sucesso!");
                     }
                 };
-
-
 
                 var corGrifo = ColorTranslator.FromHtml(grifo.Cor ?? "#FFFFFF");
 
                 Panel indicadorCor = new Panel
                 {
-                    Size = new Size(12, 12),
+                    Size = new Size(16, 16),
                     BackColor = corGrifo,
-                    Location = new Point(5, 4),
-                    Margin = new Padding(0)
+                    Margin = new Padding(0) 
                 };
+
+                // Adiciona o evento Resize para manter o quadrado no canto superior direito
+                card.Resize += (s, e) =>
+                {
+                    indicadorCor.Location = new Point(card.Width - indicadorCor.Width - 10, 10);
+                };
+
+                // Garante a posição inicial
+                indicadorCor.Location = new Point(card.Width - indicadorCor.Width - 10, 10);
 
                 card.Controls.Add(lblReferencia);
                 card.Controls.Add(lblTexto);
@@ -1434,6 +1447,36 @@ namespace BeLightBible
             });
         }
 
+
+        private void MostrarSnackbar(string mensagem)
+        {
+            Label snackbar = new Label
+            {
+                Text = mensagem,
+                BackColor = Color.FromArgb(33, 150, 243),
+                ForeColor = Color.White,
+                AutoSize = false,
+                TextAlign = ContentAlignment.MiddleCenter,
+                Dock = DockStyle.Bottom,
+                Height = 30,
+                Font = new Font("Segoe UI", 13, FontStyle.Regular)
+            };
+
+            this.Controls.Add(snackbar);
+            snackbar.BringToFront();
+
+            var timer = new Timer();
+            timer.Interval = 2500; // 2,5 segundos
+            timer.Tick += (s, e) =>
+            {
+                this.Controls.Remove(snackbar);
+                timer.Stop();
+                timer.Dispose();
+            };
+            timer.Start();
+        }
+
+
         private async void VersiculoGrifadoClicado(object sender, MouseEventArgs e)
         {
             if (sender is Label lbl && lbl.Tag is VersiculoSublinhado grifo)
@@ -1442,9 +1485,9 @@ namespace BeLightBible
 
                 ContextMenuStrip menu = new ContextMenuStrip();
 
-                ToolStripMenuItem lerItem = new ToolStripMenuItem("Ler")
+                ToolStripMenuItem lerItem = new ToolStripMenuItem("Abrir na Bíblia")
                 {
-                    Image = Image.FromFile("icons/email.png")
+                    Image = Image.FromFile("icons/book-open-text.png")
                 };
                 lerItem.Click += async (s, ev) =>
                 {

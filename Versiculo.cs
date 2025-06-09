@@ -146,7 +146,6 @@ namespace BeLightBible
             }
         }
 
-
         public void SalvarVersiculoEF(int userId, string referencia, string texto)
         {
             try
@@ -226,13 +225,11 @@ namespace BeLightBible
                     v.Versiculo == versiculo);
 
                 if (grifo != null)
-                {
-                    context.VersiculoSublinhado.Remove(grifo);
+                { 
                     context.SaveChanges();
                 }
             }
         }
-
 
         private void SalvarGrifo(int userId, string livro, int capitulo, int versiculo, string texto,string corHex)
         {
