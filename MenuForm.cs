@@ -1267,8 +1267,6 @@ namespace BeLightBible
                     historiasTab.CriarComponentes(); // ✔️ certo
                     historiasTab.InicializarHistorias();
 
-
-
                     //Renovar Estilos
                     estilo.EstilizarPictureBoxComoBotao(picBtnProximoCapitulo, true, cmbLivro, cmbCapitulo, BibleTab);
                     estilo.EstilizarPictureBoxComoBotao(picBtnAnteriorCapitulo, false, cmbLivro, cmbCapitulo, BibleTab);
@@ -1331,7 +1329,7 @@ namespace BeLightBible
         }
 
         // ------------------------------------------------------------------------------------
-        // -------------------- TELA DOS VERSÍCULOS SALVOS --------------------------------------
+        // -------------------- TELA DOS GRIFOS SALVOS --------------------------------------
         // ------------------------------------------------------------------------------------
         private void CriarCardsGrifos(List<VersiculoSublinhado> grifos, FlowLayoutPanel flowPanelAnotacoes)
         {
@@ -1353,7 +1351,6 @@ namespace BeLightBible
                     Tag = grifo
                 };
 
-
                 // Título com referência e data
                 Label lblReferencia = new Label
                 {
@@ -1363,6 +1360,7 @@ namespace BeLightBible
                     AutoSize = true
                 };
 
+          
                 Label lblTexto = new Label
                 {
                     Text = grifo.Texto,
@@ -1370,7 +1368,8 @@ namespace BeLightBible
                     ForeColor = Color.White,
                     MaximumSize = new Size(370, 0),
                     AutoSize = true,
-                    Location = new Point(0, lblReferencia.Bottom + 5)
+                    Cursor = Cursors.Hand,
+                    Location = new Point(0, lblReferencia.Bottom + 5),
                 };
 
                 // Botão Excluir
@@ -1395,16 +1394,13 @@ namespace BeLightBible
                     Margin = new Padding(0)
                 };
 
-                lblReferencia.Location = new Point(indicadorCor.Right, 0);
-
-
-
                 // Se quiseres mostrar o texto do versículo, precisas buscá-lo de outra tabela/API.
                 card.Controls.Add(lblReferencia);
                 card.Controls.Add(lblTexto);
                 card.Controls.Add(indicadorCor);
-
                 card.Controls.Add(btnExcluirGrifo);
+
+                lblTexto.MouseClick += VersiculoGrifadoClicado;
 
                 flowPanelAnotacoes.Controls.Add(card);
             }
@@ -1420,13 +1416,37 @@ namespace BeLightBible
             flowPanelAnotacoes.Controls.Add(espacoAbaixo);
         }
 
+        private async void VersiculoGrifadoClicado(object sender, MouseEventArgs e)
+        {
+            if (sender is Label lbl)
+            {
+                lbl.Font = new Font(lbl.Font, lbl.Font.Style | FontStyle.Underline);
+                Versiculo versiculo = new Versiculo(lbl);
+
+                ContextMenuStrip menu = new ContextMenuStrip();
+
+                // Item: Ir direto para Leitura
+                //ToolStripMenuItem emailItem = new ToolStripMenuItem("Compartilhar por Email");
+                //emailItem.Image = Image.FromFile("icons/email.png");
+                //emailItem.Click += (s, ev) =>
+                //{
+                    
+                //};
+
+                menu.Closed += (s, ev) =>
+                {
+                    lbl.Font = new Font(lbl.Font, lbl.Font.Style & ~FontStyle.Underline);
+                };
+
+                menu.Show(lbl, new Point(e.X, e.Y));
+            }
+        }
+
         private void CarregarGrifos()
         {
             var grifos = Versiculo.ObterGrifosUtilizador(Sessao.UserId); // você define esse método no seu DAL
             CriarCardsGrifos(grifos, flowLayoutPanelAnotacoes);
         }
-
-
 
     }
 }
