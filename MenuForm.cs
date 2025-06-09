@@ -19,9 +19,6 @@ using System.Runtime.InteropServices;
 using System.IO;
 using System.Security.Cryptography.Xml;
 
-
-
-
 namespace BeLightBible
 {
 
@@ -610,7 +607,7 @@ namespace BeLightBible
                 menu.Items.Add(new ToolStripMenuItem("Grifar", Image.FromFile("icons/palette.png"), (s, ev) =>
                 {
                     int versNumero = Convert.ToInt32(lbl.Tag);
-                    versiculo.Grifar(Sessao.UserId, cmbLivro.SelectedItem.ToString(), int.Parse(cmbCapitulo.SelectedItem.ToString()), versNumero);
+                    versiculo.Grifar(Sessao.UserId, cmbLivro.SelectedItem.ToString(), int.Parse(cmbCapitulo.SelectedItem.ToString()), versNumero, lbl.Text);
                 }));
                 menu.Items.Add(new ToolStripMenuItem("Copiar", Image.FromFile("icons/copy.png"), (s, ev) => versiculo.Copiar()));
                 menu.Items.Add(new ToolStripMenuItem("Anotar", Image.FromFile("icons/notepad.png"), async (s, ev) =>
@@ -1108,7 +1105,7 @@ namespace BeLightBible
         // -------------------- TELA DAS ANOTAÇÕES DE UTILIZADOR ------------------------------
         // ------------------------------------------------------------------------------------
 
-        private void cmbCategoriaVersiculos_SelectedIndexChanged(object sender, EventArgs e)
+        private void cmbCategoriaAnotacoes_SelectedIndexChanged(object sender, EventArgs e)
         {
             string categoriaSelecionada = cmbCategoriaAnotacoes.SelectedItem.ToString();
 
@@ -1119,7 +1116,7 @@ namespace BeLightBible
                     break;
 
                 case "Grifos":
-                    //CarregarGrifos(); // você precisará criar essa função
+                    CarregarGrifos(); // você precisará criar essa função
                     break;
 
                 case "Versículos do Dia":
@@ -1336,6 +1333,99 @@ namespace BeLightBible
         // ------------------------------------------------------------------------------------
         // -------------------- TELA DOS VERSÍCULOS SALVOS --------------------------------------
         // ------------------------------------------------------------------------------------
+        private void CriarCardsGrifos(List<VersiculoSublinhado> grifos, FlowLayoutPanel flowPanelAnotacoes)
+        {
+            flowPanelAnotacoes.Controls.Clear();
+            flowPanelAnotacoes.Padding = new Padding(10, 50, 10, 10);
+
+            foreach (var grifo in grifos)
+            {
+                var card = new MaterialCard
+                {
+                    Padding = new Padding(10),
+                    Margin = new Padding(10),
+                    Width = flowPanelAnotacoes.ClientSize.Width - 30,
+                    AutoSize = false,
+                    AutoSizeMode = AutoSizeMode.GrowOnly,
+                    BackColor = Color.White,
+                    ForeColor = Color.Black,
+                    Font = new Font("Segoe UI", 10),
+                    Tag = grifo
+                };
+
+
+                // Título com referência e data
+                Label lblReferencia = new Label
+                {
+                    Text = $"{grifo.Livro} {grifo.Capitulo}:{grifo.Versiculo} - {grifo.DataCriado?.ToShortDateString()}",
+                    Font = new Font("Segoe UI", 10, FontStyle.Bold),
+                    ForeColor = Color.LightBlue, // Cor do grifo
+                    AutoSize = true
+                };
+
+                Label lblTexto = new Label
+                {
+                    Text = grifo.Texto,
+                    Font = new Font("Segoe UI", 11),
+                    ForeColor = Color.White,
+                    MaximumSize = new Size(370, 0),
+                    AutoSize = true,
+                    Location = new Point(0, lblReferencia.Bottom + 5)
+                };
+
+                // Botão Excluir
+                Button btnExcluirGrifo = new Button
+                {
+                    Text = "Excluir",
+                    AutoSize = true,
+                    BackColor = Color.FromArgb(244, 67, 54),
+                    ForeColor = Color.White,
+                    FlatStyle = FlatStyle.Flat,
+                    Location = new Point(card.Width - 80, card.Height - 35),
+                    Anchor = AnchorStyles.Bottom | AnchorStyles.Right
+                };
+
+                var corGrifo = ColorTranslator.FromHtml(grifo.Cor ?? "#FFFFFF");
+
+                Panel indicadorCor = new Panel
+                {
+                    Size = new Size(12, 12),
+                    BackColor = corGrifo,
+                    Location = new Point(5, 4),
+                    Margin = new Padding(0)
+                };
+
+                lblReferencia.Location = new Point(indicadorCor.Right, 0);
+
+
+
+                // Se quiseres mostrar o texto do versículo, precisas buscá-lo de outra tabela/API.
+                card.Controls.Add(lblReferencia);
+                card.Controls.Add(lblTexto);
+                card.Controls.Add(indicadorCor);
+
+                card.Controls.Add(btnExcluirGrifo);
+
+                flowPanelAnotacoes.Controls.Add(card);
+            }
+
+            var espacoAbaixo = new Panel
+            {
+                Height = 50,
+                Width = 0,
+                BackColor = Color.Transparent,
+                Margin = new Padding(0)
+            };
+
+            flowPanelAnotacoes.Controls.Add(espacoAbaixo);
+        }
+
+        private void CarregarGrifos()
+        {
+            var grifos = Versiculo.ObterGrifosUtilizador(Sessao.UserId); // você define esse método no seu DAL
+            CriarCardsGrifos(grifos, flowLayoutPanelAnotacoes);
+        }
+
 
 
     }

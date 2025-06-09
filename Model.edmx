@@ -57,6 +57,7 @@
           <Property Name="Livro" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="Capitulo" Type="int" Nullable="false" />
           <Property Name="Versiculo" Type="int" Nullable="false" />
+          <Property Name="Texto" Type="nvarchar" MaxLength="1000" Nullable="false" />
           <Property Name="Cor" Type="nvarchar" MaxLength="20" Nullable="false" />
           <Property Name="DataCriado" Type="datetime" />
         </EntityType>
@@ -74,7 +75,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Versiculo__UserI__5070F446">
+        <Association Name="FK__Versiculo__UserI__03F0984C">
           <End Role="Users" Type="Self.Users" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -126,7 +127,7 @@
             <End Role="Users" EntitySet="Users" />
             <End Role="UltimoPontoLeitura" EntitySet="UltimoPontoLeitura" />
           </AssociationSet>
-          <AssociationSet Name="FK__Versiculo__UserI__5070F446" Association="Self.FK__Versiculo__UserI__5070F446">
+          <AssociationSet Name="FK__Versiculo__UserI__03F0984C" Association="Self.FK__Versiculo__UserI__03F0984C">
             <End Role="Users" EntitySet="Users" />
             <End Role="VersiculoSublinhado" EntitySet="VersiculoSublinhado" />
           </AssociationSet>
@@ -164,7 +165,7 @@
           <Property Name="PasswordHash" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="CreatedAt" Type="DateTime" Precision="3" />
           <NavigationProperty Name="UltimoPontoLeitura" Relationship="Self.FK__UltimoPon__UserI__74AE54BC" FromRole="Users" ToRole="UltimoPontoLeitura" />
-          <NavigationProperty Name="VersiculoSublinhado" Relationship="Self.FK__Versiculo__UserI__5070F446" FromRole="Users" ToRole="VersiculoSublinhado" />
+          <NavigationProperty Name="VersiculoSublinhado" Relationship="Self.FK__Versiculo__UserI__03F0984C" FromRole="Users" ToRole="VersiculoSublinhado" />
           <NavigationProperty Name="VersiculoAnotado" Relationship="Self.FK__Versiculo__UserI__5EBF139D" FromRole="Users" ToRole="VersiculoAnotado" />
           <NavigationProperty Name="VersiculoSalvo" Relationship="Self.FK__Versiculo__UserI__70DDC3D8" FromRole="Users" ToRole="VersiculoSalvo" />
         </EntityType>
@@ -203,9 +204,10 @@
           <Property Name="Livro" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Capitulo" Type="Int32" Nullable="false" />
           <Property Name="Versiculo" Type="Int32" Nullable="false" />
+          <Property Name="Texto" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Cor" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="DataCriado" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Users" Relationship="Self.FK__Versiculo__UserI__5070F446" FromRole="VersiculoSublinhado" ToRole="Users" />
+          <NavigationProperty Name="Users" Relationship="Self.FK__Versiculo__UserI__03F0984C" FromRole="VersiculoSublinhado" ToRole="Users" />
         </EntityType>
         <Association Name="FK__UltimoPon__UserI__74AE54BC">
           <End Role="Users" Type="Self.Users" Multiplicity="1">
@@ -221,7 +223,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Versiculo__UserI__5070F446">
+        <Association Name="FK__Versiculo__UserI__03F0984C">
           <End Role="Users" Type="Self.Users" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -273,7 +275,7 @@
             <End Role="Users" EntitySet="Users" />
             <End Role="UltimoPontoLeitura" EntitySet="UltimoPontoLeitura" />
           </AssociationSet>
-          <AssociationSet Name="FK__Versiculo__UserI__5070F446" Association="Self.FK__Versiculo__UserI__5070F446">
+          <AssociationSet Name="FK__Versiculo__UserI__03F0984C" Association="Self.FK__Versiculo__UserI__03F0984C">
             <End Role="Users" EntitySet="Users" />
             <End Role="VersiculoSublinhado" EntitySet="VersiculoSublinhado" />
           </AssociationSet>
@@ -347,6 +349,7 @@
                 <ScalarProperty Name="Livro" ColumnName="Livro" />
                 <ScalarProperty Name="Capitulo" ColumnName="Capitulo" />
                 <ScalarProperty Name="Versiculo" ColumnName="Versiculo" />
+                <ScalarProperty Name="Texto" ColumnName="Texto" />
                 <ScalarProperty Name="Cor" ColumnName="Cor" />
                 <ScalarProperty Name="DataCriado" ColumnName="DataCriado" />
               </MappingFragment>

@@ -19,6 +19,7 @@ namespace BeLightBible
         public string Livro { get; set; }
         public int Capitulo { get; set; }
         public int Versiculo { get; set; }
+        public string Texto { get; set; }
         public string Cor { get; set; }
         public Nullable<System.DateTime> DataCriado { get; set; }
     

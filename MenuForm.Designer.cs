@@ -626,6 +626,7 @@ namespace BeLightBible
             this.cmbCategoriaAnotacoes.StartIndex = 0;
             this.cmbCategoriaAnotacoes.TabIndex = 5;
             this.cmbCategoriaAnotacoes.UseTallSize = false;
+            this.cmbCategoriaAnotacoes.SelectedIndexChanged += new System.EventHandler(this.cmbCategoriaAnotacoes_SelectedIndexChanged);
             // 
             // MenuForm
             // 

@@ -4,14 +4,14 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="fd3c1952bfb841c1aa26be989165283e" Name="Diagram1">
+      <Diagram DiagramId="0060f859ef104b459c764a9440129148" Name="Diagram1">
         <EntityTypeShape EntityType="BeLightBibleDBModel.UltimoPontoLeitura" Width="1.5" PointX="3" PointY="1.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="BeLightBibleDBModel.Users" Width="1.5" PointX="0.75" PointY="6" IsExpanded="true" />
+        <EntityTypeShape EntityType="BeLightBibleDBModel.Users" Width="1.5" PointX="0.75" PointY="6.125" IsExpanded="true" />
         <EntityTypeShape EntityType="BeLightBibleDBModel.VersiculoAnotado" Width="1.5" PointX="3" PointY="4.125" IsExpanded="true" />
         <EntityTypeShape EntityType="BeLightBibleDBModel.VersiculoSalvo" Width="1.5" PointX="3" PointY="7.5" IsExpanded="true" />
         <EntityTypeShape EntityType="BeLightBibleDBModel.VersiculoSublinhado" Width="1.5" PointX="3" PointY="10.75" IsExpanded="true" />
         <AssociationConnector Association="BeLightBibleDBModel.FK__UltimoPon__UserI__74AE54BC" ManuallyRouted="false" />
-        <AssociationConnector Association="BeLightBibleDBModel.FK__Versiculo__UserI__5070F446" ManuallyRouted="false" />
+        <AssociationConnector Association="BeLightBibleDBModel.FK__Versiculo__UserI__03F0984C" ManuallyRouted="false" />
         <AssociationConnector Association="BeLightBibleDBModel.FK__Versiculo__UserI__5EBF139D" ManuallyRouted="false" />
         <AssociationConnector Association="BeLightBibleDBModel.FK__Versiculo__UserI__70DDC3D8" ManuallyRouted="false" />
       </Diagram>

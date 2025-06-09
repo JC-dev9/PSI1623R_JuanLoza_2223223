@@ -205,7 +205,18 @@ namespace BeLightBible
             }
         }
 
-        private void SalvarGrifo(int userId, string livro, int capitulo, int versiculo, string corHex)
+        public static List<VersiculoSublinhado> ObterGrifosUtilizador(int userId)
+        {
+            using (var context = new Entities())
+            {
+                return context.VersiculoSublinhado
+                    .Where(v => v.UserId == userId)
+                    .ToList();
+            }
+        }
+
+
+        private void SalvarGrifo(int userId, string livro, int capitulo, int versiculo, string texto,string corHex)
         {
             using (var context = new Entities())
             {
@@ -223,7 +234,9 @@ namespace BeLightBible
                         Livro = livro,
                         Capitulo = capitulo,
                         Versiculo = versiculo,
-                        Cor = corHex
+                        Texto = texto,
+                        Cor = corHex,
+                        DataCriado = DateTime.Now
                     };
 
                     context.VersiculoSublinhado.Add(novoGrifo);
@@ -232,7 +245,7 @@ namespace BeLightBible
                 context.SaveChanges();
             }
         }
-        public void Grifar(int userId, string livro, int capitulo, int versiculo)
+        public void Grifar(int userId, string livro, int capitulo, int versiculo, string texto)
         {
 
             using (ColorDialog colorDialog = new ColorDialog())
@@ -248,7 +261,7 @@ namespace BeLightBible
                     try
                     {
                         // Salva a cor no banco de dados
-                        SalvarGrifo(userId, livro, capitulo, versiculo, corHex);
+                        SalvarGrifo(userId, livro, capitulo, versiculo, texto, corHex);
                         MessageBox.Show("Grifo salvo com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                     catch (Exception ex)
