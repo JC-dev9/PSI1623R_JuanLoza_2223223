@@ -215,6 +215,24 @@ namespace BeLightBible
             }
         }
 
+        public static void ExcluirGrifo(int userId, string livro, int capitulo, int versiculo)
+        {
+            using (var context = new Entities())
+            {
+                var grifo = context.VersiculoSublinhado.FirstOrDefault(v =>
+                    v.UserId == userId &&
+                    v.Livro == livro &&
+                    v.Capitulo == capitulo &&
+                    v.Versiculo == versiculo);
+
+                if (grifo != null)
+                {
+                    context.VersiculoSublinhado.Remove(grifo);
+                    context.SaveChanges();
+                }
+            }
+        }
+
 
         private void SalvarGrifo(int userId, string livro, int capitulo, int versiculo, string texto,string corHex)
         {

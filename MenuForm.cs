@@ -1351,16 +1351,14 @@ namespace BeLightBible
                     Tag = grifo
                 };
 
-                // Título com referência e data
                 Label lblReferencia = new Label
                 {
                     Text = $"{grifo.Livro} {grifo.Capitulo}:{grifo.Versiculo} - {grifo.DataCriado?.ToShortDateString()}",
                     Font = new Font("Segoe UI", 10, FontStyle.Bold),
-                    ForeColor = Color.LightBlue, // Cor do grifo
+                    ForeColor = Color.LightBlue,
                     AutoSize = true
                 };
 
-          
                 Label lblTexto = new Label
                 {
                     Text = grifo.Texto,
@@ -1370,9 +1368,9 @@ namespace BeLightBible
                     AutoSize = true,
                     Cursor = Cursors.Hand,
                     Location = new Point(0, lblReferencia.Bottom + 5),
+                    Tag = grifo
                 };
 
-                // Botão Excluir
                 Button btnExcluirGrifo = new Button
                 {
                     Text = "Excluir",
@@ -1384,6 +1382,29 @@ namespace BeLightBible
                     Anchor = AnchorStyles.Bottom | AnchorStyles.Right
                 };
 
+                btnExcluirGrifo.Click += (s, e) =>
+                {
+                    var resultado = MessageBox.Show(
+                        "Deseja realmente excluir este grifo?",
+                        "Confirmar exclusão",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Warning
+                    );
+
+                    if (resultado == DialogResult.Yes)
+                    {
+                        var grifoExcluir = (VersiculoSublinhado)card.Tag;
+
+                        Versiculo.ExcluirGrifo(grifoExcluir.UserId, grifoExcluir.Livro, grifoExcluir.Capitulo, grifoExcluir.Versiculo);
+
+                        flowPanelAnotacoes.Controls.Remove(card);
+
+                        MessageBox.Show("Grifo excluído com sucesso!", "Excluído", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                };
+
+
+
                 var corGrifo = ColorTranslator.FromHtml(grifo.Cor ?? "#FFFFFF");
 
                 Panel indicadorCor = new Panel
@@ -1394,7 +1415,6 @@ namespace BeLightBible
                     Margin = new Padding(0)
                 };
 
-                // Se quiseres mostrar o texto do versículo, precisas buscá-lo de outra tabela/API.
                 card.Controls.Add(lblReferencia);
                 card.Controls.Add(lblTexto);
                 card.Controls.Add(indicadorCor);
@@ -1405,33 +1425,41 @@ namespace BeLightBible
                 flowPanelAnotacoes.Controls.Add(card);
             }
 
-            var espacoAbaixo = new Panel
+            flowPanelAnotacoes.Controls.Add(new Panel
             {
                 Height = 50,
                 Width = 0,
                 BackColor = Color.Transparent,
                 Margin = new Padding(0)
-            };
-
-            flowPanelAnotacoes.Controls.Add(espacoAbaixo);
+            });
         }
 
         private async void VersiculoGrifadoClicado(object sender, MouseEventArgs e)
         {
-            if (sender is Label lbl)
+            if (sender is Label lbl && lbl.Tag is VersiculoSublinhado grifo)
             {
                 lbl.Font = new Font(lbl.Font, lbl.Font.Style | FontStyle.Underline);
-                Versiculo versiculo = new Versiculo(lbl);
 
                 ContextMenuStrip menu = new ContextMenuStrip();
 
-                // Item: Ir direto para Leitura
-                //ToolStripMenuItem emailItem = new ToolStripMenuItem("Compartilhar por Email");
-                //emailItem.Image = Image.FromFile("icons/email.png");
-                //emailItem.Click += (s, ev) =>
-                //{
-                    
-                //};
+                ToolStripMenuItem lerItem = new ToolStripMenuItem("Ler")
+                {
+                    Image = Image.FromFile("icons/email.png")
+                };
+                lerItem.Click += async (s, ev) =>
+                {
+                    string livro = grifo.Livro;
+                    int capitulo = grifo.Capitulo;
+
+                    cmbLivro.SelectedItem = livro;
+                    cmbCapitulo.SelectedItem = capitulo.ToString();
+                    TabControlPrincipal.SelectedTab = tabBible;
+
+                    await BibleTab(livro, capitulo);
+                };
+
+
+                menu.Items.Add(lerItem);
 
                 menu.Closed += (s, ev) =>
                 {
@@ -1441,6 +1469,7 @@ namespace BeLightBible
                 menu.Show(lbl, new Point(e.X, e.Y));
             }
         }
+
 
         private void CarregarGrifos()
         {
