@@ -27,7 +27,6 @@ namespace BeLightBible
         private PictureBox pictureBoxExterno;
         private Panel pnlTextoComScroll;
 
-        private PictureBox pictureBox;
         private PictureBox btnAnterior;
         private PictureBox btnProximo;
         private MaterialCard card;

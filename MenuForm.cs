@@ -159,14 +159,14 @@ namespace BeLightBible
                 AplicarLayoutResponsivoBible();
                 AtualizarLarguraDasMensagens();
 
-                CarregarAnotacoes();
 
-                CarregarGrifos();
             };
 
             flowLayoutPanelConversa.Resize += flowLayoutPanelConversa_Resize;
             AplicarLayoutResponsivoBible();
             AtualizarLarguraDasMensagens();
+            AtualizarLarguraDosCards();
+            AjustarFonteCards();
         }
 
         // -------------------- LAYOUT --------------------
@@ -415,11 +415,11 @@ namespace BeLightBible
 
         public async Task<RespostasCache> BuscarRespostaCacheAsync(string pergunta)
         {
-            var embeddingAtual = await ObterEmbeddingOllamaAsync(pergunta);
+            var embeddingAtual = await ObterEmbeddingOllamaAsync(pergunta); // Irá retornar algo como: [0.1234, -0.5678, 0.9012, ...]
 
             var todosCaches = await _context.RespostasCache.ToListAsync();
 
-            double threshold = 0.85; // ajusta conforme quiser
+            double threshold = 0.85;
             RespostasCache melhorCache = null;
             double melhorSimilaridade = 0;
 
@@ -481,7 +481,7 @@ namespace BeLightBible
                 var promptEspecializado =
                     "Responda com base na Bíblia Sagrada, de forma clara, fiel e acessível, como um teólogo experiente. " +
                     "Não faça saudações ou introduções; responda diretamente à pergunta. " +
-                    "Limite sua resposta a 130 tokens.\n\n" +
+                    "Limite sua resposta a 170 tokens.\n\n" +
                     $"Pergunta do utilizador:\n{pergunta}\n\n" +
                     "Resposta:";
 
@@ -748,7 +748,7 @@ namespace BeLightBible
                     TabControlPrincipal.SelectedTab = tabChatbot;
 
                     // Cria o prompt
-                   string prompt = $"Você é um especialista bíblico. Explique com clareza e profundidade o contexto histórico, cultural e teológico do versículo {livro} {capitulo}:{versNumero}, que diz: \"{textoVersiculo}\". Inclua referências relevantes e aplicação prática para a vida cristã hoje.";
+                    string prompt = $"Você é um especialista bíblico. Explique com clareza e profundidade o contexto histórico, cultural e teológico do versículo {livro} {capitulo}:{versNumero}, que diz: \"{textoVersiculo}\". Inclua referências relevantes e aplicação prática para a vida cristã hoje.";
 
                     // Mostra a mensagem do usuário na conversa
                     AddUserMessage(prompt);
@@ -1229,12 +1229,13 @@ namespace BeLightBible
                     // você precisará criar essa função
                     break;
 
-                case "Versículos do Dia":
-                    //CarregarVersiculosDoDia(); // você também cria essa função
+                case "Versículos":
+                    CarregarVersiculosDoDia(); // você também cria essa função
+                    AtualizarLarguraDosCards();
+                    AjustarFonteCards();
                     break;
             }
         }
-
 
         private void CriarCardsAnotacoes(List<VersiculoAnotado> anotacoes, FlowLayoutPanel flowPanelAnotacoes)
         {
@@ -1479,7 +1480,7 @@ namespace BeLightBible
                     Height = 60, // altura limitada para mostrar só parte do texto
                     AutoEllipsis = true, // ativa os "..."
                     Cursor = Cursors.Hand,
-                    Location = new Point(10, lblReferencia.Bottom + 5),
+                    Location = new Point(0, lblReferencia.Bottom + 5),
                     Tag = grifo
                 };
 
@@ -1515,7 +1516,7 @@ namespace BeLightBible
                 {
                     Size = new Size(16, 16),
                     BackColor = corGrifo,
-                    Margin = new Padding(0) 
+                    Margin = new Padding(0)
                 };
 
                 // Adiciona o evento Resize para manter o quadrado no canto superior direito
@@ -1575,7 +1576,6 @@ namespace BeLightBible
             timer.Start();
         }
 
-
         private async void VersiculoGrifadoClicado(object sender, MouseEventArgs e)
         {
             if (sender is Label lbl && lbl.Tag is VersiculoSublinhado grifo)
@@ -1600,7 +1600,6 @@ namespace BeLightBible
                     await BibleTab(livro, capitulo);
                 };
 
-
                 menu.Items.Add(lerItem);
 
                 menu.Closed += (s, ev) =>
@@ -1617,6 +1616,139 @@ namespace BeLightBible
         {
             var grifos = Versiculo.ObterGrifosUtilizador(Sessao.UserId); // você define esse método no seu DAL
             CriarCardsGrifos(grifos, flowLayoutPanelAnotacoes);
+        }
+
+        // ------------------------------------------------------------------------------------
+        // -------------------- TELA DOS VERSÍCULOS SALVOS --------------------------------------
+        // ------------------------------------------------------------------------------------
+
+        private async void VersiculoSalvoClicado(object sender, MouseEventArgs e)
+        {
+            if (sender is Label lbl && lbl.Tag is VersiculoSalvo grifo)
+            {
+                lbl.Font = new Font(lbl.Font, lbl.Font.Style | FontStyle.Underline);
+
+                ContextMenuStrip menu = new ContextMenuStrip();
+
+                ToolStripMenuItem lerItem = new ToolStripMenuItem("Abrir na Bíblia")
+                {
+                    Image = Image.FromFile("icons/book-open-text.png")
+                };
+                lerItem.Click += async (s, ev) =>
+                {
+                    string livro = grifo.Livro;
+                    int capitulo = grifo.Capitulo;
+
+                    cmbLivro.SelectedItem = livro;
+                    cmbCapitulo.SelectedItem = capitulo.ToString();
+                    TabControlPrincipal.SelectedTab = tabBible;
+
+                    await BibleTab(livro, capitulo);
+                };
+
+                menu.Items.Add(lerItem);
+
+                menu.Closed += (s, ev) =>
+                {
+                    lbl.Font = new Font(lbl.Font, lbl.Font.Style & ~FontStyle.Underline);
+                };
+
+                menu.Show(lbl, new Point(e.X, e.Y));
+            }
+        }
+
+        private void CriarCardsVersiculos(List<VersiculoSalvo> versiculos, FlowLayoutPanel flowPanelAnotacoes)
+        {
+            flowPanelAnotacoes.Controls.Clear();
+            flowPanelAnotacoes.Padding = new Padding(10, 50, 10, 10);
+
+            foreach (var versiculo in versiculos)
+            {
+                var card = new MaterialCard
+                {
+                    Padding = new Padding(10),
+                    Margin = new Padding(10),
+                    Width = flowPanelAnotacoes.ClientSize.Width - 30,
+                    AutoSize = false,
+                    AutoSizeMode = AutoSizeMode.GrowOnly,
+                    BackColor = Color.White,
+                    ForeColor = Color.Black,
+                    Font = new Font("Segoe UI", 10),
+                    Tag = versiculo
+                };
+
+                Label lblReferencia = new Label
+                {
+                    Text = $"{versiculo.Livro} {versiculo.Capitulo}:{versiculo.Versiculo} - {versiculo.DataSalvo.ToShortDateString()}",
+                    Font = new Font("Segoe UI", 10, FontStyle.Bold),
+                    ForeColor = Color.LightBlue,
+                    AutoSize = true
+                };
+                
+                Label lblTexto = new Label
+                {
+                    Text = versiculo.Texto,
+                    Font = new Font("Segoe UI", 11),
+                    ForeColor = Color.White,
+                    MaximumSize = new Size(370, 0),
+                    AutoSize = false,
+                    Width = card.Width - 150,
+                    Height = 60,
+                    AutoEllipsis = true,
+                    Cursor = Cursors.Hand,
+                    Location = new Point(0, lblReferencia.Bottom + 5),
+                    Tag = versiculo
+                };
+
+                Button btnExcluirVersiculo = new Button
+                {
+                    Text = "Excluir",
+                    AutoSize = true,
+                    BackColor = Color.FromArgb(244, 67, 54),
+                    ForeColor = Color.White,
+                    FlatStyle = FlatStyle.Flat,
+                    Location = new Point(card.Width - 80, card.Height - 35),
+                    Anchor = AnchorStyles.Bottom | AnchorStyles.Right
+                };
+
+                btnExcluirVersiculo.Click += (s, e) =>
+                {
+                    var resultado = MessageBox.Show("Deseja realmente excluir este versículo?", "Confirmar exclusão", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+                    if (resultado == DialogResult.Yes)
+                    {
+                        var versiculoExcluir = (VersiculoSalvo)card.Tag;
+
+                        Versiculo.ExcluirVersiculoSalvo(versiculoExcluir.UserId, versiculoExcluir.Livro, versiculoExcluir.Capitulo, versiculoExcluir.Versiculo);
+                        flowPanelAnotacoes.Controls.Remove(card);
+
+                        MostrarSnackbar("Versículo excluído com sucesso!");
+                    }
+                };
+
+                card.Controls.Add(lblReferencia);
+                card.Controls.Add(lblTexto);
+                card.Controls.Add(btnExcluirVersiculo);
+
+                lblTexto.MouseClick += VersiculoSalvoClicado;
+
+                flowPanelAnotacoes.Controls.Add(card);
+            }
+
+            flowPanelAnotacoes.Controls.Add(new Panel
+            {
+                Height = 50,
+                Width = 0,
+                BackColor = Color.Transparent,
+                Margin = new Padding(0)
+            });
+        }
+
+
+        private void CarregarVersiculosDoDia()
+        {
+            var versiculos = Versiculo.ObterVersiculosSalvos(Sessao.UserId);
+            CriarCardsVersiculos(versiculos, flowLayoutPanelAnotacoes); // flowLayoutPanelAnotacoes dentro do tab "save"
         }
 
     }

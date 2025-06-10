@@ -14,7 +14,6 @@ namespace BeLightBible
 {
     public partial class LoginForm : MaterialForm
     {
-        private readonly MaterialSkinManager materialSkinManager;
         public LoginForm()
         {
             InitializeComponent();

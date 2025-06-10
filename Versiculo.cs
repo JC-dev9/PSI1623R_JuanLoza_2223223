@@ -106,6 +106,25 @@ namespace BeLightBible
             }
         }
 
+        public static void ExcluirVersiculoSalvo(int userId, string livro, int capitulo, int versiculo)
+        {
+            using (var context = new Entities())
+            {
+                var versiculoSalvo = context.VersiculoSalvo.FirstOrDefault(v =>
+                    v.UserId == userId &&
+                    v.Livro == livro &&
+                    v.Capitulo == capitulo &&
+                    v.Versiculo == versiculo);
+
+                if (versiculoSalvo != null)
+                {
+                    context.VersiculoSalvo.Remove(versiculoSalvo);
+                    context.SaveChanges();
+                }
+            }
+        }
+
+
         public static (string Livro, int Capitulo)? ObterUltimoPonto(int userId)
         {
             using (var context = new Entities())
@@ -225,7 +244,8 @@ namespace BeLightBible
                     v.Versiculo == versiculo);
 
                 if (grifo != null)
-                { 
+                {
+                    context.VersiculoSublinhado.Remove(grifo);
                     context.SaveChanges();
                 }
             }
