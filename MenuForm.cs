@@ -18,6 +18,7 @@ using System.Text;
 using System.Runtime.InteropServices;
 using System.IO;
 using System.Security.Cryptography.Xml;
+using Newtonsoft.Json.Linq;
 
 namespace BeLightBible
 {
@@ -386,6 +387,29 @@ namespace BeLightBible
             AdicionarEspacadorFinal();
         }
 
+        public async Task<float[]> ObterEmbeddingOllamaAsync(string texto)
+        {
+            var url = "http://localhost:11434/api/embeddings";
+            var requestData = new
+            {
+                model = "nomic-embed-text",
+                prompt = texto
+            };
+
+            var json = JsonConvert.SerializeObject(requestData);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await client.PostAsync(url, content);
+            response.EnsureSuccessStatusCode();
+
+            var jsonResponse = await response.Content.ReadAsStringAsync();
+            dynamic result = JsonConvert.DeserializeObject(jsonResponse);
+
+            JArray embeddingArray = result.embedding;
+            return embeddingArray.ToObject<float[]>();
+        }
+
+
         private async Task EnviarParaOllama(string pergunta)
         {
             try
@@ -395,7 +419,7 @@ namespace BeLightBible
                 var promptEspecializado =
        "Responda com base na Bíblia Sagrada, de forma clara, fiel e acessível, como um teólogo experiente. " +
        "Não faça saudações ou introduções; responda diretamente à pergunta. " +
-       "Limite sua resposta a 70 tokens.\n\n" +
+       "Limite sua resposta a 110 tokens.\n\n" +
        $"Pergunta do utilizador:\n{pergunta}\n\n" +
        "Resposta:";
 
@@ -644,13 +668,13 @@ namespace BeLightBible
                     int versNumero = Convert.ToInt32(lbl.Tag);
                     string livro = cmbLivro.SelectedItem.ToString();
                     int capitulo = int.Parse(cmbCapitulo.SelectedItem.ToString());
+                    string textoVersiculo = lbl.Text;
 
                     // Muda para a aba do chatbot
                     TabControlPrincipal.SelectedTab = tabChatbot;
 
                     // Cria o prompt
-                    string prompt = $"Você é um especialista bíblico. Explique com clareza e profundidade o contexto histórico, cultural e teológico do versículo {livro} {capitulo}:{versiculo}. Inclua referências relevantes e aplicação prática para a vida cristã hoje.";
-
+                   string prompt = $"Você é um especialista bíblico. Explique com clareza e profundidade o contexto histórico, cultural e teológico do versículo {livro} {capitulo}:{versNumero}, que diz: \"{textoVersiculo}\". Inclua referências relevantes e aplicação prática para a vida cristã hoje.";
 
                     // Mostra a mensagem do usuário na conversa
                     AddUserMessage(prompt);
@@ -658,6 +682,7 @@ namespace BeLightBible
                     // Envia o prompt para o chatbot (aguarda resposta)
                     await EnviarParaOllama(prompt);
                 }));
+
 
                 menu.Items.Add(new ToolStripMenuItem("Compartilhar", Image.FromFile("icons/share-2.png"), (s, ev) => versiculo.Copiar()));
 
