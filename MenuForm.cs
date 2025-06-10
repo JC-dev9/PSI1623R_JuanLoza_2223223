@@ -19,6 +19,7 @@ using System.Runtime.InteropServices;
 using System.IO;
 using System.Security.Cryptography.Xml;
 using Newtonsoft.Json.Linq;
+using System.Data.Entity;
 
 namespace BeLightBible
 {
@@ -31,6 +32,9 @@ namespace BeLightBible
         private int indiceAtualKids = 0;
 
         private static readonly HttpClient client = new HttpClient();
+        private readonly Entities _context = new Entities();
+
+
         private PictureBox picLoading;
         private Label lblTituloCapitulo;
         private Label lblNumeroVersiculo;
@@ -409,26 +413,83 @@ namespace BeLightBible
             return embeddingArray.ToObject<float[]>();
         }
 
+        public async Task<RespostasCache> BuscarRespostaCacheAsync(string pergunta)
+        {
+            var embeddingAtual = await ObterEmbeddingOllamaAsync(pergunta);
 
+            var todosCaches = await _context.RespostasCache.ToListAsync();
+
+            double threshold = 0.85; // ajusta conforme quiser
+            RespostasCache melhorCache = null;
+            double melhorSimilaridade = 0;
+
+            foreach (var cache in todosCaches)
+            {
+                var embeddingCache = cache.EmbeddingArray;
+                var similaridade = CosineSimilarity(embeddingAtual, embeddingCache);
+
+                if (similaridade > melhorSimilaridade)
+                {
+                    melhorSimilaridade = similaridade;
+                    melhorCache = cache;
+                }
+            }
+
+            if (melhorSimilaridade >= threshold)
+                return melhorCache;
+
+            return null;
+        }
+
+        public static double CosineSimilarity(float[] vectorA, float[] vectorB)
+        {
+            if (vectorA.Length != vectorB.Length)
+                throw new ArgumentException("Vetores com tamanhos diferentes");
+
+            double dot = 0;
+            double magA = 0;
+            double magB = 0;
+
+            for (int i = 0; i < vectorA.Length; i++)
+            {
+                dot += vectorA[i] * vectorB[i];
+                magA += vectorA[i] * vectorA[i];
+                magB += vectorB[i] * vectorB[i];
+            }
+
+            magA = Math.Sqrt(magA);
+            magB = Math.Sqrt(magB);
+
+            if (magA == 0 || magB == 0) return 0;
+
+            return dot / (magA * magB);
+        }
         private async Task EnviarParaOllama(string pergunta)
         {
             try
             {
+                // Busca no cache
+                var respostaCache = await BuscarRespostaCacheAsync(pergunta);
+                if (respostaCache != null)
+                {
+                    AddBotMessage(respostaCache.Resposta);
+                    return;
+                }
+
                 var url = "http://localhost:11434/api/generate";
 
                 var promptEspecializado =
-       "Responda com base na Bíblia Sagrada, de forma clara, fiel e acessível, como um teólogo experiente. " +
-       "Não faça saudações ou introduções; responda diretamente à pergunta. " +
-       "Limite sua resposta a 110 tokens.\n\n" +
-       $"Pergunta do utilizador:\n{pergunta}\n\n" +
-       "Resposta:";
+                    "Responda com base na Bíblia Sagrada, de forma clara, fiel e acessível, como um teólogo experiente. " +
+                    "Não faça saudações ou introduções; responda diretamente à pergunta. " +
+                    "Limite sua resposta a 130 tokens.\n\n" +
+                    $"Pergunta do utilizador:\n{pergunta}\n\n" +
+                    "Resposta:";
 
                 var requestData = new
                 {
                     model = "llama3.2",
                     prompt = promptEspecializado,
                     stream = true,
-
                     max_tokens = 10,
                 };
 
@@ -444,35 +505,48 @@ namespace BeLightBible
                 var stream = await response.Content.ReadAsStreamAsync();
                 var reader = new StreamReader(stream);
 
-                // Adiciona bolha vazia e atualiza em tempo real
                 var botBubble = CreateMessageBubble("", false);
                 var botLabel = (Label)botBubble.Controls[0];
                 flowLayoutPanelConversa.Controls.Add(botBubble);
                 flowLayoutPanelConversa.ScrollControlIntoView(botBubble);
+
+                string respostaCompleta = "";
 
                 while (!reader.EndOfStream)
                 {
                     var line = await reader.ReadLineAsync();
                     if (string.IsNullOrWhiteSpace(line)) continue;
 
-                    // Remove prefixo "data: "
                     if (line.StartsWith("data: ")) line = line.Substring(6);
 
                     dynamic obj = JsonConvert.DeserializeObject(line);
                     string contentPart = obj?.response;
                     if (contentPart != null)
                     {
+                        respostaCompleta += contentPart;
                         botLabel.Text += contentPart;
                         botBubble.Width = botLabel.PreferredWidth + 20;
                         Application.DoEvents();
                     }
                 }
+
+                var embeddingPergunta = await ObterEmbeddingOllamaAsync(pergunta);
+                var novaRespostaCache = new RespostasCache
+                {
+                    Pergunta = pergunta,
+                    Resposta = respostaCompleta,
+                    EmbeddingArray = embeddingPergunta
+                };
+
+                _context.RespostasCache.Add(novaRespostaCache);
+                await _context.SaveChangesAsync();
             }
             catch (Exception ex)
             {
                 AddBotMessage("Erro: " + ex.Message);
             }
         }
+
 
         private async void btnEnviarChatbot_Click(object sender, EventArgs e)
         {

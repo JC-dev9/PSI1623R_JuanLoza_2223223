@@ -188,6 +188,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Model.edmx</DependentUpon>
     </Compile>
+    <Compile Include="RespostasCache.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
     <Compile Include="tabChatbot.cs">
       <SubType>UserControl</SubType>
     </Compile>

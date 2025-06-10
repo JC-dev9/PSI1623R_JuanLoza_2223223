@@ -4,7 +4,16 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="BeLightBibleDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="BeLightBibleDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="RespostasCache">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Pergunta" Type="nvarchar(max)" />
+          <Property Name="Resposta" Type="nvarchar(max)" />
+          <Property Name="Embedding" Type="nvarchar(max)" />
+        </EntityType>
         <EntityType Name="UltimoPontoLeitura">
           <Key>
             <PropertyRef Name="UserId" />
@@ -118,6 +127,7 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="BeLightBibleDBModelStoreContainer">
+          <EntitySet Name="RespostasCache" EntityType="Self.RespostasCache" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UltimoPontoLeitura" EntityType="Self.UltimoPontoLeitura" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VersiculoAnotado" EntityType="Self.VersiculoAnotado" Schema="dbo" store:Type="Tables" />
@@ -140,11 +150,19 @@
             <End Role="VersiculoSalvo" EntitySet="VersiculoSalvo" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="BeLightBibleDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="RespostasCache">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Pergunta" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Resposta" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Embedding" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
         <EntityType Name="UltimoPontoLeitura">
           <Key>
             <PropertyRef Name="UserId" />
@@ -266,6 +284,7 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="RespostasCache" EntityType="Self.RespostasCache" />
           <EntitySet Name="UltimoPontoLeitura" EntityType="Self.UltimoPontoLeitura" />
           <EntitySet Name="Users" EntityType="Self.Users" />
           <EntitySet Name="VersiculoAnotado" EntityType="Self.VersiculoAnotado" />
@@ -294,6 +313,16 @@
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="BeLightBibleDBModelStoreContainer" CdmEntityContainer="Entities">
+          <EntitySetMapping Name="RespostasCache">
+            <EntityTypeMapping TypeName="BeLightBibleDBModel.RespostasCache">
+              <MappingFragment StoreEntitySet="RespostasCache">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Pergunta" ColumnName="Pergunta" />
+                <ScalarProperty Name="Resposta" ColumnName="Resposta" />
+                <ScalarProperty Name="Embedding" ColumnName="Embedding" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="UltimoPontoLeitura">
             <EntityTypeMapping TypeName="BeLightBibleDBModel.UltimoPontoLeitura">
               <MappingFragment StoreEntitySet="UltimoPontoLeitura">
