@@ -57,6 +57,9 @@ namespace BeLightBible
             this.btnEnviarChatbot = new MaterialSkin.Controls.MaterialButton();
             this.flowLayoutPanelConversa = new System.Windows.Forms.FlowLayoutPanel();
             this.tabAnotacoes = new System.Windows.Forms.TabPage();
+            this.pnlAnotacoes = new System.Windows.Forms.Panel();
+            this.brn = new MaterialSkin.Controls.MaterialButton();
+            this.cmbCategoriaAnotacoes = new MaterialSkin.Controls.MaterialComboBox();
             this.flowLayoutPanelAnotacoes = new System.Windows.Forms.FlowLayoutPanel();
             this.tabBibleKids = new System.Windows.Forms.TabPage();
             this.pnlBibleKidPrincipal = new System.Windows.Forms.Panel();
@@ -65,10 +68,8 @@ namespace BeLightBible
             this.pnlBibleKids = new System.Windows.Forms.Panel();
             this.picBtnVoltarHistoria = new System.Windows.Forms.PictureBox();
             this.picBtnProximaHistoria = new System.Windows.Forms.PictureBox();
+            this.tabPlanoLeitura = new System.Windows.Forms.TabPage();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
-            this.pnlAnotacoes = new System.Windows.Forms.Panel();
-            this.brn = new MaterialSkin.Controls.MaterialButton();
-            this.cmbCategoriaAnotacoes = new MaterialSkin.Controls.MaterialComboBox();
             this.TabControlPrincipal.SuspendLayout();
             this.tabHome.SuspendLayout();
             this.cardUltimaLeitura.SuspendLayout();
@@ -82,13 +83,13 @@ namespace BeLightBible
             this.tabChatbot.SuspendLayout();
             this.pnlChatbot.SuspendLayout();
             this.tabAnotacoes.SuspendLayout();
+            this.pnlAnotacoes.SuspendLayout();
             this.tabBibleKids.SuspendLayout();
             this.pnlBibleKidPrincipal.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxImagemHistoria)).BeginInit();
             this.pnlBibleKids.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picBtnVoltarHistoria)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picBtnProximaHistoria)).BeginInit();
-            this.pnlAnotacoes.SuspendLayout();
             this.SuspendLayout();
             // 
             // TabControlPrincipal
@@ -97,6 +98,7 @@ namespace BeLightBible
             this.TabControlPrincipal.Controls.Add(this.tabBible);
             this.TabControlPrincipal.Controls.Add(this.tabChatbot);
             this.TabControlPrincipal.Controls.Add(this.tabAnotacoes);
+            this.TabControlPrincipal.Controls.Add(this.tabPlanoLeitura);
             this.TabControlPrincipal.Controls.Add(this.tabBibleKids);
             this.TabControlPrincipal.Depth = 0;
             this.TabControlPrincipal.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -473,6 +475,67 @@ namespace BeLightBible
             this.tabAnotacoes.Text = "Anotações";
             this.tabAnotacoes.UseVisualStyleBackColor = true;
             // 
+            // pnlAnotacoes
+            // 
+            this.pnlAnotacoes.BackColor = System.Drawing.Color.Transparent;
+            this.pnlAnotacoes.Controls.Add(this.brn);
+            this.pnlAnotacoes.Controls.Add(this.cmbCategoriaAnotacoes);
+            this.pnlAnotacoes.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlAnotacoes.ForeColor = System.Drawing.SystemColors.GrayText;
+            this.pnlAnotacoes.Location = new System.Drawing.Point(3, 3);
+            this.pnlAnotacoes.Name = "pnlAnotacoes";
+            this.pnlAnotacoes.Size = new System.Drawing.Size(860, 59);
+            this.pnlAnotacoes.TabIndex = 8;
+            // 
+            // brn
+            // 
+            this.brn.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.brn.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            this.brn.Depth = 0;
+            this.brn.ForeColor = System.Drawing.SystemColors.GrayText;
+            this.brn.HighEmphasis = true;
+            this.brn.Icon = null;
+            this.brn.Location = new System.Drawing.Point(291, 11);
+            this.brn.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.brn.MouseState = MaterialSkin.MouseState.HOVER;
+            this.brn.Name = "brn";
+            this.brn.NoAccentTextColor = System.Drawing.Color.Empty;
+            this.brn.Size = new System.Drawing.Size(77, 36);
+            this.brn.TabIndex = 7;
+            this.brn.Text = "Buscar";
+            this.brn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.brn.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            this.brn.UseAccentColor = false;
+            this.brn.UseVisualStyleBackColor = true;
+            // 
+            // cmbCategoriaAnotacoes
+            // 
+            this.cmbCategoriaAnotacoes.AutoResize = false;
+            this.cmbCategoriaAnotacoes.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.cmbCategoriaAnotacoes.Depth = 0;
+            this.cmbCategoriaAnotacoes.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
+            this.cmbCategoriaAnotacoes.DropDownHeight = 118;
+            this.cmbCategoriaAnotacoes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbCategoriaAnotacoes.DropDownWidth = 121;
+            this.cmbCategoriaAnotacoes.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.cmbCategoriaAnotacoes.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.cmbCategoriaAnotacoes.FormattingEnabled = true;
+            this.cmbCategoriaAnotacoes.IntegralHeight = false;
+            this.cmbCategoriaAnotacoes.ItemHeight = 29;
+            this.cmbCategoriaAnotacoes.Items.AddRange(new object[] {
+            "Anotações",
+            "Versículos",
+            "Grifos"});
+            this.cmbCategoriaAnotacoes.Location = new System.Drawing.Point(14, 12);
+            this.cmbCategoriaAnotacoes.MaxDropDownItems = 4;
+            this.cmbCategoriaAnotacoes.MouseState = MaterialSkin.MouseState.OUT;
+            this.cmbCategoriaAnotacoes.Name = "cmbCategoriaAnotacoes";
+            this.cmbCategoriaAnotacoes.Size = new System.Drawing.Size(253, 35);
+            this.cmbCategoriaAnotacoes.StartIndex = 0;
+            this.cmbCategoriaAnotacoes.TabIndex = 5;
+            this.cmbCategoriaAnotacoes.UseTallSize = false;
+            this.cmbCategoriaAnotacoes.SelectedIndexChanged += new System.EventHandler(this.cmbCategoriaAnotacoes_SelectedIndexChanged);
+            // 
             // flowLayoutPanelAnotacoes
             // 
             this.flowLayoutPanelAnotacoes.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -556,6 +619,17 @@ namespace BeLightBible
             this.picBtnProximaHistoria.TabIndex = 5;
             this.picBtnProximaHistoria.TabStop = false;
             // 
+            // tabPlanoLeitura
+            // 
+            this.tabPlanoLeitura.ImageKey = "calendar-days.png";
+            this.tabPlanoLeitura.Location = new System.Drawing.Point(4, 31);
+            this.tabPlanoLeitura.Name = "tabPlanoLeitura";
+            this.tabPlanoLeitura.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPlanoLeitura.Size = new System.Drawing.Size(866, 395);
+            this.tabPlanoLeitura.TabIndex = 5;
+            this.tabPlanoLeitura.Text = "Plano de Leitura";
+            this.tabPlanoLeitura.UseVisualStyleBackColor = true;
+            // 
             // imageList1
             // 
             this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
@@ -566,67 +640,7 @@ namespace BeLightBible
             this.imageList1.Images.SetKeyName(3, "house.png");
             this.imageList1.Images.SetKeyName(4, "bookmark.png");
             this.imageList1.Images.SetKeyName(5, "baby.png");
-            // 
-            // pnlAnotacoes
-            // 
-            this.pnlAnotacoes.BackColor = System.Drawing.Color.Transparent;
-            this.pnlAnotacoes.Controls.Add(this.brn);
-            this.pnlAnotacoes.Controls.Add(this.cmbCategoriaAnotacoes);
-            this.pnlAnotacoes.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnlAnotacoes.ForeColor = System.Drawing.SystemColors.GrayText;
-            this.pnlAnotacoes.Location = new System.Drawing.Point(3, 3);
-            this.pnlAnotacoes.Name = "pnlAnotacoes";
-            this.pnlAnotacoes.Size = new System.Drawing.Size(860, 59);
-            this.pnlAnotacoes.TabIndex = 8;
-            // 
-            // brn
-            // 
-            this.brn.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.brn.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            this.brn.Depth = 0;
-            this.brn.ForeColor = System.Drawing.SystemColors.GrayText;
-            this.brn.HighEmphasis = true;
-            this.brn.Icon = null;
-            this.brn.Location = new System.Drawing.Point(291, 11);
-            this.brn.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.brn.MouseState = MaterialSkin.MouseState.HOVER;
-            this.brn.Name = "brn";
-            this.brn.NoAccentTextColor = System.Drawing.Color.Empty;
-            this.brn.Size = new System.Drawing.Size(77, 36);
-            this.brn.TabIndex = 7;
-            this.brn.Text = "Buscar";
-            this.brn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.brn.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
-            this.brn.UseAccentColor = false;
-            this.brn.UseVisualStyleBackColor = true;
-            // 
-            // cmbCategoriaAnotacoes
-            // 
-            this.cmbCategoriaAnotacoes.AutoResize = false;
-            this.cmbCategoriaAnotacoes.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.cmbCategoriaAnotacoes.Depth = 0;
-            this.cmbCategoriaAnotacoes.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
-            this.cmbCategoriaAnotacoes.DropDownHeight = 118;
-            this.cmbCategoriaAnotacoes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbCategoriaAnotacoes.DropDownWidth = 121;
-            this.cmbCategoriaAnotacoes.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.cmbCategoriaAnotacoes.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.cmbCategoriaAnotacoes.FormattingEnabled = true;
-            this.cmbCategoriaAnotacoes.IntegralHeight = false;
-            this.cmbCategoriaAnotacoes.ItemHeight = 29;
-            this.cmbCategoriaAnotacoes.Items.AddRange(new object[] {
-            "Anotações",
-            "Versículos",
-            "Grifos"});
-            this.cmbCategoriaAnotacoes.Location = new System.Drawing.Point(14, 12);
-            this.cmbCategoriaAnotacoes.MaxDropDownItems = 4;
-            this.cmbCategoriaAnotacoes.MouseState = MaterialSkin.MouseState.OUT;
-            this.cmbCategoriaAnotacoes.Name = "cmbCategoriaAnotacoes";
-            this.cmbCategoriaAnotacoes.Size = new System.Drawing.Size(253, 35);
-            this.cmbCategoriaAnotacoes.StartIndex = 0;
-            this.cmbCategoriaAnotacoes.TabIndex = 5;
-            this.cmbCategoriaAnotacoes.UseTallSize = false;
-            this.cmbCategoriaAnotacoes.SelectedIndexChanged += new System.EventHandler(this.cmbCategoriaAnotacoes_SelectedIndexChanged);
+            this.imageList1.Images.SetKeyName(6, "calendar-days.png");
             // 
             // MenuForm
             // 
@@ -656,14 +670,14 @@ namespace BeLightBible
             this.pnlChatbot.ResumeLayout(false);
             this.pnlChatbot.PerformLayout();
             this.tabAnotacoes.ResumeLayout(false);
+            this.pnlAnotacoes.ResumeLayout(false);
+            this.pnlAnotacoes.PerformLayout();
             this.tabBibleKids.ResumeLayout(false);
             this.pnlBibleKidPrincipal.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxImagemHistoria)).EndInit();
             this.pnlBibleKids.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.picBtnVoltarHistoria)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picBtnProximaHistoria)).EndInit();
-            this.pnlAnotacoes.ResumeLayout(false);
-            this.pnlAnotacoes.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -706,5 +720,6 @@ namespace BeLightBible
         private Panel pnlAnotacoes;
         private MaterialSkin.Controls.MaterialButton brn;
         private MaterialSkin.Controls.MaterialComboBox cmbCategoriaAnotacoes;
+        private TabPage tabPlanoLeitura;
     }
 }

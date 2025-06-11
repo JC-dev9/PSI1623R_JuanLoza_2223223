@@ -42,6 +42,7 @@ namespace BeLightBible
         private Estilo estilo = new Estilo();
         private readonly ApiBibleService bibleService = new ApiBibleService();
         private SpeechSynthesizer synthesizer = new SpeechSynthesizer();
+        private NotifyIcon notifyIcon1;
         private bool isPlaying = false;
         [DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
         private static extern IntPtr CreateRoundRectRgn(int nLeft, int nTop, int nRight, int nBottom, int nWidthEllipse, int nHeightEllipse);
@@ -177,22 +178,22 @@ namespace BeLightBible
         }
 
         private HistoriasKidsTab historiasTab;
+        private PlanoLeitura planoLeituraTab;
 
         private void FormPrincipal_Load(object sender, EventArgs e)
         {
             historiasTab = new HistoriasKidsTab(tabBibleKids, pnlBibleKidPrincipal, picBtnProximaHistoria, picBtnVoltarHistoria, cardTextoHistoria, pictureBoxImagemHistoria, pnlBibleKids);
-            TabControlPrincipal.SelectedTab = tabBibleKids;
-
         }
         private async void MenuForm_Load(object sender, EventArgs e)
         {
+           
+
             CriarCardUltimoPonto();
             CarregarUltimoPonto();
             CriarLabelsVersiculoDia();
             await CarregarVersiculoDiaAsync(); // Carrega o versículo do dia na tela inicial
 
             CarregarAnotacoes();
-
         }
 
         private void AtualizarLarguraDosCards()
@@ -481,7 +482,6 @@ namespace BeLightBible
                 var promptEspecializado =
                     "Responda com base na Bíblia Sagrada, de forma clara, fiel e acessível, como um teólogo experiente. " +
                     "Não faça saudações ou introduções; responda diretamente à pergunta. " +
-                    "Limite sua resposta a 170 tokens.\n\n" +
                     $"Pergunta do utilizador:\n{pergunta}\n\n" +
                     "Resposta:";
 
@@ -566,9 +566,8 @@ namespace BeLightBible
             await EnviarParaOllama(pergunta);
         }
 
-        private async void MensagemClicada(object sender, MouseEventArgs e)
+        private void MensagemClicada(object sender, MouseEventArgs e)
         {
-
             if (sender is Label lbl)
             {
                 lbl.Font = new Font(lbl.Font, lbl.Font.Style | FontStyle.Underline);
@@ -956,12 +955,36 @@ namespace BeLightBible
                 Properties.Settings.Default.UltimaReferencia = referencia;
                 Properties.Settings.Default.DataUltimoVersiculo = hoje;
                 Properties.Settings.Default.Save();
+
+                MostrarNotificacaoVersiculoDoDia();
             }
             else
             {
                 lblTextoVersiculo.Text = "Não foi possível carregar o versículo do dia.";
             }
         }
+
+        private void MostrarNotificacaoVersiculoDoDia()
+        {
+            notifyIcon1 = new NotifyIcon();
+            notifyIcon1.Icon = SystemIcons.Information; // ícone padrão do sistema
+            notifyIcon1.Visible = true;
+
+            if (notifyIcon1 == null)
+                return;
+
+            string mensagem = ObterMensagemVersiculo();
+
+            if (string.IsNullOrEmpty(mensagem))
+                return;
+
+            notifyIcon1.BalloonTipTitle = "Versículo do Dia";
+            notifyIcon1.BalloonTipText = mensagem;
+            notifyIcon1.BalloonTipIcon = ToolTipIcon.Info;
+            notifyIcon1.Visible = true;
+            notifyIcon1.ShowBalloonTip(5000); // mostra por 5 segundos
+        }
+
 
         // -------------------- SALVAR VERSICULO --------------------
         private void btnSalvarVersiculo_Click(object sender, EventArgs e)

@@ -43,7 +43,7 @@ namespace BeLightBible
             this.btnProximo = btnProximo;
             this.btnAnterior = btnAnterior;
             this.pictureBoxExterno = pictureBoxExterno;
-            this.pnlBibleKids = pnlBibleKids; // <-- novo
+            this.pnlBibleKids = pnlBibleKids;
 
             InicializarHistorias();
             CriarComponentes();
