@@ -18,5 +18,6 @@ namespace BeLightBible
         public string Nome { get; set; }
         public string Descricao { get; set; }
         public int DiasDuracao { get; set; }
+        public string ImagemBase64 { get; set; }
     }
 }

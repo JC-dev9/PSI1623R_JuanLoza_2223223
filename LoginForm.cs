@@ -38,6 +38,14 @@ namespace BeLightBible
             string username = txtUsername.Text.Trim();
             string password = txtPassword.Text.Trim();
 
+            if (username == "admin" && password == "admin123")
+            {
+                // Abre a tela principal 
+                var adminForm = new MenuAdmin();
+                adminForm.Show();
+                this.Hide(); // Esconde o formulário de login
+            }
+
             if (user.Autenticar(username, password))
             {
                 // Salva Informações na sessão

@@ -105,6 +105,13 @@ namespace BeLightBible
             flowLayoutPanelAnotacoes.AutoScroll = true;
             flowLayoutPanelAnotacoes.AutoScrollMargin = new Size(0, 100); // Espaço extra para rolagem suave
 
+            // Configurações do FlowLayoutPanel das anotações de versículos
+            flowPanelPlanos.Dock = DockStyle.Fill;
+            flowPanelPlanos.FlowDirection = FlowDirection.TopDown;
+            flowPanelPlanos.WrapContents = false;
+            flowPanelPlanos.AutoScroll = true;
+            flowPanelPlanos.AutoScrollMargin = new Size(0, 100); // Espaço extra para rolagem suave
+
             // Âncoras
             cmbLivro.Anchor = AnchorStyles.Top | AnchorStyles.Left;
             cmbCapitulo.Anchor = AnchorStyles.Top | AnchorStyles.Left;
@@ -1802,7 +1809,7 @@ namespace BeLightBible
             }
         }
 
-        private void CriarCardsPlanosLeitura(List<PlanoLeitura> planos, FlowLayoutPanel flowPanelPlanos)
+        private void CriarCardsPlanoLeitura(List<PlanoLeitura> planos, FlowLayoutPanel flowPanelPlanos)
         {
             flowPanelPlanos.Controls.Clear();
             flowPanelPlanos.Padding = new Padding(10, 20, 10, 10);
@@ -1824,11 +1831,31 @@ namespace BeLightBible
                 // Imagem (ícone)
                 var pic = new PictureBox
                 {
-                    Image = Image.FromFile(@"C:\Users\juanl\Source\Repos\PSI1623R_JuanLoza_2223223\Imagens\adaoEva.png"),
                     SizeMode = PictureBoxSizeMode.Zoom,
                     Location = new Point(10, 10),
                     Size = new Size(80, 80)
                 };
+
+                if (!string.IsNullOrEmpty(plano.ImagemBase64))
+                {
+                    try
+                    {
+                        byte[] imageBytes = Convert.FromBase64String(plano.ImagemBase64);
+                        using (var ms = new MemoryStream(imageBytes))
+                        {
+                            pic.Image = Image.FromStream(ms);
+                        }
+                    }
+                    catch
+                    {
+                        // Caso a imagem esteja malformada ou ausente, usa uma imagem padrão
+                        pic.Image = Properties.Resources.ImagemPadrao; // <- adicione uma no Resources
+                    }
+                }
+                else
+                {
+                    pic.Image = Properties.Resources.ImagemPadrao;
+                }
 
                 card.Controls.Add(pic);
 
@@ -1883,11 +1910,8 @@ namespace BeLightBible
             using (var context = new Entities())
             {
                 var planos = context.PlanoLeitura.ToList();
-                CriarCardsPlanosLeitura(planos, flowPanelPlanos);
+                CriarCardsPlanoLeitura(planos, flowPanelPlanos);
             }
         }
-
-
-
     }
 }
