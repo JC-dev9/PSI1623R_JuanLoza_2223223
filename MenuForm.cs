@@ -186,7 +186,7 @@ namespace BeLightBible
         }
         private async void MenuForm_Load(object sender, EventArgs e)
         {
-           
+
 
             CriarCardUltimoPonto();
             CarregarUltimoPonto();
@@ -194,6 +194,7 @@ namespace BeLightBible
             await CarregarVersiculoDiaAsync(); // Carrega o versículo do dia na tela inicial
 
             CarregarAnotacoes();
+            CarregarPlanoLeituraTodos();
         }
 
         private void AtualizarLarguraDosCards()
@@ -1707,7 +1708,7 @@ namespace BeLightBible
                     ForeColor = Color.LightBlue,
                     AutoSize = true
                 };
-                
+
                 Label lblTexto = new Label
                 {
                     Text = versiculo.Texto,
@@ -1766,13 +1767,127 @@ namespace BeLightBible
                 Margin = new Padding(0)
             });
         }
-
-
         private void CarregarVersiculosDoDia()
         {
             var versiculos = Versiculo.ObterVersiculosSalvos(Sessao.UserId);
             CriarCardsVersiculos(versiculos, flowLayoutPanelAnotacoes); // flowLayoutPanelAnotacoes dentro do tab "save"
         }
+
+        // ------------------------------------------------------------------------------------
+        // -------------------- TELA DE TODOS OS PLANOS ---------------------------------------
+        // ------------------------------------------------------------------------------------
+
+        private void cmbCategoriaPlanos_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string categoriaSelecionada = cmbCategoriaPlanos.SelectedItem.ToString();
+
+            switch (categoriaSelecionada)
+            {
+                case "Todos":
+                    CarregarPlanoLeituraTodos();
+                    break;
+
+                case "Meus Planos":
+                    CarregarVersiculosDoDia(); // você também cria essa função
+                    AtualizarLarguraDosCards();
+                    AjustarFonteCards();
+                    break;
+
+
+                    //case "Versículos":
+                    //CarregarVersiculosDoDia(); // você também cria essa função
+                    //AtualizarLarguraDosCards();
+                    //AjustarFonteCards();
+                    //break;
+            }
+        }
+
+        private void CriarCardsPlanosLeitura(List<PlanoLeitura> planos, FlowLayoutPanel flowPanelPlanos)
+        {
+            flowPanelPlanos.Controls.Clear();
+            flowPanelPlanos.Padding = new Padding(10, 20, 10, 10);
+
+            foreach (var plano in planos)
+            {
+                // Card
+                var card = new MaterialCard
+                {
+                    Padding = new Padding(10),
+                    Margin = new Padding(10),
+                    Width = flowPanelPlanos.ClientSize.Width - 30,
+                    Height = 120,
+                    AutoSize = false,
+                    BackColor = Color.White,
+                    Tag = plano
+                };
+
+                // Imagem (ícone)
+                var pic = new PictureBox
+                {
+                    Image = Image.FromFile(@"C:\Users\juanl\Source\Repos\PSI1623R_JuanLoza_2223223\Imagens\adaoEva.png"),
+                    SizeMode = PictureBoxSizeMode.Zoom,
+                    Location = new Point(10, 10),
+                    Size = new Size(80, 80)
+                };
+
+                card.Controls.Add(pic);
+
+                // Título
+                var lblTitulo = new Label
+                {
+                    Text = plano.Nome,
+                    Font = new Font("Segoe UI", 12, FontStyle.Bold),
+                    ForeColor = Color.Black,
+                    Location = new Point(100, 10),
+                    AutoSize = true
+                };
+                card.Controls.Add(lblTitulo);
+
+                // Descrição
+                var lblDescricao = new Label
+                {
+                    Text = plano.Descricao,
+                    Font = new Font("Segoe UI", 10),
+                    ForeColor = Color.DimGray,
+                    Location = new Point(100, 35),
+                    Size = new Size(card.Width - 200, 40),
+                    AutoEllipsis = true
+                };
+                card.Controls.Add(lblDescricao);
+
+                // Botão "Iniciar"
+                var btnIniciar = new MaterialButton
+                {
+                    Text = "Iniciar",
+                    AutoSize = true,
+                    Location = new Point(card.Width - 110, 70),
+                    Tag = plano // você pode usar isso pra abrir nova tela ou iniciar o plano
+                };
+
+                // Evento de clique (opcional)
+                btnIniciar.Click += (sender, e) =>
+                {
+                    var planoSelecionado = (PlanoLeitura)((MaterialButton)sender).Tag;
+                    MessageBox.Show($"Você clicou em iniciar: {planoSelecionado.Nome}");
+                    // Aqui você chama sua lógica de iniciar plano
+                };
+
+                card.Controls.Add(btnIniciar);
+
+                flowPanelPlanos.Controls.Add(card);
+            }
+        }
+
+        private void CarregarPlanoLeituraTodos()
+        {
+            using (var context = new Entities())
+            {
+                var planos = context.PlanoLeitura.ToList();
+                CriarCardsPlanosLeitura(planos, flowPanelPlanos);
+            }
+        }
+
+
 
     }
 }

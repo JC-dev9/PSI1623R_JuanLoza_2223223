@@ -4,8 +4,9 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="c1375fb5cae449b29a39a043885cb5dd" Name="Diagram1">
-        <EntityTypeShape EntityType="BeLightBibleDBModel.RespostasCache" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
+      <Diagram DiagramId="f37a9eaffa9f4de0800ed11887e11812" Name="Diagram1">
+        <EntityTypeShape EntityType="BeLightBibleDBModel.PlanoLeitura" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BeLightBibleDBModel.RespostasCache" Width="1.5" PointX="5.75" PointY="3.75" IsExpanded="true" />
         <EntityTypeShape EntityType="BeLightBibleDBModel.UltimoPontoLeitura" Width="1.5" PointX="3" PointY="1.375" IsExpanded="true" />
         <EntityTypeShape EntityType="BeLightBibleDBModel.Users" Width="1.5" PointX="0.75" PointY="6.125" IsExpanded="true" />
         <EntityTypeShape EntityType="BeLightBibleDBModel.VersiculoAnotado" Width="1.5" PointX="3" PointY="4.125" IsExpanded="true" />
