@@ -36,7 +36,6 @@ namespace BeLightBible
                 TextShade.WHITE
             );
         }
-
         private void btnSelecionarImagem_Click(object sender, EventArgs e)
         {
             using (OpenFileDialog ofd = new OpenFileDialog())

@@ -460,10 +460,11 @@ namespace BeLightBible
             // 
             // flowLayoutPanelConversa
             // 
+            this.flowLayoutPanelConversa.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanelConversa.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanelConversa.Location = new System.Drawing.Point(3, 3);
+            this.flowLayoutPanelConversa.Location = new System.Drawing.Point(0, 0);
             this.flowLayoutPanelConversa.Name = "flowLayoutPanelConversa";
-            this.flowLayoutPanelConversa.Size = new System.Drawing.Size(860, 324);
+            this.flowLayoutPanelConversa.Size = new System.Drawing.Size(866, 395);
             this.flowLayoutPanelConversa.TabIndex = 6;
             // 
             // tabAnotacoes

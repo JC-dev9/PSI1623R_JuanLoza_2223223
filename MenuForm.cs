@@ -357,7 +357,7 @@ namespace BeLightBible
                 AutoSize = true,
                 AutoSizeMode = AutoSizeMode.GrowAndShrink,
                 Padding = new Padding(10),
-                Margin = new Padding(5),
+                Margin = new Padding(5, 5, 5, 50),
                 BackColor = isUser ? Color.FromArgb(33, 150, 243) : Color.FromArgb(97, 97, 97),
             };
 
@@ -487,16 +487,12 @@ namespace BeLightBible
 
                 var url = "http://localhost:11434/api/generate";
 
-                var promptEspecializado =
-                    "Responda com base na Bíblia Sagrada, de forma clara, fiel e acessível, como um teólogo experiente. " +
-                    "Não faça saudações ou introduções; responda diretamente à pergunta. " +
-                    $"Pergunta do utilizador:\n{pergunta}\n\n" +
-                    "Resposta:";
+                
 
                 var requestData = new
                 {
                     model = "llama3.2",
-                    prompt = promptEspecializado,
+                    prompt = pergunta,
                     stream = true,
                     max_tokens = 10,
                 };

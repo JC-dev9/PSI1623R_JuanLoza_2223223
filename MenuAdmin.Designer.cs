@@ -32,18 +32,18 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MenuAdmin));
             this.materialTabControl1 = new MaterialSkin.Controls.MaterialTabControl();
             this.tabCriarPlano = new System.Windows.Forms.TabPage();
+            this.btnLimpar = new MaterialSkin.Controls.MaterialButton();
+            this.btnSalvar = new MaterialSkin.Controls.MaterialButton();
+            this.pictureBoxPreview = new System.Windows.Forms.PictureBox();
+            this.btnSelecionarImagem = new MaterialSkin.Controls.MaterialButton();
+            this.txtDias = new MaterialSkin.Controls.MaterialTextBox();
+            this.lblDuracao = new MaterialSkin.Controls.MaterialLabel();
+            this.txtDescricao = new MaterialSkin.Controls.MaterialTextBox();
+            this.lblDescricao = new MaterialSkin.Controls.MaterialLabel();
             this.txtNome = new MaterialSkin.Controls.MaterialTextBox();
             this.lblNome = new MaterialSkin.Controls.MaterialLabel();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
-            this.txtDescricao = new MaterialSkin.Controls.MaterialTextBox();
-            this.lblDescricao = new MaterialSkin.Controls.MaterialLabel();
-            this.txtDias = new MaterialSkin.Controls.MaterialTextBox();
-            this.lblDuracao = new MaterialSkin.Controls.MaterialLabel();
-            this.btnSelecionarImagem = new MaterialSkin.Controls.MaterialButton();
-            this.pictureBoxPreview = new System.Windows.Forms.PictureBox();
-            this.btnSalvar = new MaterialSkin.Controls.MaterialButton();
-            this.btnLimpar = new MaterialSkin.Controls.MaterialButton();
             this.materialTabControl1.SuspendLayout();
             this.tabCriarPlano.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPreview)).BeginInit();
@@ -84,6 +84,135 @@
             this.tabCriarPlano.TabIndex = 0;
             this.tabCriarPlano.Text = "Plano de Leitura";
             this.tabCriarPlano.UseVisualStyleBackColor = true;
+            // 
+            // btnLimpar
+            // 
+            this.btnLimpar.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnLimpar.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            this.btnLimpar.Depth = 0;
+            this.btnLimpar.HighEmphasis = true;
+            this.btnLimpar.Icon = null;
+            this.btnLimpar.Location = new System.Drawing.Point(701, 350);
+            this.btnLimpar.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.btnLimpar.MouseState = MaterialSkin.MouseState.HOVER;
+            this.btnLimpar.Name = "btnLimpar";
+            this.btnLimpar.NoAccentTextColor = System.Drawing.Color.Empty;
+            this.btnLimpar.Size = new System.Drawing.Size(75, 36);
+            this.btnLimpar.TabIndex = 12;
+            this.btnLimpar.Text = "Limpar";
+            this.btnLimpar.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            this.btnLimpar.UseAccentColor = false;
+            this.btnLimpar.UseVisualStyleBackColor = true;
+            // 
+            // btnSalvar
+            // 
+            this.btnSalvar.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnSalvar.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            this.btnSalvar.Depth = 0;
+            this.btnSalvar.HighEmphasis = true;
+            this.btnSalvar.Icon = null;
+            this.btnSalvar.Location = new System.Drawing.Point(617, 350);
+            this.btnSalvar.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.btnSalvar.MouseState = MaterialSkin.MouseState.HOVER;
+            this.btnSalvar.Name = "btnSalvar";
+            this.btnSalvar.NoAccentTextColor = System.Drawing.Color.Empty;
+            this.btnSalvar.Size = new System.Drawing.Size(76, 36);
+            this.btnSalvar.TabIndex = 11;
+            this.btnSalvar.Text = "Salvar";
+            this.btnSalvar.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            this.btnSalvar.UseAccentColor = false;
+            this.btnSalvar.UseVisualStyleBackColor = true;
+            this.btnSalvar.Click += new System.EventHandler(this.btnSalvar_Click);
+            // 
+            // pictureBoxPreview
+            // 
+            this.pictureBoxPreview.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pictureBoxPreview.Location = new System.Drawing.Point(512, 29);
+            this.pictureBoxPreview.Name = "pictureBoxPreview";
+            this.pictureBoxPreview.Size = new System.Drawing.Size(135, 117);
+            this.pictureBoxPreview.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBoxPreview.TabIndex = 10;
+            this.pictureBoxPreview.TabStop = false;
+            // 
+            // btnSelecionarImagem
+            // 
+            this.btnSelecionarImagem.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnSelecionarImagem.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            this.btnSelecionarImagem.Depth = 0;
+            this.btnSelecionarImagem.HighEmphasis = true;
+            this.btnSelecionarImagem.Icon = null;
+            this.btnSelecionarImagem.Location = new System.Drawing.Point(493, 155);
+            this.btnSelecionarImagem.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.btnSelecionarImagem.MouseState = MaterialSkin.MouseState.HOVER;
+            this.btnSelecionarImagem.Name = "btnSelecionarImagem";
+            this.btnSelecionarImagem.NoAccentTextColor = System.Drawing.Color.Empty;
+            this.btnSelecionarImagem.Size = new System.Drawing.Size(170, 36);
+            this.btnSelecionarImagem.TabIndex = 9;
+            this.btnSelecionarImagem.Text = "Selecionar Imagem";
+            this.btnSelecionarImagem.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            this.btnSelecionarImagem.UseAccentColor = false;
+            this.btnSelecionarImagem.UseVisualStyleBackColor = true;
+            this.btnSelecionarImagem.Click += new System.EventHandler(this.btnSelecionarImagem_Click);
+            // 
+            // txtDias
+            // 
+            this.txtDias.AnimateReadOnly = false;
+            this.txtDias.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txtDias.CausesValidation = false;
+            this.txtDias.Depth = 0;
+            this.txtDias.Font = new System.Drawing.Font("Roboto", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.txtDias.Hint = "Duração";
+            this.txtDias.LeadingIcon = null;
+            this.txtDias.Location = new System.Drawing.Point(36, 162);
+            this.txtDias.MaxLength = 50;
+            this.txtDias.MouseState = MaterialSkin.MouseState.OUT;
+            this.txtDias.Multiline = false;
+            this.txtDias.Name = "txtDias";
+            this.txtDias.Size = new System.Drawing.Size(300, 50);
+            this.txtDias.TabIndex = 8;
+            this.txtDias.Text = "";
+            this.txtDias.TrailingIcon = null;
+            // 
+            // lblDuracao
+            // 
+            this.lblDuracao.Depth = 0;
+            this.lblDuracao.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.lblDuracao.Location = new System.Drawing.Point(36, 130);
+            this.lblDuracao.MouseState = MaterialSkin.MouseState.HOVER;
+            this.lblDuracao.Name = "lblDuracao";
+            this.lblDuracao.Size = new System.Drawing.Size(300, 20);
+            this.lblDuracao.TabIndex = 7;
+            this.lblDuracao.Text = "Duração do Plano:";
+            // 
+            // txtDescricao
+            // 
+            this.txtDescricao.AnimateReadOnly = false;
+            this.txtDescricao.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txtDescricao.CausesValidation = false;
+            this.txtDescricao.Depth = 0;
+            this.txtDescricao.Font = new System.Drawing.Font("Roboto", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.txtDescricao.Hint = "Descrição";
+            this.txtDescricao.LeadingIcon = null;
+            this.txtDescricao.Location = new System.Drawing.Point(36, 274);
+            this.txtDescricao.MaxLength = 50;
+            this.txtDescricao.MouseState = MaterialSkin.MouseState.OUT;
+            this.txtDescricao.Multiline = false;
+            this.txtDescricao.Name = "txtDescricao";
+            this.txtDescricao.Size = new System.Drawing.Size(300, 50);
+            this.txtDescricao.TabIndex = 6;
+            this.txtDescricao.Text = "";
+            this.txtDescricao.TrailingIcon = null;
+            // 
+            // lblDescricao
+            // 
+            this.lblDescricao.Depth = 0;
+            this.lblDescricao.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.lblDescricao.Location = new System.Drawing.Point(36, 242);
+            this.lblDescricao.MouseState = MaterialSkin.MouseState.HOVER;
+            this.lblDescricao.Name = "lblDescricao";
+            this.lblDescricao.Size = new System.Drawing.Size(300, 20);
+            this.lblDescricao.TabIndex = 5;
+            this.lblDescricao.Text = "Descrição do Plano:";
             // 
             // txtNome
             // 
@@ -130,135 +259,6 @@
             this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
             this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
             this.imageList1.Images.SetKeyName(0, "auto_stories_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24(1).png");
-            // 
-            // txtDescricao
-            // 
-            this.txtDescricao.AnimateReadOnly = false;
-            this.txtDescricao.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.txtDescricao.CausesValidation = false;
-            this.txtDescricao.Depth = 0;
-            this.txtDescricao.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.txtDescricao.Hint = "Descrição";
-            this.txtDescricao.LeadingIcon = null;
-            this.txtDescricao.Location = new System.Drawing.Point(36, 274);
-            this.txtDescricao.MaxLength = 50;
-            this.txtDescricao.MouseState = MaterialSkin.MouseState.OUT;
-            this.txtDescricao.Multiline = false;
-            this.txtDescricao.Name = "txtDescricao";
-            this.txtDescricao.Size = new System.Drawing.Size(300, 50);
-            this.txtDescricao.TabIndex = 6;
-            this.txtDescricao.Text = "";
-            this.txtDescricao.TrailingIcon = null;
-            // 
-            // lblDescricao
-            // 
-            this.lblDescricao.Depth = 0;
-            this.lblDescricao.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.lblDescricao.Location = new System.Drawing.Point(36, 242);
-            this.lblDescricao.MouseState = MaterialSkin.MouseState.HOVER;
-            this.lblDescricao.Name = "lblDescricao";
-            this.lblDescricao.Size = new System.Drawing.Size(300, 20);
-            this.lblDescricao.TabIndex = 5;
-            this.lblDescricao.Text = "Descrição do Plano:";
-            // 
-            // txtDias
-            // 
-            this.txtDias.AnimateReadOnly = false;
-            this.txtDias.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.txtDias.CausesValidation = false;
-            this.txtDias.Depth = 0;
-            this.txtDias.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.txtDias.Hint = "Duração";
-            this.txtDias.LeadingIcon = null;
-            this.txtDias.Location = new System.Drawing.Point(36, 162);
-            this.txtDias.MaxLength = 50;
-            this.txtDias.MouseState = MaterialSkin.MouseState.OUT;
-            this.txtDias.Multiline = false;
-            this.txtDias.Name = "txtDias";
-            this.txtDias.Size = new System.Drawing.Size(300, 50);
-            this.txtDias.TabIndex = 8;
-            this.txtDias.Text = "";
-            this.txtDias.TrailingIcon = null;
-            // 
-            // lblDuracao
-            // 
-            this.lblDuracao.Depth = 0;
-            this.lblDuracao.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.lblDuracao.Location = new System.Drawing.Point(36, 130);
-            this.lblDuracao.MouseState = MaterialSkin.MouseState.HOVER;
-            this.lblDuracao.Name = "lblDuracao";
-            this.lblDuracao.Size = new System.Drawing.Size(300, 20);
-            this.lblDuracao.TabIndex = 7;
-            this.lblDuracao.Text = "Duração do Plano:";
-            // 
-            // btnSelecionarImagem
-            // 
-            this.btnSelecionarImagem.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.btnSelecionarImagem.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            this.btnSelecionarImagem.Depth = 0;
-            this.btnSelecionarImagem.HighEmphasis = true;
-            this.btnSelecionarImagem.Icon = null;
-            this.btnSelecionarImagem.Location = new System.Drawing.Point(493, 155);
-            this.btnSelecionarImagem.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.btnSelecionarImagem.MouseState = MaterialSkin.MouseState.HOVER;
-            this.btnSelecionarImagem.Name = "btnSelecionarImagem";
-            this.btnSelecionarImagem.NoAccentTextColor = System.Drawing.Color.Empty;
-            this.btnSelecionarImagem.Size = new System.Drawing.Size(170, 36);
-            this.btnSelecionarImagem.TabIndex = 9;
-            this.btnSelecionarImagem.Text = "Selecionar Imagem";
-            this.btnSelecionarImagem.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
-            this.btnSelecionarImagem.UseAccentColor = false;
-            this.btnSelecionarImagem.UseVisualStyleBackColor = true;
-            this.btnSelecionarImagem.Click += new System.EventHandler(this.btnSelecionarImagem_Click);
-            // 
-            // pictureBoxPreview
-            // 
-            this.pictureBoxPreview.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pictureBoxPreview.Location = new System.Drawing.Point(512, 29);
-            this.pictureBoxPreview.Name = "pictureBoxPreview";
-            this.pictureBoxPreview.Size = new System.Drawing.Size(135, 117);
-            this.pictureBoxPreview.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBoxPreview.TabIndex = 10;
-            this.pictureBoxPreview.TabStop = false;
-            // 
-            // btnSalvar
-            // 
-            this.btnSalvar.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.btnSalvar.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            this.btnSalvar.Depth = 0;
-            this.btnSalvar.HighEmphasis = true;
-            this.btnSalvar.Icon = null;
-            this.btnSalvar.Location = new System.Drawing.Point(617, 350);
-            this.btnSalvar.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.btnSalvar.MouseState = MaterialSkin.MouseState.HOVER;
-            this.btnSalvar.Name = "btnSalvar";
-            this.btnSalvar.NoAccentTextColor = System.Drawing.Color.Empty;
-            this.btnSalvar.Size = new System.Drawing.Size(76, 36);
-            this.btnSalvar.TabIndex = 11;
-            this.btnSalvar.Text = "Salvar";
-            this.btnSalvar.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
-            this.btnSalvar.UseAccentColor = false;
-            this.btnSalvar.UseVisualStyleBackColor = true;
-            this.btnSalvar.Click += new System.EventHandler(this.btnSalvar_Click);
-            // 
-            // btnLimpar
-            // 
-            this.btnLimpar.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.btnLimpar.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            this.btnLimpar.Depth = 0;
-            this.btnLimpar.HighEmphasis = true;
-            this.btnLimpar.Icon = null;
-            this.btnLimpar.Location = new System.Drawing.Point(701, 350);
-            this.btnLimpar.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.btnLimpar.MouseState = MaterialSkin.MouseState.HOVER;
-            this.btnLimpar.Name = "btnLimpar";
-            this.btnLimpar.NoAccentTextColor = System.Drawing.Color.Empty;
-            this.btnLimpar.Size = new System.Drawing.Size(75, 36);
-            this.btnLimpar.TabIndex = 12;
-            this.btnLimpar.Text = "Limpar";
-            this.btnLimpar.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
-            this.btnLimpar.UseAccentColor = false;
-            this.btnLimpar.UseVisualStyleBackColor = true;
             // 
             // MenuAdmin
             // 

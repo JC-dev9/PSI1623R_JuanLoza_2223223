@@ -123,8 +123,6 @@ namespace BeLightBible
                 }
             }
         }
-
-
         public static (string Livro, int Capitulo)? ObterUltimoPonto(int userId)
         {
             using (var context = new Entities())
@@ -171,10 +169,13 @@ namespace BeLightBible
             {
                 // Exemplo: "Salmos 37:5"
                 string[] partes = referencia.Split(' ');
-                string livro = partes[0];
-                string[] capVers = partes[1].Split(':');
+                string capVersStr = partes.Last(); // último item deve ser "cap:vers"
+                string livro = string.Join(" ", partes.Take(partes.Length - 1)); // junta o resto como nome do livro
+
+                string[] capVers = capVersStr.Split(':');
                 int capitulo = int.Parse(capVers[0]);
                 int versiculo = int.Parse(capVers[1]);
+
 
                 using (var context = new Entities()) // Substitua pelo nome do seu DbContext
                 {
