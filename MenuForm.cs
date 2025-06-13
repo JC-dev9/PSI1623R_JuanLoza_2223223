@@ -1961,7 +1961,6 @@ Agora responda a seguinte pergunta de forma clara, com base nesses princípios:
                     }
 
                     MessageBox.Show("Plano iniciado com sucesso!");
-
                     // Opcional: atualizar a tela ou abrir a leitura
                     // var formLeitura = new FormLeituraDiaria(planoUtil.Id);
                     // formLeitura.Show();
