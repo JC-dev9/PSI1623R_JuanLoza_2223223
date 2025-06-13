@@ -26,6 +26,8 @@ namespace BeLightBible
         }
     
         public virtual DbSet<PlanoLeitura> PlanoLeitura { get; set; }
+        public virtual DbSet<PlanoLeituraModeloDia> PlanoLeituraModeloDia { get; set; }
+        public virtual DbSet<PlanoLeituraUtilizador> PlanoLeituraUtilizador { get; set; }
         public virtual DbSet<RespostasCache> RespostasCache { get; set; }
         public virtual DbSet<UltimoPontoLeitura> UltimoPontoLeitura { get; set; }
         public virtual DbSet<Users> Users { get; set; }

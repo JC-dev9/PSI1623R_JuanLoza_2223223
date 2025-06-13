@@ -81,10 +81,20 @@ namespace BeLightBible
                 db.SaveChanges();
             }
 
+            int planoId = PlanoCriado.Id;
 
-            this.DialogResult = DialogResult.OK;
+            // Fecha o MenuAdmin (este form)
+            this.Hide();
+
+            // Abre o FormPlanoDiasAdmin
+            var formDias = new FormPlanoDiasAdmin(planoId);
+            formDias.ShowDialog();
+
+            // Fecha o MenuAdmin depois que o formDias fechar
             this.Close();
         }
+
+
 
         private void btnCancelar_Click(object sender, EventArgs e)
         {

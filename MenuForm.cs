@@ -20,6 +20,7 @@ using System.IO;
 using System.Security.Cryptography.Xml;
 using Newtonsoft.Json.Linq;
 using System.Data.Entity;
+using System.Runtime.Remoting.Contexts;
 
 namespace BeLightBible
 {
@@ -1790,10 +1791,8 @@ namespace BeLightBible
                     CarregarPlanoLeituraTodos();
                     break;
 
-                case "Meus Planos":
-                    CarregarVersiculosDoDia(); // você também cria essa função
-                    AtualizarLarguraDosCards();
-                    AjustarFonteCards();
+                case "Meus":
+                    //CarregarMeusPlanos(); // você também cria essa função
                     break;
 
 
@@ -1909,5 +1908,101 @@ namespace BeLightBible
                 CriarCardsPlanoLeitura(planos, flowPanelPlanos);
             }
         }
+
+        private void CriarCardsMeusPlanos(List<PlanoLeituraUtilizador> planos, FlowLayoutPanel flowPanelPlanos)
+        {
+            flowPanelPlanos.Controls.Clear();
+
+            foreach (var planoUtilizador in planos)
+            {
+                var plano = planoUtilizador.PlanoLeitura;
+
+                var card = new MaterialCard
+                {
+                    Padding = new Padding(10),
+                    Margin = new Padding(10),
+                    Width = flowPanelPlanos.ClientSize.Width - 30,
+                    Height = 150,
+                    BackColor = Color.White
+                };
+
+                // Imagem
+                var pic = new PictureBox
+                {
+                    SizeMode = PictureBoxSizeMode.Zoom,
+                    Location = new Point(10, 10),
+                    Size = new Size(80, 80)
+                };
+
+                if (!string.IsNullOrEmpty(plano.ImagemBase64))
+                {
+                    byte[] imgBytes = Convert.FromBase64String(plano.ImagemBase64);
+                    pic.Image = Image.FromStream(new MemoryStream(imgBytes));
+                }
+
+                card.Controls.Add(pic);
+
+                // Título
+                var lblTitulo = new Label
+                {
+                    Text = plano.Nome,
+                    Font = new Font("Segoe UI", 12, FontStyle.Bold),
+                    ForeColor = Color.Black,
+                    Location = new Point(100, 10),
+                    AutoSize = true
+                };
+                card.Controls.Add(lblTitulo);
+
+                // Progresso
+                int diaAtual = (int)planoUtilizador.ProgressoDiaAtual;
+                int totalDias = plano.DiasDuracao;
+                int porcentagem = (int)((diaAtual - 1) / (double)totalDias * 100);
+
+                var barra = new ProgressBar
+                {
+                    Value = Math.Min(porcentagem, 100),
+                    Size = new Size(card.Width - 120, 20),
+                    Location = new Point(100, 40)
+                };
+                card.Controls.Add(barra);
+
+                var lblProgresso = new Label
+                {
+                    Text = $"Dia {diaAtual} de {totalDias}",
+                    Location = new Point(100, 65),
+                    AutoSize = true
+                };
+                card.Controls.Add(lblProgresso);
+
+                var btnContinuar = new MaterialButton
+                {
+                    Text = "Continuar",
+                    Location = new Point(card.Width - 110, 100),
+                    Tag = planoUtilizador
+                };
+
+                card.Controls.Add(btnContinuar);
+                flowPanelPlanos.Controls.Add(card);
+            }
+        }
+
+
+        private void CarregarMeusPlanos()
+        {
+            int userId = Sessao.UserId;
+
+            using (var context = new Entities())
+            {
+                var meusPlanos = context.PlanoLeituraUtilizador
+                    .Where(pu => pu.UserId == userId)
+                    .Include(pu => pu.PlanoLeitura)
+                    .ToList();
+
+                CriarCardsMeusPlanos(meusPlanos, flowPanelPlanos);
+            }
+
+                
+        }
+
     }
 }

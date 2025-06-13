@@ -14,10 +14,22 @@ namespace BeLightBible
     
     public partial class PlanoLeitura
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public PlanoLeitura()
+        {
+            this.PlanoLeituraModeloDia = new HashSet<PlanoLeituraModeloDia>();
+            this.PlanoLeituraUtilizador = new HashSet<PlanoLeituraUtilizador>();
+        }
+    
         public int Id { get; set; }
         public string Nome { get; set; }
         public string Descricao { get; set; }
         public int DiasDuracao { get; set; }
         public string ImagemBase64 { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PlanoLeituraModeloDia> PlanoLeituraModeloDia { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PlanoLeituraUtilizador> PlanoLeituraUtilizador { get; set; }
     }
 }

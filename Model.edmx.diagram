@@ -4,14 +4,19 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="f37a9eaffa9f4de0800ed11887e11812" Name="Diagram1" ZoomLevel="83">
-        <EntityTypeShape EntityType="BeLightBibleDBModel.PlanoLeitura" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="BeLightBibleDBModel.RespostasCache" Width="1.5" PointX="5.75" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="BeLightBibleDBModel.UltimoPontoLeitura" Width="1.5" PointX="3" PointY="1.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="BeLightBibleDBModel.Users" Width="1.5" PointX="0.75" PointY="6.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="BeLightBibleDBModel.VersiculoAnotado" Width="1.5" PointX="3" PointY="4.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="BeLightBibleDBModel.VersiculoSalvo" Width="1.5" PointX="3" PointY="7.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="BeLightBibleDBModel.VersiculoSublinhado" Width="1.5" PointX="3" PointY="10.75" IsExpanded="true" />
+      <Diagram DiagramId="49c5642a46114d7b94df148266be2ae6" Name="Diagram1">
+        <EntityTypeShape EntityType="BeLightBibleDBModel.PlanoLeitura" Width="1.5" PointX="3.75" PointY="3" IsExpanded="true" />
+        <EntityTypeShape EntityType="BeLightBibleDBModel.PlanoLeituraModeloDia" Width="1.5" PointX="6" PointY="3.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="BeLightBibleDBModel.PlanoLeituraUtilizador" Width="1.5" PointX="6" PointY="8" IsExpanded="true" />
+        <EntityTypeShape EntityType="BeLightBibleDBModel.RespostasCache" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BeLightBibleDBModel.UltimoPontoLeitura" Width="1.5" PointX="3" PointY="6.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="BeLightBibleDBModel.Users" Width="1.5" PointX="0.75" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BeLightBibleDBModel.VersiculoAnotado" Width="1.5" PointX="3" PointY="9" IsExpanded="true" />
+        <EntityTypeShape EntityType="BeLightBibleDBModel.VersiculoSalvo" Width="1.5" PointX="3" PointY="12.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="BeLightBibleDBModel.VersiculoSublinhado" Width="1.5" PointX="3" PointY="15.625" IsExpanded="true" />
+        <AssociationConnector Association="BeLightBibleDBModel.FK__PlanoLeit__Plano__1DB06A4F" ManuallyRouted="false" />
+        <AssociationConnector Association="BeLightBibleDBModel.FK_PlanoLeituraUtilizador_Plano" ManuallyRouted="false" />
+        <AssociationConnector Association="BeLightBibleDBModel.FK_PlanoLeituraUtilizador_User" ManuallyRouted="false" />
         <AssociationConnector Association="BeLightBibleDBModel.FK__UltimoPon__UserI__74AE54BC" ManuallyRouted="false" />
         <AssociationConnector Association="BeLightBibleDBModel.FK__Versiculo__UserI__03F0984C" ManuallyRouted="false" />
         <AssociationConnector Association="BeLightBibleDBModel.FK__Versiculo__UserI__5EBF139D" ManuallyRouted="false" />

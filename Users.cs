@@ -17,6 +17,7 @@ namespace BeLightBible
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Users()
         {
+            this.PlanoLeituraUtilizador = new HashSet<PlanoLeituraUtilizador>();
             this.VersiculoSublinhado = new HashSet<VersiculoSublinhado>();
             this.VersiculoAnotado = new HashSet<VersiculoAnotado>();
             this.VersiculoSalvo = new HashSet<VersiculoSalvo>();
@@ -28,6 +29,8 @@ namespace BeLightBible
         public string PasswordHash { get; set; }
         public Nullable<System.DateTime> CreatedAt { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PlanoLeituraUtilizador> PlanoLeituraUtilizador { get; set; }
         public virtual UltimoPontoLeitura UltimoPontoLeitura { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<VersiculoSublinhado> VersiculoSublinhado { get; set; }

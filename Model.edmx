@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="BeLightBibleDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="BeLightBibleDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="PlanoLeitura">
           <Key>
             <PropertyRef Name="Id" />
@@ -14,6 +14,25 @@
           <Property Name="Descricao" Type="nvarchar" MaxLength="300" />
           <Property Name="DiasDuracao" Type="int" Nullable="false" />
           <Property Name="ImagemBase64" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="PlanoLeituraModeloDia">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PlanoLeituraId" Type="int" Nullable="false" />
+          <Property Name="Dia" Type="int" Nullable="false" />
+          <Property Name="Capitulos" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PlanoLeituraUtilizador">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="PlanoLeituraId" Type="int" Nullable="false" />
+          <Property Name="DataInicio" Type="date" Nullable="false" />
+          <Property Name="ProgressoDiaAtual" Type="int" />
         </EntityType>
         <EntityType Name="RespostasCache">
           <Key>
@@ -80,6 +99,20 @@
           <Property Name="Cor" Type="nvarchar" MaxLength="20" Nullable="false" />
           <Property Name="DataCriado" Type="datetime" />
         </EntityType>
+        <Association Name="FK__PlanoLeit__Plano__1DB06A4F">
+          <End Role="PlanoLeitura" Type="Self.PlanoLeitura" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PlanoLeituraModeloDia" Type="Self.PlanoLeituraModeloDia" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PlanoLeitura">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PlanoLeituraModeloDia">
+              <PropertyRef Name="PlanoLeituraId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__UltimoPon__UserI__74AE54BC">
           <End Role="Users" Type="Self.Users" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -136,14 +169,44 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_PlanoLeituraUtilizador_Plano">
+          <End Role="PlanoLeitura" Type="Self.PlanoLeitura" Multiplicity="1" />
+          <End Role="PlanoLeituraUtilizador" Type="Self.PlanoLeituraUtilizador" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PlanoLeitura">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PlanoLeituraUtilizador">
+              <PropertyRef Name="PlanoLeituraId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PlanoLeituraUtilizador_User">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="PlanoLeituraUtilizador" Type="Self.PlanoLeituraUtilizador" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="PlanoLeituraUtilizador">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="BeLightBibleDBModelStoreContainer">
           <EntitySet Name="PlanoLeitura" EntityType="Self.PlanoLeitura" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PlanoLeituraModeloDia" EntityType="Self.PlanoLeituraModeloDia" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PlanoLeituraUtilizador" EntityType="Self.PlanoLeituraUtilizador" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RespostasCache" EntityType="Self.RespostasCache" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UltimoPontoLeitura" EntityType="Self.UltimoPontoLeitura" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VersiculoAnotado" EntityType="Self.VersiculoAnotado" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VersiculoSalvo" EntityType="Self.VersiculoSalvo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VersiculoSublinhado" EntityType="Self.VersiculoSublinhado" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__PlanoLeit__Plano__1DB06A4F" Association="Self.FK__PlanoLeit__Plano__1DB06A4F">
+            <End Role="PlanoLeitura" EntitySet="PlanoLeitura" />
+            <End Role="PlanoLeituraModeloDia" EntitySet="PlanoLeituraModeloDia" />
+          </AssociationSet>
           <AssociationSet Name="FK__UltimoPon__UserI__74AE54BC" Association="Self.FK__UltimoPon__UserI__74AE54BC">
             <End Role="Users" EntitySet="Users" />
             <End Role="UltimoPontoLeitura" EntitySet="UltimoPontoLeitura" />
@@ -160,8 +223,17 @@
             <End Role="Users" EntitySet="Users" />
             <End Role="VersiculoSalvo" EntitySet="VersiculoSalvo" />
           </AssociationSet>
+          <AssociationSet Name="FK_PlanoLeituraUtilizador_Plano" Association="Self.FK_PlanoLeituraUtilizador_Plano">
+            <End Role="PlanoLeitura" EntitySet="PlanoLeitura" />
+            <End Role="PlanoLeituraUtilizador" EntitySet="PlanoLeituraUtilizador" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PlanoLeituraUtilizador_User" Association="Self.FK_PlanoLeituraUtilizador_User">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="PlanoLeituraUtilizador" EntitySet="PlanoLeituraUtilizador" />
+          </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="BeLightBibleDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -174,6 +246,30 @@
           <Property Name="Descricao" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
           <Property Name="DiasDuracao" Type="Int32" Nullable="false" />
           <Property Name="ImagemBase64" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="PlanoLeituraModeloDia" Relationship="Self.FK__PlanoLeit__Plano__1DB06A4F" FromRole="PlanoLeitura" ToRole="PlanoLeituraModeloDia" />
+          <NavigationProperty Name="PlanoLeituraUtilizador" Relationship="Self.FK_PlanoLeituraUtilizador_Plano" FromRole="PlanoLeitura" ToRole="PlanoLeituraUtilizador" />
+        </EntityType>
+        <EntityType Name="PlanoLeituraModeloDia">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PlanoLeituraId" Type="Int32" Nullable="false" />
+          <Property Name="Dia" Type="Int32" Nullable="false" />
+          <Property Name="Capitulos" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="PlanoLeitura" Relationship="Self.FK__PlanoLeit__Plano__1DB06A4F" FromRole="PlanoLeituraModeloDia" ToRole="PlanoLeitura" />
+        </EntityType>
+        <EntityType Name="PlanoLeituraUtilizador">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="PlanoLeituraId" Type="Int32" Nullable="false" />
+          <Property Name="DataInicio" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="ProgressoDiaAtual" Type="Int32" />
+          <NavigationProperty Name="PlanoLeitura" Relationship="Self.FK_PlanoLeituraUtilizador_Plano" FromRole="PlanoLeituraUtilizador" ToRole="PlanoLeitura" />
+          <NavigationProperty Name="Users" Relationship="Self.FK_PlanoLeituraUtilizador_User" FromRole="PlanoLeituraUtilizador" ToRole="Users" />
         </EntityType>
         <EntityType Name="RespostasCache">
           <Key>
@@ -203,6 +299,7 @@
           <Property Name="Email" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="PasswordHash" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="CreatedAt" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="PlanoLeituraUtilizador" Relationship="Self.FK_PlanoLeituraUtilizador_User" FromRole="Users" ToRole="PlanoLeituraUtilizador" />
           <NavigationProperty Name="UltimoPontoLeitura" Relationship="Self.FK__UltimoPon__UserI__74AE54BC" FromRole="Users" ToRole="UltimoPontoLeitura" />
           <NavigationProperty Name="VersiculoSublinhado" Relationship="Self.FK__Versiculo__UserI__03F0984C" FromRole="Users" ToRole="VersiculoSublinhado" />
           <NavigationProperty Name="VersiculoAnotado" Relationship="Self.FK__Versiculo__UserI__5EBF139D" FromRole="Users" ToRole="VersiculoAnotado" />
@@ -248,6 +345,44 @@
           <Property Name="DataCriado" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Users" Relationship="Self.FK__Versiculo__UserI__03F0984C" FromRole="VersiculoSublinhado" ToRole="Users" />
         </EntityType>
+        <Association Name="FK__PlanoLeit__Plano__1DB06A4F">
+          <End Role="PlanoLeitura" Type="Self.PlanoLeitura" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PlanoLeituraModeloDia" Type="Self.PlanoLeituraModeloDia" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PlanoLeitura">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PlanoLeituraModeloDia">
+              <PropertyRef Name="PlanoLeituraId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PlanoLeituraUtilizador_Plano">
+          <End Role="PlanoLeitura" Type="Self.PlanoLeitura" Multiplicity="1" />
+          <End Role="PlanoLeituraUtilizador" Type="Self.PlanoLeituraUtilizador" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PlanoLeitura">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PlanoLeituraUtilizador">
+              <PropertyRef Name="PlanoLeituraId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PlanoLeituraUtilizador_User">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="PlanoLeituraUtilizador" Type="Self.PlanoLeituraUtilizador" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="PlanoLeituraUtilizador">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__UltimoPon__UserI__74AE54BC">
           <End Role="Users" Type="Self.Users" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -306,12 +441,26 @@
         </Association>
         <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="PlanoLeitura" EntityType="Self.PlanoLeitura" />
+          <EntitySet Name="PlanoLeituraModeloDia" EntityType="Self.PlanoLeituraModeloDia" />
+          <EntitySet Name="PlanoLeituraUtilizador" EntityType="Self.PlanoLeituraUtilizador" />
           <EntitySet Name="RespostasCache" EntityType="Self.RespostasCache" />
           <EntitySet Name="UltimoPontoLeitura" EntityType="Self.UltimoPontoLeitura" />
           <EntitySet Name="Users" EntityType="Self.Users" />
           <EntitySet Name="VersiculoAnotado" EntityType="Self.VersiculoAnotado" />
           <EntitySet Name="VersiculoSalvo" EntityType="Self.VersiculoSalvo" />
           <EntitySet Name="VersiculoSublinhado" EntityType="Self.VersiculoSublinhado" />
+          <AssociationSet Name="FK__PlanoLeit__Plano__1DB06A4F" Association="Self.FK__PlanoLeit__Plano__1DB06A4F">
+            <End Role="PlanoLeitura" EntitySet="PlanoLeitura" />
+            <End Role="PlanoLeituraModeloDia" EntitySet="PlanoLeituraModeloDia" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PlanoLeituraUtilizador_Plano" Association="Self.FK_PlanoLeituraUtilizador_Plano">
+            <End Role="PlanoLeitura" EntitySet="PlanoLeitura" />
+            <End Role="PlanoLeituraUtilizador" EntitySet="PlanoLeituraUtilizador" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PlanoLeituraUtilizador_User" Association="Self.FK_PlanoLeituraUtilizador_User">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="PlanoLeituraUtilizador" EntitySet="PlanoLeituraUtilizador" />
+          </AssociationSet>
           <AssociationSet Name="FK__UltimoPon__UserI__74AE54BC" Association="Self.FK__UltimoPon__UserI__74AE54BC">
             <End Role="Users" EntitySet="Users" />
             <End Role="UltimoPontoLeitura" EntitySet="UltimoPontoLeitura" />
@@ -338,11 +487,32 @@
           <EntitySetMapping Name="PlanoLeitura">
             <EntityTypeMapping TypeName="BeLightBibleDBModel.PlanoLeitura">
               <MappingFragment StoreEntitySet="PlanoLeitura">
-                <ScalarProperty Name="ImagemBase64" ColumnName="ImagemBase64" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Nome" ColumnName="Nome" />
                 <ScalarProperty Name="Descricao" ColumnName="Descricao" />
                 <ScalarProperty Name="DiasDuracao" ColumnName="DiasDuracao" />
+                <ScalarProperty Name="ImagemBase64" ColumnName="ImagemBase64" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PlanoLeituraModeloDia">
+            <EntityTypeMapping TypeName="BeLightBibleDBModel.PlanoLeituraModeloDia">
+              <MappingFragment StoreEntitySet="PlanoLeituraModeloDia">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="PlanoLeituraId" ColumnName="PlanoLeituraId" />
+                <ScalarProperty Name="Dia" ColumnName="Dia" />
+                <ScalarProperty Name="Capitulos" ColumnName="Capitulos" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PlanoLeituraUtilizador">
+            <EntityTypeMapping TypeName="BeLightBibleDBModel.PlanoLeituraUtilizador">
+              <MappingFragment StoreEntitySet="PlanoLeituraUtilizador">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="PlanoLeituraId" ColumnName="PlanoLeituraId" />
+                <ScalarProperty Name="DataInicio" ColumnName="DataInicio" />
+                <ScalarProperty Name="ProgressoDiaAtual" ColumnName="ProgressoDiaAtual" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

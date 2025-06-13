@@ -159,6 +159,18 @@
     <Compile Include="FormAnotacao.Designer.cs">
       <DependentUpon>FormAnotacao.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormLeituraDiaria.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormLeituraDiaria.Designer.cs">
+      <DependentUpon>FormLeituraDiaria.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormPlanoDiasAdmin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormPlanoDiasAdmin.Designer.cs">
+      <DependentUpon>FormPlanoDiasAdmin.cs</DependentUpon>
+    </Compile>
     <Compile Include="HistoriasKidsTab.cs" />
     <Compile Include="HomeTab.cs">
       <SubType>UserControl</SubType>
@@ -195,6 +207,12 @@
       <DependentUpon>Model.edmx</DependentUpon>
     </Compile>
     <Compile Include="PlanoLeitura.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PlanoLeituraModeloDia.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PlanoLeituraUtilizador.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
@@ -245,6 +263,9 @@
     </Compile>
     <EmbeddedResource Include="FormAnotacao.resx">
       <DependentUpon>FormAnotacao.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormPlanoDiasAdmin.resx">
+      <DependentUpon>FormPlanoDiasAdmin.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="HomeTab.resx">
       <DependentUpon>HomeTab.cs</DependentUpon>
