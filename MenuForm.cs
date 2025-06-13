@@ -486,16 +486,19 @@ namespace BeLightBible
                     return;
                 }
 
-                var url = "http://localhost:11434/api/generate";
+                var url = "https://api.groq.com/openai/v1/chat/completions";
 
-                
+                client.DefaultRequestHeaders.Authorization =
+                    new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", "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");
 
                 var requestData = new
                 {
-                    model = "llama3.2",
-                    prompt = pergunta,
-                    stream = true,
-                    max_tokens = 10,
+                    model = "llama3-8b-8192",
+                    messages = new[]
+                    {
+                        new { role = "user", content = pergunta }
+                    },
+                    stream = true
                 };
 
                 var json = JsonConvert.SerializeObject(requestData);
@@ -523,9 +526,11 @@ namespace BeLightBible
                     if (string.IsNullOrWhiteSpace(line)) continue;
 
                     if (line.StartsWith("data: ")) line = line.Substring(6);
+                    if (line == "[DONE]") break;
 
                     dynamic obj = JsonConvert.DeserializeObject(line);
-                    string contentPart = obj?.response;
+                    string contentPart = obj?.choices[0]?.delta?.content;
+
                     if (contentPart != null)
                     {
                         respostaCompleta += contentPart;
@@ -534,6 +539,7 @@ namespace BeLightBible
                         Application.DoEvents();
                     }
                 }
+
 
                 var embeddingPergunta = await ObterEmbeddingOllamaAsync(pergunta);
                 var novaRespostaCache = new RespostasCache
@@ -2001,7 +2007,7 @@ namespace BeLightBible
                 CriarCardsMeusPlanos(meusPlanos, flowPanelPlanos);
             }
 
-                
+
         }
 
     }
