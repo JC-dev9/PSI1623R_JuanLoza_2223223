@@ -82,9 +82,14 @@ namespace BeLightBible
             }
 
             MessageBox.Show("Dia adicionado com sucesso!");
+            Application.DoEvents(); // força UI a atualizar agora
+
             txtDia.Clear();
             txtCapitulos.Clear();
-            await CarregarDiasPlanoSelecionado(); // opcional
+
+            CarregarDiasPlanoSelecionado();
+            listDias.Refresh(); // repinta a lista imediatamente
+
         }
 
         private void cmbPlanos_SelectedIndexChanged(object sender, EventArgs e)

@@ -575,7 +575,7 @@ namespace BeLightBible
             this.cmbCategoriaPlanos.ItemHeight = 29;
             this.cmbCategoriaPlanos.Items.AddRange(new object[] {
             "Todos",
-            "Meus Planos"});
+            "Meus"});
             this.cmbCategoriaPlanos.Location = new System.Drawing.Point(14, 12);
             this.cmbCategoriaPlanos.MaxDropDownItems = 4;
             this.cmbCategoriaPlanos.MouseState = MaterialSkin.MouseState.OUT;

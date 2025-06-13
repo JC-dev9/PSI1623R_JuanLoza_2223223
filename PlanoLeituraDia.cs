@@ -9,24 +9,18 @@
 
 namespace BeLightBible
 {
-    using Newtonsoft.Json;
-    using System.ComponentModel.DataAnnotations.Schema;
     using System;
     using System.Collections.Generic;
     
-    public partial class RespostasCache
+    public partial class PlanoLeituraDia
     {
         public int Id { get; set; }
-        public string Pergunta { get; set; }
-        public string Resposta { get; set; }
-        public string Embedding { get; set; }
-
-
-        [NotMapped]
-        public float[] EmbeddingArray
-        {
-            get => string.IsNullOrEmpty(Embedding) ? Array.Empty<float>() : JsonConvert.DeserializeObject<float[]>(Embedding);
-            set => Embedding = JsonConvert.SerializeObject(value);
-        }
+        public int PlanoUtilizadorId { get; set; }
+        public int Dia { get; set; }
+        public string Capitulos { get; set; }
+        public Nullable<bool> Lido { get; set; }
+        public Nullable<System.DateTime> DataLeitura { get; set; }
+    
+        public virtual PlanoLeituraUtilizador PlanoLeituraUtilizador { get; set; }
     }
 }

@@ -38,30 +38,30 @@ namespace BeLightBible
             string username = txtUsername.Text.Trim();
             string password = txtPassword.Text.Trim();
 
-            if (username == "admin" && password == "admin123")
-            {
-                // Abre a tela principal 
-                var adminForm = new MenuAdmin();
-                adminForm.Show();
-                this.Hide(); // Esconde o formulário de login
-            }
-
             if (user.Autenticar(username, password))
             {
                 // Salva Informações na sessão
                 Sessao.Username = username;
                 Sessao.UserId = user.ObterUserId(username);
 
-                // Abre a tela principal 
-                var mainForm = new MenuForm();
-                mainForm.Show();
-                this.Hide(); // Esconde o formulário de login
+                if (Sessao.Username == "admin")
+                {
+                    var adminForm = new MenuAdmin();
+                    adminForm.Show();
+                }
+                else
+                {
+                    var mainForm = new MenuForm();
+                    mainForm.Show();
+                }
 
+                this.Hide(); // Esconde o formulário de login
             }
             else
             {
-                MessageBox.Show("Nome de utilizador ou senha incorretos.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Nome de utilizador ou senha incorretos.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+
         }
 
         private void lblRegisterLink_Click(object sender, EventArgs e)

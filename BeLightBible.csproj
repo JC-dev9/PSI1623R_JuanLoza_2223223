@@ -209,6 +209,9 @@
     <Compile Include="PlanoLeitura.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="PlanoLeituraDia.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
     <Compile Include="PlanoLeituraModeloDia.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>

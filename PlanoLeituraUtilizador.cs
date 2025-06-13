@@ -14,6 +14,12 @@ namespace BeLightBible
     
     public partial class PlanoLeituraUtilizador
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public PlanoLeituraUtilizador()
+        {
+            this.PlanoLeituraDia = new HashSet<PlanoLeituraDia>();
+        }
+    
         public int Id { get; set; }
         public int UserId { get; set; }
         public int PlanoLeituraId { get; set; }
@@ -21,6 +27,8 @@ namespace BeLightBible
         public Nullable<int> ProgressoDiaAtual { get; set; }
     
         public virtual PlanoLeitura PlanoLeitura { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PlanoLeituraDia> PlanoLeituraDia { get; set; }
         public virtual Users Users { get; set; }
     }
 }

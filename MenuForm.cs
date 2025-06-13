@@ -30,6 +30,7 @@ namespace BeLightBible
         // -------------------- VARIÁVEIS --------------------
 
         private List<MenuForm> historiasKids;
+
         private int indiceAtualKids = 0;
 
         private static readonly HttpClient client = new HttpClient();
@@ -474,6 +475,7 @@ namespace BeLightBible
 
             return dot / (magA * magB);
         }
+
         private async Task EnviarParaOllama(string pergunta)
         {
             try
@@ -485,6 +487,15 @@ namespace BeLightBible
                     AddBotMessage(respostaCache.Resposta);
                     return;
                 }
+                string promptBase = @"Você é um especialista em Bíblia, teologia cristã e princípios do cristianismo.
+Todas as suas respostas devem ser baseadas nas Escrituras Sagradas, na fé cristã e em valores bíblicos.
+Mesmo que a pergunta não pareça religiosa, responda de forma que conecte com a Bíblia, princípios cristãos ou histórias bíblicas.
+
+Agora responda a seguinte pergunta de forma clara, com base nesses princípios:
+";
+
+                string promptFinal = promptBase + pergunta;
+
 
                 var url = "https://api.groq.com/openai/v1/chat/completions";
 
@@ -496,9 +507,10 @@ namespace BeLightBible
                     model = "llama3-8b-8192",
                     messages = new[]
                     {
-                        new { role = "user", content = pergunta }
+                        new { role = "user", content = promptFinal }
                     },
-                    stream = true
+                    stream = true,
+                    max_tokens = 500,
                 };
 
                 var json = JsonConvert.SerializeObject(requestData);
@@ -1798,7 +1810,7 @@ namespace BeLightBible
                     break;
 
                 case "Meus":
-                    //CarregarMeusPlanos(); // você também cria essa função
+                    CarregarMeusPlanos(); // você também cria essa função
                     break;
 
 
@@ -1896,9 +1908,65 @@ namespace BeLightBible
                 btnIniciar.Click += (sender, e) =>
                 {
                     var planoSelecionado = (PlanoLeitura)((MaterialButton)sender).Tag;
-                    MessageBox.Show($"Você clicou em iniciar: {planoSelecionado.Nome}");
-                    // Aqui você chama sua lógica de iniciar plano
+
+                    using (var db = new Entities())
+                    {
+                        // Verifica se o usuário já iniciou esse plano
+                        int userId = Sessao.UserId; // Substitua isso pelo seu sistema de login
+
+                        bool jaIniciado = db.PlanoLeituraUtilizador
+                                            .Any(p => p.UserId == userId && p.PlanoLeituraId == planoSelecionado.Id);
+
+                        if (jaIniciado)
+                        {
+                            MessageBox.Show("Você já iniciou esse plano.");
+                            return;
+                        }
+
+                        // Cria o registro de PlanoLeituraUtilizador
+                        var planoUtil = new PlanoLeituraUtilizador
+                        {
+                            UserId = userId,
+                            PlanoLeituraId = planoSelecionado.Id,
+                            DataInicio = DateTime.Today,
+                            ProgressoDiaAtual = 1
+                        };
+
+                        db.PlanoLeituraUtilizador.Add(planoUtil);
+                        db.SaveChanges();
+
+                        // Pega o ID gerado
+                        int planoUtilId = planoUtil.Id;
+
+                        // Copia os dias do modelo
+                        var diasModelo = db.PlanoLeituraModeloDia
+                                           .Where(d => d.PlanoLeituraId == planoSelecionado.Id)
+                                           .OrderBy(d => d.Dia)
+                                           .ToList();
+
+                        foreach (var diaModelo in diasModelo)
+                        {
+                            var novoDia = new PlanoLeituraDia
+                            {
+                                PlanoUtilizadorId = planoUtilId,
+                                Dia = diaModelo.Dia,
+                                Capitulos = diaModelo.Capitulos,
+                                Lido = false,
+                                DataLeitura = null
+                            };
+                            db.PlanoLeituraDia.Add(novoDia);
+                        }
+
+                        db.SaveChanges();
+                    }
+
+                    MessageBox.Show("Plano iniciado com sucesso!");
+
+                    // Opcional: atualizar a tela ou abrir a leitura
+                    // var formLeitura = new FormLeituraDiaria(planoUtil.Id);
+                    // formLeitura.Show();
                 };
+
 
                 card.Controls.Add(btnIniciar);
 
@@ -1987,9 +2055,24 @@ namespace BeLightBible
                     Tag = planoUtilizador
                 };
 
+                btnContinuar.Click += BtnContinuar_Click;
+
                 card.Controls.Add(btnContinuar);
                 flowPanelPlanos.Controls.Add(card);
             }
+        }
+
+        private void BtnContinuar_Click(object sender, EventArgs e)
+        {
+            var btn = sender as MaterialButton;
+            var planoUtilizador = btn?.Tag as PlanoLeituraUtilizador;
+
+            if (planoUtilizador == null)
+                return;
+
+            // Abre o form de leitura do dia atual
+            var formLeitura = new FormLeituraDiaria(planoUtilizador.Id);
+            formLeitura.Show(); // ou .ShowDialog() se quiser modal
         }
 
 
