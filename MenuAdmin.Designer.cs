@@ -161,7 +161,7 @@
             this.txtDias.CausesValidation = false;
             this.txtDias.Depth = 0;
             this.txtDias.Font = new System.Drawing.Font("Roboto", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.txtDias.Hint = "Duração";
+            this.txtDias.Hint = "Número de dias (ex: 7)";
             this.txtDias.LeadingIcon = null;
             this.txtDias.Location = new System.Drawing.Point(36, 162);
             this.txtDias.MaxLength = 50;

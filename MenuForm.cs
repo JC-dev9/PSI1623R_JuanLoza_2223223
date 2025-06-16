@@ -359,7 +359,7 @@ namespace BeLightBible
                 AutoSize = true,
                 AutoSizeMode = AutoSizeMode.GrowAndShrink,
                 Padding = new Padding(10),
-                Margin = new Padding(5, 5, 5, 50),
+                Margin = new Padding(5,5,5,50),
                 BackColor = isUser ? Color.FromArgb(33, 150, 243) : Color.FromArgb(97, 97, 97),
             };
 
@@ -430,7 +430,7 @@ namespace BeLightBible
 
             var todosCaches = await _context.RespostasCache.ToListAsync();
 
-            double threshold = 0.85;
+            double threshold = 0.95;
             RespostasCache melhorCache = null;
             double melhorSimilaridade = 0;
 
@@ -485,13 +485,14 @@ namespace BeLightBible
                 if (respostaCache != null)
                 {
                     AddBotMessage(respostaCache.Resposta);
-                    return;
+                    return; // Se encontrou no cache, não precisa enviar para o LLM
                 }
+                
                 string promptBase = @"Você é um especialista em Bíblia, teologia cristã e princípios do cristianismo.
 Todas as suas respostas devem ser baseadas nas Escrituras Sagradas, na fé cristã e em valores bíblicos.
 Mesmo que a pergunta não pareça religiosa, responda de forma que conecte com a Bíblia, princípios cristãos ou histórias bíblicas.
 
-Agora responda a seguinte pergunta de forma clara, com base nesses princípios:
+Agora responda a seguinte pergunta em Portugues de Portugal de forma clara, com base nesses princípios:
 ";
 
                 string promptFinal = promptBase + pergunta;
@@ -504,13 +505,12 @@ Agora responda a seguinte pergunta de forma clara, com base nesses princípios:
 
                 var requestData = new
                 {
-                    model = "llama3-8b-8192",
+                    model = "llama-3.3-70b-versatile",
                     messages = new[]
                     {
                         new { role = "user", content = promptFinal }
                     },
                     stream = true,
-                    max_tokens = 500,
                 };
 
                 var json = JsonConvert.SerializeObject(requestData);

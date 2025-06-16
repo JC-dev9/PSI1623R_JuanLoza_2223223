@@ -35,6 +35,8 @@ namespace BeLightBible
                 Accent.DeepOrange200,
                 TextShade.WHITE
             );
+
+            txtDias.KeyPress += txtDias_KeyPress;
         }
         private void btnSelecionarImagem_Click(object sender, EventArgs e)
         {
@@ -64,6 +66,12 @@ namespace BeLightBible
             if (!int.TryParse(txtDias.Text, out int dias))
             {
                 MessageBox.Show("Digite um número válido para os dias.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (dias < 1 || dias > 365)
+            {
+                MessageBox.Show("O número de dias deve estar entre 1 e 365.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -101,6 +109,13 @@ namespace BeLightBible
             this.DialogResult = DialogResult.Cancel;
             this.Close();
         }
-        
+
+        private void txtDias_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true; // Impede letras, símbolos, etc.
+            }
+        }
     }
 }
