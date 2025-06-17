@@ -719,7 +719,9 @@ Agora responda a seguinte pergunta em Portugues de Portugal de forma clara, com 
             }
 
             if (cmbCapitulo.Items.Count > 0)
+            {
                 cmbCapitulo.SelectedIndex = 0;
+            }
         }
 
         private async void VersiculoClicado(object sender, MouseEventArgs e)
@@ -1265,18 +1267,17 @@ Agora responda a seguinte pergunta em Portugues de Portugal de forma clara, com 
                 case "Anotações":
                     CarregarAnotacoes();
                     AtualizarLarguraDosCards();
-                    AjustarFonteCards();// já existe
+                    AjustarFonteCards();
                     break;
 
                 case "Grifos":
                     CarregarGrifos();
                     AtualizarLarguraDosCards();
                     AjustarFonteCards();
-                    // você precisará criar essa função
                     break;
 
                 case "Versículos":
-                    CarregarVersiculosDoDia(); // você também cria essa função
+                    CarregarVersiculosDoDia();
                     AtualizarLarguraDosCards();
                     AjustarFonteCards();
                     break;
@@ -1861,8 +1862,8 @@ Agora responda a seguinte pergunta em Portugues de Portugal de forma clara, com 
                     }
                     catch
                     {
-                        // Caso a imagem esteja malformada ou ausente, usa uma imagem padrão
-                        pic.Image = Properties.Resources.ImagemPadrao; // <- adicione uma no Resources
+                        // Caso a imagem esteja malformada ou ausente, usa-se uma imagem padrão
+                        pic.Image = Properties.Resources.ImagemPadrao;
                     }
                 }
                 else

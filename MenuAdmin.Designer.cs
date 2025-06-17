@@ -32,9 +32,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MenuAdmin));
             this.materialTabControl1 = new MaterialSkin.Controls.MaterialTabControl();
             this.tabCriarPlano = new System.Windows.Forms.TabPage();
-            this.btnLimpar = new MaterialSkin.Controls.MaterialButton();
             this.btnSalvar = new MaterialSkin.Controls.MaterialButton();
-            this.pictureBoxPreview = new System.Windows.Forms.PictureBox();
             this.btnSelecionarImagem = new MaterialSkin.Controls.MaterialButton();
             this.txtDias = new MaterialSkin.Controls.MaterialTextBox();
             this.lblDuracao = new MaterialSkin.Controls.MaterialLabel();
@@ -44,6 +42,7 @@
             this.lblNome = new MaterialSkin.Controls.MaterialLabel();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+            this.pictureBoxPreview = new System.Windows.Forms.PictureBox();
             this.materialTabControl1.SuspendLayout();
             this.tabCriarPlano.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPreview)).BeginInit();
@@ -66,7 +65,6 @@
             // 
             // tabCriarPlano
             // 
-            this.tabCriarPlano.Controls.Add(this.btnLimpar);
             this.tabCriarPlano.Controls.Add(this.btnSalvar);
             this.tabCriarPlano.Controls.Add(this.pictureBoxPreview);
             this.tabCriarPlano.Controls.Add(this.btnSelecionarImagem);
@@ -85,25 +83,6 @@
             this.tabCriarPlano.Text = "Plano de Leitura";
             this.tabCriarPlano.UseVisualStyleBackColor = true;
             // 
-            // btnLimpar
-            // 
-            this.btnLimpar.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.btnLimpar.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            this.btnLimpar.Depth = 0;
-            this.btnLimpar.HighEmphasis = true;
-            this.btnLimpar.Icon = null;
-            this.btnLimpar.Location = new System.Drawing.Point(701, 350);
-            this.btnLimpar.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.btnLimpar.MouseState = MaterialSkin.MouseState.HOVER;
-            this.btnLimpar.Name = "btnLimpar";
-            this.btnLimpar.NoAccentTextColor = System.Drawing.Color.Empty;
-            this.btnLimpar.Size = new System.Drawing.Size(75, 36);
-            this.btnLimpar.TabIndex = 12;
-            this.btnLimpar.Text = "Limpar";
-            this.btnLimpar.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
-            this.btnLimpar.UseAccentColor = false;
-            this.btnLimpar.UseVisualStyleBackColor = true;
-            // 
             // btnSalvar
             // 
             this.btnSalvar.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
@@ -111,7 +90,7 @@
             this.btnSalvar.Depth = 0;
             this.btnSalvar.HighEmphasis = true;
             this.btnSalvar.Icon = null;
-            this.btnSalvar.Location = new System.Drawing.Point(617, 350);
+            this.btnSalvar.Location = new System.Drawing.Point(689, 350);
             this.btnSalvar.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnSalvar.MouseState = MaterialSkin.MouseState.HOVER;
             this.btnSalvar.Name = "btnSalvar";
@@ -124,16 +103,6 @@
             this.btnSalvar.UseVisualStyleBackColor = true;
             this.btnSalvar.Click += new System.EventHandler(this.btnSalvar_Click);
             // 
-            // pictureBoxPreview
-            // 
-            this.pictureBoxPreview.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pictureBoxPreview.Location = new System.Drawing.Point(512, 29);
-            this.pictureBoxPreview.Name = "pictureBoxPreview";
-            this.pictureBoxPreview.Size = new System.Drawing.Size(135, 117);
-            this.pictureBoxPreview.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBoxPreview.TabIndex = 10;
-            this.pictureBoxPreview.TabStop = false;
-            // 
             // btnSelecionarImagem
             // 
             this.btnSelecionarImagem.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
@@ -141,7 +110,7 @@
             this.btnSelecionarImagem.Depth = 0;
             this.btnSelecionarImagem.HighEmphasis = true;
             this.btnSelecionarImagem.Icon = null;
-            this.btnSelecionarImagem.Location = new System.Drawing.Point(493, 155);
+            this.btnSelecionarImagem.Location = new System.Drawing.Point(496, 155);
             this.btnSelecionarImagem.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnSelecionarImagem.MouseState = MaterialSkin.MouseState.HOVER;
             this.btnSelecionarImagem.Name = "btnSelecionarImagem";
@@ -160,7 +129,7 @@
             this.txtDias.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtDias.CausesValidation = false;
             this.txtDias.Depth = 0;
-            this.txtDias.Font = new System.Drawing.Font("Roboto", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.txtDias.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.txtDias.Hint = "Número de dias (ex: 7)";
             this.txtDias.LeadingIcon = null;
             this.txtDias.Location = new System.Drawing.Point(36, 162);
@@ -190,7 +159,7 @@
             this.txtDescricao.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtDescricao.CausesValidation = false;
             this.txtDescricao.Depth = 0;
-            this.txtDescricao.Font = new System.Drawing.Font("Roboto", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.txtDescricao.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.txtDescricao.Hint = "Descrição";
             this.txtDescricao.LeadingIcon = null;
             this.txtDescricao.Location = new System.Drawing.Point(36, 274);
@@ -220,7 +189,7 @@
             this.txtNome.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtNome.CausesValidation = false;
             this.txtNome.Depth = 0;
-            this.txtNome.Font = new System.Drawing.Font("Roboto", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.txtNome.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.txtNome.Hint = "Insira o nome";
             this.txtNome.LeadingIcon = null;
             this.txtNome.Location = new System.Drawing.Point(36, 46);
@@ -260,6 +229,16 @@
             this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
             this.imageList1.Images.SetKeyName(0, "auto_stories_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24(1).png");
             // 
+            // pictureBoxPreview
+            // 
+            this.pictureBoxPreview.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pictureBoxPreview.Location = new System.Drawing.Point(512, 29);
+            this.pictureBoxPreview.Name = "pictureBoxPreview";
+            this.pictureBoxPreview.Size = new System.Drawing.Size(135, 117);
+            this.pictureBoxPreview.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBoxPreview.TabIndex = 10;
+            this.pictureBoxPreview.TabStop = false;
+            // 
             // MenuAdmin
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -291,7 +270,6 @@
         private MaterialSkin.Controls.MaterialLabel lblDuracao;
         private MaterialSkin.Controls.MaterialButton btnSelecionarImagem;
         private System.Windows.Forms.PictureBox pictureBoxPreview;
-        private MaterialSkin.Controls.MaterialButton btnLimpar;
         private MaterialSkin.Controls.MaterialButton btnSalvar;
     }
 }

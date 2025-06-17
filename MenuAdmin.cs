@@ -96,10 +96,8 @@ namespace BeLightBible
 
             // Abre o FormPlanoDiasAdmin
             var formDias = new FormPlanoDiasAdmin(planoId);
-            formDias.ShowDialog();
+            formDias.Show();
 
-            // Fecha o MenuAdmin depois que o formDias fechar
-            this.Close();
         }
 
 

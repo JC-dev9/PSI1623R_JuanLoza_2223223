@@ -267,6 +267,9 @@
     <EmbeddedResource Include="FormAnotacao.resx">
       <DependentUpon>FormAnotacao.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FormLeituraDiaria.resx">
+      <DependentUpon>FormLeituraDiaria.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormPlanoDiasAdmin.resx">
       <DependentUpon>FormPlanoDiasAdmin.cs</DependentUpon>
     </EmbeddedResource>
