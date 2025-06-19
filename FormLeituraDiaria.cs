@@ -19,6 +19,9 @@ namespace BeLightBible
         private FlowLayoutPanel flowCapitulos;
         private MaterialButton btnConcluirDia;
 
+        public event EventHandler ProgressoAtualizado;
+
+
         public FormLeituraDiaria(int planoUtilizadorId)
         {
             this.planoUtilizadorId = planoUtilizadorId;
@@ -178,12 +181,15 @@ namespace BeLightBible
                         db.SaveChanges();
                         CarregarLeituraDoDia();
                     }
+
                     else
                     {
                         db.SaveChanges();
                         MessageBox.Show("Parabéns! Você concluiu o plano de leitura.");
                         this.Close();
                     }
+
+                    ProgressoAtualizado?.Invoke(this, EventArgs.Empty);
                 }
             }
         }

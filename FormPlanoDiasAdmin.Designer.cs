@@ -86,12 +86,12 @@
             this.listDias.BorderColor = System.Drawing.Color.LightGray;
             this.listDias.Depth = 0;
             this.listDias.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.listDias.Location = new System.Drawing.Point(456, 121);
+            this.listDias.Location = new System.Drawing.Point(352, 80);
             this.listDias.MouseState = MaterialSkin.MouseState.HOVER;
             this.listDias.Name = "listDias";
             this.listDias.SelectedIndex = -1;
             this.listDias.SelectedItem = null;
-            this.listDias.Size = new System.Drawing.Size(240, 118);
+            this.listDias.Size = new System.Drawing.Size(421, 290);
             this.listDias.TabIndex = 12;
             // 
             // numericUpDownDia

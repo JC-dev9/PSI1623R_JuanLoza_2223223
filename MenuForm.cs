@@ -2032,7 +2032,9 @@ Agora responda a seguinte pergunta em Portugues de Portugal de forma clara, com 
                 // Progresso
                 int diaAtual = (int)planoUtilizador.ProgressoDiaAtual;
                 int totalDias = plano.DiasDuracao;
-                int porcentagem = (int)((diaAtual - 1) / (double)totalDias * 100);
+
+                bool planoConcluido = diaAtual >= totalDias;
+                int porcentagem = planoConcluido ? 100 : (int)((diaAtual / (double)totalDias) * 100);
 
                 var barra = new ProgressBar
                 {
@@ -2044,22 +2046,40 @@ Agora responda a seguinte pergunta em Portugues de Portugal de forma clara, com 
 
                 var lblProgresso = new Label
                 {
-                    Text = $"Dia {diaAtual} de {totalDias}",
+                    Text = planoConcluido ? $"Plano concluído ({totalDias} dias)" : $"Dia {diaAtual} de {totalDias}",
                     Location = new Point(100, 65),
                     AutoSize = true
                 };
                 card.Controls.Add(lblProgresso);
 
+
                 var btnContinuar = new MaterialButton
                 {
-                    Text = "Continuar",
-                    Location = new Point(card.Width - 110, 100),
+                    AutoSize = true,
+                    BackColor = planoConcluido ? Color.Gray : Color.FromArgb(244, 67, 54),
+                    ForeColor = Color.White,
+                    FlatStyle = FlatStyle.Flat,
+                    Location = new Point(card.Width - 80, card.Height - 45),
+                    Anchor = AnchorStyles.Bottom | AnchorStyles.Right,
                     Tag = planoUtilizador
                 };
 
-                btnContinuar.Click += BtnContinuar_Click;
+                if (planoConcluido)
+                {
+                    btnContinuar.Text = "Concluído ✔";
+                    btnContinuar.Enabled = false;
+                }
+                else
+                {
+                    btnContinuar.Text = "Continuar";
+                    btnContinuar.Click += BtnContinuar_Click;
+                }
+
 
                 card.Controls.Add(btnContinuar);
+
+
+
                 flowPanelPlanos.Controls.Add(card);
             }
         }
@@ -2072,10 +2092,20 @@ Agora responda a seguinte pergunta em Portugues de Portugal de forma clara, com 
             if (planoUtilizador == null)
                 return;
 
-            // Abre o form de leitura do dia atual
-            var formLeitura = new FormLeituraDiaria(planoUtilizador.Id);
-            formLeitura.Show(); // ou .ShowDialog() se quiser modal
+            int diaAtual = (int)planoUtilizador.ProgressoDiaAtual;
+            int totalDias = planoUtilizador.PlanoLeitura.DiasDuracao;
+
+            if (diaAtual >= totalDias)
+            {
+                MessageBox.Show("Este plano já foi concluído! 🎉", "Concluído", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            // Aqui sim abre a tela de leitura diária
+            var leituraForm = new FormLeituraDiaria(planoUtilizador.Id);
+            leituraForm.ShowDialog();
         }
+
 
         private void CarregarMeusPlanos()
         {

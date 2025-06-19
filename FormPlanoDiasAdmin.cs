@@ -1,6 +1,7 @@
 ﻿using MaterialSkin;
 using MaterialSkin.Controls;
 using System;
+using System.Data.SqlTypes;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -9,6 +10,7 @@ namespace BeLightBible
     public partial class FormPlanoDiasAdmin : MaterialForm
     {
         private int planoLeituraId;
+        private int diasMaximo;
         private Livro livros = new Livro();
 
         public FormPlanoDiasAdmin(int planoId)
@@ -116,9 +118,12 @@ namespace BeLightBible
                 return;
             }
 
+            
             int planoId = (int)cmbPlanos.SelectedValue;
             int dia = (int)numericUpDownDia.Value;
+            string livro = cmbLivro.SelectedItem.ToString();
             string capitulo = cmbCapitulo.SelectedItem.ToString();
+            string capituloCompleto = $"{livro} {capitulo}";
 
             using (var db = new Entities())
             {
@@ -134,7 +139,7 @@ namespace BeLightBible
                 {
                     PlanoLeituraId = planoId,
                     Dia = dia,
-                    Capitulos = capitulo
+                    Capitulos = capituloCompleto
                 };
 
                 db.PlanoLeituraModeloDia.Add(novoDia);
@@ -149,13 +154,45 @@ namespace BeLightBible
             // Limpa seleção dos combos e incrementa o numericUpDown para o próximo dia automaticamente
             cmbLivro.SelectedIndex = -1;
             cmbCapitulo.Items.Clear();
-            numericUpDownDia.Value += 1;
+
+            if (numericUpDownDia.Value < numericUpDownDia.Maximum)
+            {
+                numericUpDownDia.Value += 1;
+            }
+
         }
+
+        private int ObterDiasMaximoPlano(int planoId)
+        {
+            using (var db = new Entities())
+            {
+                return db.PlanoLeitura
+                         .Where(p => p.Id == planoId)
+                         .Select(p => p.DiasDuracao)
+                         .FirstOrDefault();
+            }
+        }
+
 
         private void cmbPlanos_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (cmbPlanos.SelectedItem == null)
+                return;
+
+            planoLeituraId = (int)cmbPlanos.SelectedValue;
+
+            diasMaximo = ObterDiasMaximoPlano(planoLeituraId);
+
+            numericUpDownDia.Minimum = 1;
+            numericUpDownDia.Maximum = diasMaximo;
+            numericUpDownDia.Value = 1;
+
+            // Bloqueia para o usuário só usar incremento automático no código
+            numericUpDownDia.Enabled = false;
+
             CarregarDiasPlanoSelecionado();
         }
+
 
         private void CarregarDiasPlanoSelecionado()
         {
