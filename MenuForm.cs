@@ -877,7 +877,6 @@ Agora responda a seguinte pergunta em Portugues de Portugal de forma clara, com 
             }
         }
 
-
         private void Synthesizer_SpeakCompleted(object sender, SpeakCompletedEventArgs e)
         {
             if (this.InvokeRequired)

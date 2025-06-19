@@ -72,6 +72,7 @@ namespace BeLightBible
             this.picBtnVoltarHistoria = new System.Windows.Forms.PictureBox();
             this.picBtnProximaHistoria = new System.Windows.Forms.PictureBox();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+            this.tabSettings = new System.Windows.Forms.TabPage();
             this.TabControlPrincipal.SuspendLayout();
             this.tabHome.SuspendLayout();
             this.cardUltimaLeitura.SuspendLayout();
@@ -104,6 +105,7 @@ namespace BeLightBible
             this.TabControlPrincipal.Controls.Add(this.tabAnotacoes);
             this.TabControlPrincipal.Controls.Add(this.tabPlanoLeitura);
             this.TabControlPrincipal.Controls.Add(this.tabBibleKids);
+            this.TabControlPrincipal.Controls.Add(this.tabSettings);
             this.TabControlPrincipal.Depth = 0;
             this.TabControlPrincipal.Dock = System.Windows.Forms.DockStyle.Fill;
             this.TabControlPrincipal.ImageList = this.imageList1;
@@ -232,7 +234,7 @@ namespace BeLightBible
             // 
             this.tabBible.Controls.Add(this.flowLayoutPanelVersiculos);
             this.tabBible.Controls.Add(this.pnlBible);
-            this.tabBible.ImageKey = "book-marked(1).png";
+            this.tabBible.ImageKey = "bible.png";
             this.tabBible.Location = new System.Drawing.Point(4, 31);
             this.tabBible.Name = "tabBible";
             this.tabBible.Padding = new System.Windows.Forms.Padding(3);
@@ -672,6 +674,19 @@ namespace BeLightBible
             this.imageList1.Images.SetKeyName(4, "bookmark.png");
             this.imageList1.Images.SetKeyName(5, "baby.png");
             this.imageList1.Images.SetKeyName(6, "calendar-days.png");
+            this.imageList1.Images.SetKeyName(7, "settings.png");
+            this.imageList1.Images.SetKeyName(8, "bible.png");
+            // 
+            // tabSettings
+            // 
+            this.tabSettings.ImageKey = "settings.png";
+            this.tabSettings.Location = new System.Drawing.Point(4, 31);
+            this.tabSettings.Name = "tabSettings";
+            this.tabSettings.Padding = new System.Windows.Forms.Padding(3);
+            this.tabSettings.Size = new System.Drawing.Size(866, 395);
+            this.tabSettings.TabIndex = 6;
+            this.tabSettings.Text = "Definições";
+            this.tabSettings.UseVisualStyleBackColor = true;
             // 
             // MenuForm
             // 
@@ -755,5 +770,6 @@ namespace BeLightBible
         private FlowLayoutPanel flowPanelPlanos;
         private Panel pnlCategoriaPlano;
         private MaterialSkin.Controls.MaterialComboBox cmbCategoriaPlanos;
+        private TabPage tabSettings;
     }
 }
