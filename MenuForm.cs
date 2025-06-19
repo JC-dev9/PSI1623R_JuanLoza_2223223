@@ -21,6 +21,8 @@ using System.Security.Cryptography.Xml;
 using Newtonsoft.Json.Linq;
 using System.Data.Entity;
 using System.Runtime.Remoting.Contexts;
+using NAudio.Wave;
+using System.Diagnostics;
 
 namespace BeLightBible
 {
@@ -181,6 +183,9 @@ namespace BeLightBible
             AtualizarLarguraDosCards(flowPanelPlanos);
 
             AjustarFonteCards();
+
+            this.picAudio.Click += new System.EventHandler(this.picAudio_Click);
+
         }
 
         // -------------------- LAYOUT --------------------
@@ -823,29 +828,43 @@ Agora responda a seguinte pergunta em Portugues de Portugal de forma clara, com 
         private void tabPage4_Click(object sender, EventArgs e) { }
 
         // -------------------- ÁUDIO --------------------
-        private void picAudio_Click(object sender, EventArgs e)
+
+        private WaveOutEvent outputDevice;
+        private AudioFileReader audioFile;
+
+        private async void picAudio_Click(object sender, EventArgs e)
         {
-            if (!isPlaying)
+            if (isPlaying)
             {
-                string texto = ObterTextoDosVersiculos();
+                PararAudio();
+                return;
+            }
 
-                if (!string.IsNullOrWhiteSpace(texto))
+            string texto = ObterTextoDosVersiculos();
+
+            if (!string.IsNullOrWhiteSpace(texto))
+            {
+
+                bool sucesso = false;
+
+                await Task.Run(() =>
                 {
-                    synthesizer.SpeakCompleted += Synthesizer_SpeakCompleted;
-                    synthesizer.SpeakAsyncCancelAll();
-                    synthesizer.SpeakAsync(texto);
+                    sucesso = GerarAudioPython(texto);
+                });
 
-                    picAudio.Image = Image.FromFile("pause.png");
-                    isPlaying = true;
+                if (sucesso)
+                {
+                    TocarAudio();
+                }
+                else
+                {
+                    MessageBox.Show("Erro ao gerar áudio.");
+                    picAudio.Image = Image.FromFile("volume-2-white.png");
                 }
             }
-            else
-            {
-                synthesizer.SpeakAsyncCancelAll();
-                picAudio.Image = Image.FromFile("volume-2-white.png");
-                isPlaying = false;
-            }
         }
+
+
 
         private void Synthesizer_SpeakCompleted(object sender, SpeakCompletedEventArgs e)
         {
@@ -864,7 +883,115 @@ Agora responda a seguinte pergunta em Portugues de Portugal de forma clara, com 
             }
         }
 
-        private string ObterTextoDosVersiculos()
+        private void TocarAudio()
+        {
+            try
+            {
+                string mp3File = @"C:\Path\To\temp_ptpt.mp3";
+
+                if (!File.Exists(mp3File))
+                {
+                    MessageBox.Show("Arquivo de áudio não encontrado.");
+                    picAudio.Image = Image.FromFile("volume-2-white.png");
+                    isPlaying = false;
+                    return;
+                }
+
+                outputDevice = new WaveOutEvent();
+                audioFile = new AudioFileReader(mp3File);
+                outputDevice.Init(audioFile);
+                outputDevice.PlaybackStopped += OutputDevice_PlaybackStopped;
+
+                isPlaying = true;
+                picAudio.Image = Image.FromFile("pause.png");
+
+                outputDevice.Play();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro ao tocar áudio: " + ex.Message);
+                isPlaying = false;
+                picAudio.Image = Image.FromFile("volume-2-white.png");
+            }
+        }
+
+
+
+
+        private bool GerarAudioPython(string texto)
+        {
+            try
+            {
+                string pythonExe = @"C:\Users\juanl\bibleVoice\myenv\Scripts\python.exe";
+                string scriptPath = @"C:\Users\juanl\bibleVoice\tts.py";
+
+
+                // Passa texto como argumento, escapando aspas e caracteres especiais
+                string argumento = $"\"{texto.Replace("\"", "\\\"")}\"";
+
+                ProcessStartInfo psi = new ProcessStartInfo();
+                psi.FileName = pythonExe;
+                psi.Arguments = $"\"{scriptPath}\" {argumento}";
+                psi.CreateNoWindow = true;
+                psi.UseShellExecute = false;
+                psi.RedirectStandardOutput = true;
+                psi.RedirectStandardError = true;
+
+                using (Process p = Process.Start(psi))
+                {
+                    p.WaitForExit();
+                    string stderr = p.StandardError.ReadToEnd();
+                    if (p.ExitCode != 0)
+                    {
+                        // Debug - erro do python
+                        Console.WriteLine("Python error: " + stderr);
+                        return false;
+                    }
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Erro ao executar Python: " + ex.Message);
+                return false;
+            }
+        }
+
+        private void PararAudio()
+        {
+            if (outputDevice != null)
+            {
+                outputDevice.Stop();
+            }
+            picAudio.Image = Image.FromFile("volume-2-white.png");
+            isPlaying = false;
+        }
+
+        private void OutputDevice_PlaybackStopped(object sender, StoppedEventArgs e)
+        {
+            this.Invoke(new Action(() =>
+            {
+                picAudio.Image = Image.FromFile("volume-2-white.png");
+                isPlaying = false;
+
+                // Dispose dos objetos para liberar recursos
+                outputDevice.Dispose();
+                outputDevice = null;
+
+                audioFile.Dispose();
+                audioFile = null;
+
+                // Apaga o arquivo MP3 temporário
+                try
+                {
+                    string mp3File = @"C:\Path\To\temp_ptpt.mp3";
+                    if (File.Exists(mp3File))
+                        File.Delete(mp3File);
+                }
+                catch { /* não faça nada se falhar em deletar */ }
+            }));
+        }
+    private string ObterTextoDosVersiculos()
         {
             string texto = "";
 
