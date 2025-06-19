@@ -48,6 +48,9 @@ namespace BeLightBible
         private SpeechSynthesizer synthesizer = new SpeechSynthesizer();
         private NotifyIcon notifyIcon1;
         private bool isPlaying = false;
+        private bool isBusy = false;
+
+
         [DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
         private static extern IntPtr CreateRoundRectRgn(int nLeft, int nTop, int nRight, int nBottom, int nWidthEllipse, int nHeightEllipse);
 
@@ -834,36 +837,45 @@ Agora responda a seguinte pergunta em Portugues de Portugal de forma clara, com 
 
         private async void picAudio_Click(object sender, EventArgs e)
         {
-            if (isPlaying)
+            if (isBusy) return; // já está executando alguma coisa
+            isBusy = true;
+
+            try
             {
-                PararAudio();
-                return;
+                if (isPlaying)
+                {
+                    PararAudio();
+                    return;
+                }
+
+                string texto = ObterTextoDosVersiculos();
+
+                if (!string.IsNullOrWhiteSpace(texto))
+                {
+                    bool sucesso = false;
+
+                    await Task.Run(() =>
+                    {
+                        sucesso = GerarAudioPython(texto);
+                    });
+
+                    if (sucesso)
+                    {
+                        picAudio.Image = Image.FromFile("pause.png");
+                        TocarAudio();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Erro ao gerar áudio.");
+                        picAudio.Image = Image.FromFile("volume-2-white.png");
+                    }
+                }
             }
-
-            string texto = ObterTextoDosVersiculos();
-
-            if (!string.IsNullOrWhiteSpace(texto))
+            finally
             {
-
-                bool sucesso = false;
-
-                await Task.Run(() =>
-                {
-                    sucesso = GerarAudioPython(texto);
-                });
-
-                if (sucesso)
-                {
-                    TocarAudio();
-                }
-                else
-                {
-                    MessageBox.Show("Erro ao gerar áudio.");
-                    picAudio.Image = Image.FromFile("volume-2-white.png");
-                }
+                isBusy = false;
             }
         }
-
 
 
         private void Synthesizer_SpeakCompleted(object sender, SpeakCompletedEventArgs e)
@@ -887,11 +899,13 @@ Agora responda a seguinte pergunta em Portugues de Portugal de forma clara, com 
         {
             try
             {
-                string mp3File = @"C:\Path\To\temp_ptpt.mp3";
+                if (outputDevice != null || isPlaying) return;
+
+                string mp3File = Path.Combine(Path.GetDirectoryName(@"C:\Users\juanl\bibleVoice\tts.py"), "temp_ptpt.mp3");
 
                 if (!File.Exists(mp3File))
                 {
-                    MessageBox.Show("Arquivo de áudio não encontrado.");
+                    MessageBox.Show("Arquivo de áudio não encontrado: " + mp3File);
                     picAudio.Image = Image.FromFile("volume-2-white.png");
                     isPlaying = false;
                     return;
@@ -904,7 +918,6 @@ Agora responda a seguinte pergunta em Portugues de Portugal de forma clara, com 
 
                 isPlaying = true;
                 picAudio.Image = Image.FromFile("pause.png");
-
                 outputDevice.Play();
             }
             catch (Exception ex)
@@ -914,8 +927,6 @@ Agora responda a seguinte pergunta em Portugues de Portugal de forma clara, com 
                 picAudio.Image = Image.FromFile("volume-2-white.png");
             }
         }
-
-
 
 
         private bool GerarAudioPython(string texto)
@@ -957,41 +968,42 @@ Agora responda a seguinte pergunta em Portugues de Portugal de forma clara, com 
             }
         }
 
-        private void PararAudio()
+        private void LiberarAudio()
         {
-            if (outputDevice != null)
+            outputDevice?.Dispose();
+            outputDevice = null;
+
+            audioFile?.Dispose();
+            audioFile = null;
+
+            try
             {
-                outputDevice.Stop();
+                string mp3File = Path.Combine(Path.GetDirectoryName(@"C:\Users\juanl\bibleVoice\tts.py"), "temp_ptpt.mp3");
+                if (File.Exists(mp3File))
+                    File.Delete(mp3File);
             }
+            catch { }
+
             picAudio.Image = Image.FromFile("volume-2-white.png");
             isPlaying = false;
+        }
+
+
+        private void PararAudio()
+        {
+            outputDevice?.Stop();
+            LiberarAudio();
         }
 
         private void OutputDevice_PlaybackStopped(object sender, StoppedEventArgs e)
         {
             this.Invoke(new Action(() =>
             {
-                picAudio.Image = Image.FromFile("volume-2-white.png");
-                isPlaying = false;
-
-                // Dispose dos objetos para liberar recursos
-                outputDevice.Dispose();
-                outputDevice = null;
-
-                audioFile.Dispose();
-                audioFile = null;
-
-                // Apaga o arquivo MP3 temporário
-                try
-                {
-                    string mp3File = @"C:\Path\To\temp_ptpt.mp3";
-                    if (File.Exists(mp3File))
-                        File.Delete(mp3File);
-                }
-                catch { /* não faça nada se falhar em deletar */ }
+                LiberarAudio();
             }));
         }
-    private string ObterTextoDosVersiculos()
+
+        private string ObterTextoDosVersiculos()
         {
             string texto = "";
 
