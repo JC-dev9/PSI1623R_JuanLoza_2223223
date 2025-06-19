@@ -13,6 +13,7 @@ namespace BeLightBible
 
         public FormPlanoDiasAdmin(int planoId)
         {
+
             InitializeComponent();
 
             // Desativa a validação automática que pode travar o foco e gerar mensagens indesejadas

@@ -155,27 +155,31 @@ namespace BeLightBible
             this.Resize += MenuForm_Resize;
             this.Resize += (s, e) =>
             {
-                AtualizarLarguraDosCards();
+                AtualizarLarguraDosCards(flowLayoutPanelAnotacoes);
+                AtualizarLarguraDosCards(flowPanelPlanos);
+
                 AjustarFonteCards();
             };
 
             TabControlPrincipal.SelectedIndexChanged += (s, e) =>
             {
-                AtualizarLarguraDosCards();
+                AtualizarLarguraDosCards(flowLayoutPanelAnotacoes);
+                AtualizarLarguraDosCards(flowPanelPlanos);
+
                 AjustarFonteCards();
 
                 CarregarUltimoPonto();
 
                 AplicarLayoutResponsivoBible();
                 AtualizarLarguraDasMensagens();
-
-
             };
 
             flowLayoutPanelConversa.Resize += flowLayoutPanelConversa_Resize;
             AplicarLayoutResponsivoBible();
             AtualizarLarguraDasMensagens();
-            AtualizarLarguraDosCards();
+            AtualizarLarguraDosCards(flowLayoutPanelAnotacoes);
+            AtualizarLarguraDosCards(flowPanelPlanos);
+
             AjustarFonteCards();
         }
 
@@ -195,8 +199,6 @@ namespace BeLightBible
         }
         private async void MenuForm_Load(object sender, EventArgs e)
         {
-
-
             CriarCardUltimoPonto();
             CarregarUltimoPonto();
             CriarLabelsVersiculoDia();
@@ -206,13 +208,13 @@ namespace BeLightBible
             CarregarPlanoLeituraTodos();
         }
 
-        private void AtualizarLarguraDosCards()
+        private void AtualizarLarguraDosCards(FlowLayoutPanel flowLayoutPanel)
         {
-            foreach (Control control in flowLayoutPanelAnotacoes.Controls)
+            foreach (Control control in flowLayoutPanel.Controls)
             {
                 if (control is MaterialCard card)
                 {
-                    card.Width = flowLayoutPanelAnotacoes.ClientSize.Width - 30;
+                    card.Width = flowLayoutPanel.ClientSize.Width - 30;
                 }
             }
         }
@@ -1266,19 +1268,19 @@ Agora responda a seguinte pergunta em Portugues de Portugal de forma clara, com 
             {
                 case "Anotações":
                     CarregarAnotacoes();
-                    AtualizarLarguraDosCards();
+                    AtualizarLarguraDosCards(flowLayoutPanelAnotacoes);
                     AjustarFonteCards();
                     break;
 
                 case "Grifos":
                     CarregarGrifos();
-                    AtualizarLarguraDosCards();
+                    AtualizarLarguraDosCards(flowLayoutPanelAnotacoes);
                     AjustarFonteCards();
                     break;
 
                 case "Versículos":
                     CarregarVersiculosDoDia();
-                    AtualizarLarguraDosCards();
+                    AtualizarLarguraDosCards(flowLayoutPanelAnotacoes);
                     AjustarFonteCards();
                     break;
             }
@@ -1411,7 +1413,9 @@ Agora responda a seguinte pergunta em Portugues de Portugal de forma clara, com 
                     // Depois de salvar, recarrega as anotações na interface:
 
                     CarregarAnotacoes();
-                    AtualizarLarguraDosCards(); //Responsivo
+                    AtualizarLarguraDosCards(flowLayoutPanelAnotacoes); //Responsivo
+                    AtualizarLarguraDosCards(flowPanelPlanos);
+
                     AjustarFonteCards(); //Responsivo
 
                     //Renovar tela inicial
@@ -1523,7 +1527,7 @@ Agora responda a seguinte pergunta em Portugues de Portugal de forma clara, com 
                     Font = new Font("Segoe UI", 11),
                     ForeColor = Color.White,
                     AutoSize = false,
-                    Width = card.Width - 150, // ou outro valor que encaixe no card
+                    Width = card.Width - 150,
                     Height = 60, // altura limitada para mostrar só parte do texto
                     AutoEllipsis = true, // ativa os "..."
                     Cursor = Cursors.Hand,
@@ -1566,7 +1570,6 @@ Agora responda a seguinte pergunta em Portugues de Portugal de forma clara, com 
                     Margin = new Padding(0)
                 };
 
-                // Adiciona o evento Resize para manter o quadrado no canto superior direito
                 card.Resize += (s, e) =>
                 {
                     indicadorCor.Location = new Point(card.Width - indicadorCor.Width - 10, 10);
@@ -1593,7 +1596,6 @@ Agora responda a seguinte pergunta em Portugues de Portugal de forma clara, com 
                 Margin = new Padding(0)
             });
         }
-
 
         private void MostrarSnackbar(string mensagem)
         {
@@ -1661,7 +1663,7 @@ Agora responda a seguinte pergunta em Portugues de Portugal de forma clara, com 
 
         private void CarregarGrifos()
         {
-            var grifos = Versiculo.ObterGrifosUtilizador(Sessao.UserId); // você define esse método no seu DAL
+            var grifos = Versiculo.ObterGrifosUtilizador(Sessao.UserId);
             CriarCardsGrifos(grifos, flowLayoutPanelAnotacoes);
         }
 
@@ -1808,18 +1810,15 @@ Agora responda a seguinte pergunta em Portugues de Portugal de forma clara, com 
             {
                 case "Todos":
                     CarregarPlanoLeituraTodos();
+                    AtualizarLarguraDosCards(flowPanelPlanos); //Responsivo
+                    AjustarFonteCards(); //Responsivo
                     break;
 
                 case "Meus":
                     CarregarMeusPlanos(); // você também cria essa função
+                    AtualizarLarguraDosCards(flowPanelPlanos); //Responsivo
+                    AjustarFonteCards(); //Responsivo
                     break;
-
-
-                    //case "Versículos":
-                    //CarregarVersiculosDoDia(); // você também cria essa função
-                    //AtualizarLarguraDosCards();
-                    //AjustarFonteCards();
-                    //break;
             }
         }
 
@@ -1901,7 +1900,11 @@ Agora responda a seguinte pergunta em Portugues de Portugal de forma clara, com 
                 {
                     Text = "Iniciar",
                     AutoSize = true,
-                    Location = new Point(card.Width - 110, 70),
+                    BackColor = Color.FromArgb(244, 67, 54),
+                    ForeColor = Color.White,
+                    FlatStyle = FlatStyle.Flat,
+                    Location = new Point(card.Width - 80, card.Height - 45),
+                    Anchor = AnchorStyles.Bottom | AnchorStyles.Right,
                     Tag = plano // você pode usar isso pra abrir nova tela ou iniciar o plano
                 };
 
@@ -1966,7 +1969,6 @@ Agora responda a seguinte pergunta em Portugues de Portugal de forma clara, com 
                     // var formLeitura = new FormLeituraDiaria(planoUtil.Id);
                     // formLeitura.Show();
                 };
-
 
                 card.Controls.Add(btnIniciar);
 
@@ -2075,7 +2077,6 @@ Agora responda a seguinte pergunta em Portugues de Portugal de forma clara, com 
             formLeitura.Show(); // ou .ShowDialog() se quiser modal
         }
 
-
         private void CarregarMeusPlanos()
         {
             int userId = Sessao.UserId;
@@ -2089,9 +2090,6 @@ Agora responda a seguinte pergunta em Portugues de Portugal de forma clara, com 
 
                 CriarCardsMeusPlanos(meusPlanos, flowPanelPlanos);
             }
-
-
         }
-
     }
 }
