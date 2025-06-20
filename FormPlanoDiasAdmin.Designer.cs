@@ -35,6 +35,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.cmbLivro = new MaterialSkin.Controls.MaterialComboBox();
             this.cmbCapitulo = new MaterialSkin.Controls.MaterialComboBox();
+            this.btnVoltarTelaAdmin = new MaterialSkin.Controls.MaterialButton();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownDia)).BeginInit();
             this.SuspendLayout();
             // 
@@ -157,11 +158,32 @@
             this.cmbCapitulo.TabIndex = 16;
             this.cmbCapitulo.UseTallSize = false;
             // 
+            // btnVoltarTelaAdmin
+            // 
+            this.btnVoltarTelaAdmin.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnVoltarTelaAdmin.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            this.btnVoltarTelaAdmin.Depth = 0;
+            this.btnVoltarTelaAdmin.HighEmphasis = true;
+            this.btnVoltarTelaAdmin.Icon = null;
+            this.btnVoltarTelaAdmin.Location = new System.Drawing.Point(697, 395);
+            this.btnVoltarTelaAdmin.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.btnVoltarTelaAdmin.MouseState = MaterialSkin.MouseState.HOVER;
+            this.btnVoltarTelaAdmin.Name = "btnVoltarTelaAdmin";
+            this.btnVoltarTelaAdmin.NoAccentTextColor = System.Drawing.Color.Empty;
+            this.btnVoltarTelaAdmin.Size = new System.Drawing.Size(76, 36);
+            this.btnVoltarTelaAdmin.TabIndex = 17;
+            this.btnVoltarTelaAdmin.Text = "<- Voltar";
+            this.btnVoltarTelaAdmin.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            this.btnVoltarTelaAdmin.UseAccentColor = false;
+            this.btnVoltarTelaAdmin.UseVisualStyleBackColor = true;
+            this.btnVoltarTelaAdmin.Click += new System.EventHandler(this.btnVoltarTelaAdmin_Click);
+            // 
             // FormPlanoDiasAdmin
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.btnVoltarTelaAdmin);
             this.Controls.Add(this.cmbCapitulo);
             this.Controls.Add(this.cmbLivro);
             this.Controls.Add(this.label1);
@@ -188,5 +210,6 @@
         private System.Windows.Forms.Label label1;
         private MaterialSkin.Controls.MaterialComboBox cmbLivro;
         private MaterialSkin.Controls.MaterialComboBox cmbCapitulo;
+        private MaterialSkin.Controls.MaterialButton btnVoltarTelaAdmin;
     }
 }

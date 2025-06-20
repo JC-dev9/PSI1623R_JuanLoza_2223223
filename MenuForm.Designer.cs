@@ -71,8 +71,16 @@ namespace BeLightBible
             this.pnlBibleKids = new System.Windows.Forms.Panel();
             this.picBtnVoltarHistoria = new System.Windows.Forms.PictureBox();
             this.picBtnProximaHistoria = new System.Windows.Forms.PictureBox();
-            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.tabSettings = new System.Windows.Forms.TabPage();
+            this.panelSettings = new System.Windows.Forms.Panel();
+            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+            this.gbFonteTamanho = new System.Windows.Forms.GroupBox();
+            this.lblFonte = new MaterialSkin.Controls.MaterialLabel();
+            this.cmbFonte = new MaterialSkin.Controls.MaterialComboBox();
+            this.lblTamanho = new MaterialSkin.Controls.MaterialLabel();
+            this.numericTamanho = new System.Windows.Forms.NumericUpDown();
+            this.switchTema = new MaterialSkin.Controls.MaterialSwitch();
+            this.panel2 = new System.Windows.Forms.Panel();
             this.TabControlPrincipal.SuspendLayout();
             this.tabHome.SuspendLayout();
             this.cardUltimaLeitura.SuspendLayout();
@@ -95,6 +103,10 @@ namespace BeLightBible
             this.pnlBibleKids.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picBtnVoltarHistoria)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picBtnProximaHistoria)).BeginInit();
+            this.tabSettings.SuspendLayout();
+            this.panelSettings.SuspendLayout();
+            this.gbFonteTamanho.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericTamanho)).BeginInit();
             this.SuspendLayout();
             // 
             // TabControlPrincipal
@@ -479,7 +491,7 @@ namespace BeLightBible
             this.tabAnotacoes.Padding = new System.Windows.Forms.Padding(3);
             this.tabAnotacoes.Size = new System.Drawing.Size(866, 395);
             this.tabAnotacoes.TabIndex = 3;
-            this.tabAnotacoes.Text = "Anotações";
+            this.tabAnotacoes.Text = "Salvos";
             this.tabAnotacoes.UseVisualStyleBackColor = true;
             // 
             // pnlAnotacoes
@@ -523,6 +535,7 @@ namespace BeLightBible
             // 
             // flowLayoutPanelAnotacoes
             // 
+            this.flowLayoutPanelAnotacoes.AutoScroll = true;
             this.flowLayoutPanelAnotacoes.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanelAnotacoes.Location = new System.Drawing.Point(3, 3);
             this.flowLayoutPanelAnotacoes.Name = "flowLayoutPanelAnotacoes";
@@ -663,6 +676,28 @@ namespace BeLightBible
             this.picBtnProximaHistoria.TabIndex = 5;
             this.picBtnProximaHistoria.TabStop = false;
             // 
+            // tabSettings
+            // 
+            this.tabSettings.Controls.Add(this.panelSettings);
+            this.tabSettings.ImageKey = "settings.png";
+            this.tabSettings.Location = new System.Drawing.Point(4, 31);
+            this.tabSettings.Name = "tabSettings";
+            this.tabSettings.Padding = new System.Windows.Forms.Padding(3);
+            this.tabSettings.Size = new System.Drawing.Size(866, 395);
+            this.tabSettings.TabIndex = 6;
+            this.tabSettings.Text = "Definições";
+            this.tabSettings.UseVisualStyleBackColor = true;
+            // 
+            // panelSettings
+            // 
+            this.panelSettings.Controls.Add(this.panel2);
+            this.panelSettings.Controls.Add(this.gbFonteTamanho);
+            this.panelSettings.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelSettings.Location = new System.Drawing.Point(3, 3);
+            this.panelSettings.Name = "panelSettings";
+            this.panelSettings.Size = new System.Drawing.Size(860, 389);
+            this.panelSettings.TabIndex = 0;
+            // 
             // imageList1
             // 
             this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
@@ -677,16 +712,118 @@ namespace BeLightBible
             this.imageList1.Images.SetKeyName(7, "settings.png");
             this.imageList1.Images.SetKeyName(8, "bible.png");
             // 
-            // tabSettings
+            // gbFonteTamanho
             // 
-            this.tabSettings.ImageKey = "settings.png";
-            this.tabSettings.Location = new System.Drawing.Point(4, 31);
-            this.tabSettings.Name = "tabSettings";
-            this.tabSettings.Padding = new System.Windows.Forms.Padding(3);
-            this.tabSettings.Size = new System.Drawing.Size(866, 395);
-            this.tabSettings.TabIndex = 6;
-            this.tabSettings.Text = "Definições";
-            this.tabSettings.UseVisualStyleBackColor = true;
+            this.gbFonteTamanho.Controls.Add(this.switchTema);
+            this.gbFonteTamanho.Controls.Add(this.numericTamanho);
+            this.gbFonteTamanho.Controls.Add(this.lblTamanho);
+            this.gbFonteTamanho.Controls.Add(this.cmbFonte);
+            this.gbFonteTamanho.Controls.Add(this.lblFonte);
+            this.gbFonteTamanho.Location = new System.Drawing.Point(15, 15);
+            this.gbFonteTamanho.Name = "gbFonteTamanho";
+            this.gbFonteTamanho.Size = new System.Drawing.Size(823, 136);
+            this.gbFonteTamanho.TabIndex = 0;
+            this.gbFonteTamanho.TabStop = false;
+            this.gbFonteTamanho.Text = "Tema e Fonte";
+            // 
+            // lblFonte
+            // 
+            this.lblFonte.AutoSize = true;
+            this.lblFonte.Depth = 0;
+            this.lblFonte.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.lblFonte.Location = new System.Drawing.Point(20, 31);
+            this.lblFonte.MouseState = MaterialSkin.MouseState.HOVER;
+            this.lblFonte.Name = "lblFonte";
+            this.lblFonte.Size = new System.Drawing.Size(45, 19);
+            this.lblFonte.TabIndex = 0;
+            this.lblFonte.Text = "Fonte:";
+            // 
+            // cmbFonte
+            // 
+            this.cmbFonte.AutoResize = false;
+            this.cmbFonte.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.cmbFonte.Depth = 0;
+            this.cmbFonte.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
+            this.cmbFonte.DropDownHeight = 118;
+            this.cmbFonte.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbFonte.DropDownWidth = 121;
+            this.cmbFonte.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.cmbFonte.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.cmbFonte.FormattingEnabled = true;
+            this.cmbFonte.IntegralHeight = false;
+            this.cmbFonte.ItemHeight = 29;
+            this.cmbFonte.Items.AddRange(new object[] {
+            "Segoe UI",
+            "",
+            "Arial",
+            "",
+            "Verdana",
+            "",
+            "Calibri"});
+            this.cmbFonte.Location = new System.Drawing.Point(23, 64);
+            this.cmbFonte.MaxDropDownItems = 4;
+            this.cmbFonte.MouseState = MaterialSkin.MouseState.OUT;
+            this.cmbFonte.Name = "cmbFonte";
+            this.cmbFonte.Size = new System.Drawing.Size(158, 35);
+            this.cmbFonte.StartIndex = 0;
+            this.cmbFonte.TabIndex = 2;
+            this.cmbFonte.UseTallSize = false;
+            // 
+            // lblTamanho
+            // 
+            this.lblTamanho.AutoSize = true;
+            this.lblTamanho.Depth = 0;
+            this.lblTamanho.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.lblTamanho.Location = new System.Drawing.Point(219, 31);
+            this.lblTamanho.MouseState = MaterialSkin.MouseState.HOVER;
+            this.lblTamanho.Name = "lblTamanho";
+            this.lblTamanho.Size = new System.Drawing.Size(70, 19);
+            this.lblTamanho.TabIndex = 3;
+            this.lblTamanho.Text = "Tamanho";
+            // 
+            // numericTamanho
+            // 
+            this.numericTamanho.Location = new System.Drawing.Point(222, 77);
+            this.numericTamanho.Maximum = new decimal(new int[] {
+            30,
+            0,
+            0,
+            0});
+            this.numericTamanho.Minimum = new decimal(new int[] {
+            8,
+            0,
+            0,
+            0});
+            this.numericTamanho.Name = "numericTamanho";
+            this.numericTamanho.Size = new System.Drawing.Size(120, 22);
+            this.numericTamanho.TabIndex = 4;
+            this.numericTamanho.Value = new decimal(new int[] {
+            8,
+            0,
+            0,
+            0});
+            // 
+            // switchTema
+            // 
+            this.switchTema.AutoSize = true;
+            this.switchTema.Depth = 0;
+            this.switchTema.Location = new System.Drawing.Point(395, 31);
+            this.switchTema.Margin = new System.Windows.Forms.Padding(0);
+            this.switchTema.MouseLocation = new System.Drawing.Point(-1, -1);
+            this.switchTema.MouseState = MaterialSkin.MouseState.HOVER;
+            this.switchTema.Name = "switchTema";
+            this.switchTema.Ripple = true;
+            this.switchTema.Size = new System.Drawing.Size(144, 37);
+            this.switchTema.TabIndex = 1;
+            this.switchTema.Text = "Mudar tema";
+            this.switchTema.UseVisualStyleBackColor = true;
+            // 
+            // panel2
+            // 
+            this.panel2.Location = new System.Drawing.Point(0, 325);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(857, 61);
+            this.panel2.TabIndex = 11;
             // 
             // MenuForm
             // 
@@ -725,6 +862,11 @@ namespace BeLightBible
             this.pnlBibleKids.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.picBtnVoltarHistoria)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picBtnProximaHistoria)).EndInit();
+            this.tabSettings.ResumeLayout(false);
+            this.panelSettings.ResumeLayout(false);
+            this.gbFonteTamanho.ResumeLayout(false);
+            this.gbFonteTamanho.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericTamanho)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -771,5 +913,13 @@ namespace BeLightBible
         private Panel pnlCategoriaPlano;
         private MaterialSkin.Controls.MaterialComboBox cmbCategoriaPlanos;
         private TabPage tabSettings;
+        private Panel panelSettings;
+        private GroupBox gbFonteTamanho;
+        private MaterialSkin.Controls.MaterialLabel lblFonte;
+        private MaterialSkin.Controls.MaterialComboBox cmbFonte;
+        private MaterialSkin.Controls.MaterialLabel lblTamanho;
+        private NumericUpDown numericTamanho;
+        private MaterialSkin.Controls.MaterialSwitch switchTema;
+        private Panel panel2;
     }
 }

@@ -41,6 +41,9 @@ namespace BeLightBible
             CarregarLivros();
 
             this.AcceptButton = null; // Remove o comportamento padrão de 'Enter' ativar o botão Salvar
+
+            btnVoltarTelaAdmin.Text = "← Voltar";
+
         }
 
         private void CarregarLivros()
@@ -217,6 +220,13 @@ namespace BeLightBible
                     listDias.Items.Add(new MaterialListBoxItem($"Dia {d.Dia}: {d.Capitulos}"));
                 }
             }
+        }
+
+        private void btnVoltarTelaAdmin_Click(object sender, EventArgs e)
+        {
+            var telaAdmin = new MenuAdmin(); // substitua pelo nome da tela anterior
+            telaAdmin.Show();
+            this.Close(); // Fecha o formulário atual
         }
     }
 }

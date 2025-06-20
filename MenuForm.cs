@@ -32,28 +32,29 @@ namespace BeLightBible
         // -------------------- VARIÁVEIS --------------------
 
         private List<MenuForm> historiasKids;
-
         private int indiceAtualKids = 0;
 
         private static readonly HttpClient client = new HttpClient();
         private readonly Entities _context = new Entities();
 
-
         private PictureBox picLoading;
         private Label lblTituloCapitulo;
         private Label lblNumeroVersiculo;
+
         private Livro livros = new Livro();
         private Estilo estilo = new Estilo();
         private readonly ApiBibleService bibleService = new ApiBibleService();
+
         private SpeechSynthesizer synthesizer = new SpeechSynthesizer();
         private NotifyIcon notifyIcon1;
+
         private bool isPlaying = false;
         private bool isBusy = false;
 
-
+        // API externa para bordas arredondadas
         [DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
-        private static extern IntPtr CreateRoundRectRgn(int nLeft, int nTop, int nRight, int nBottom, int nWidthEllipse, int nHeightEllipse);
-
+        private static extern IntPtr CreateRoundRectRgn(
+            int nLeft, int nTop, int nRight, int nBottom, int nWidthEllipse, int nHeightEllipse);
 
         // -------------------- CONSTRUTOR --------------------
         public MenuForm()
@@ -61,8 +62,9 @@ namespace BeLightBible
             InitializeComponent();
             CarregarLivros();
 
+            // -------------------- COMPONENTES DINÂMICOS --------------------
 
-            // Inicialização do PictureBox de loading
+            // PictureBox de loading
             picLoading = new PictureBox
             {
                 Size = new Size(48, 48),
@@ -72,59 +74,50 @@ namespace BeLightBible
                 Visible = false,
                 BackColor = Color.Transparent
             };
-
-            Label lblTituloCapitulo = new Label
-            {
-                AutoSize = true, // Vai se ajustar ao texto
-                Font = new Font("Segoe UI", 14, FontStyle.Bold),
-                ForeColor = Color.White, // Cor do texto
-                BackColor = Color.Transparent, // Fundo transparente se estiver sobre uma imagem ou painel colorido
-                Margin = new Padding(5), // Espaçamento externo
-                Padding = new Padding(2), // Espaçamento interno
-                Location = new Point(flowLayoutPanelVersiculos.Left, flowLayoutPanelVersiculos.Top),
-                Text = $"Versículo do dia dia"
-            };
-
-
             this.Controls.Add(picLoading);
             picLoading.BringToFront();
 
-            // Configurações do flowLayoutPanel dos Versiculos
+            // Label do título do capítulo (não está sendo salvo na variável de classe)
+            Label lblTituloCapitulo = new Label
+            {
+                AutoSize = true,
+                Font = new Font("Segoe UI", 14, FontStyle.Bold),
+                ForeColor = Color.White,
+                BackColor = Color.Transparent,
+                Margin = new Padding(5),
+                Padding = new Padding(2),
+                Location = new Point(flowLayoutPanelVersiculos.Left, flowLayoutPanelVersiculos.Top),
+                Text = $"Versículo do dia"
+            };
+
+            // -------------------- CONFIGURAÇÕES DE LAYOUT --------------------
+
+            // flowLayoutPanelVersiculos
             flowLayoutPanelVersiculos.Dock = DockStyle.Fill;
             flowLayoutPanelVersiculos.AutoScrollMargin = new Size(0, 3000);
             flowLayoutPanelVersiculos.AutoScroll = true;
             flowLayoutPanelVersiculos.WrapContents = false;
             flowLayoutPanelVersiculos.FlowDirection = FlowDirection.TopDown;
 
-            // Configura flowLayoutPanelConversa (se não configurado no Designer)
-            flowLayoutPanelConversa.Padding = new Padding(0, 0, 0, 70); // ajusta conforme altura do painel inferior
-
+            // flowLayoutPanelConversa
+            flowLayoutPanelConversa.Padding = new Padding(0, 0, 0, 70);
             flowLayoutPanelConversa.Dock = DockStyle.Fill;
             flowLayoutPanelConversa.FlowDirection = FlowDirection.TopDown;
             flowLayoutPanelConversa.WrapContents = false;
             flowLayoutPanelConversa.AutoScroll = true;
 
-
-            // Configurações do FlowLayoutPanel das anotações de versículos
-            flowLayoutPanelAnotacoes.Dock = DockStyle.Fill;
-            flowLayoutPanelAnotacoes.FlowDirection = FlowDirection.TopDown;
-            flowLayoutPanelAnotacoes.WrapContents = false;
-            flowLayoutPanelAnotacoes.AutoScroll = true;
-            flowLayoutPanelAnotacoes.AutoScrollMargin = new Size(0, 100); // Espaço extra para rolagem suave
-
-            // Configurações do FlowLayoutPanel das anotações de versículos
+            // flowPanelPlanos
             flowPanelPlanos.Dock = DockStyle.Fill;
             flowPanelPlanos.FlowDirection = FlowDirection.TopDown;
             flowPanelPlanos.WrapContents = false;
             flowPanelPlanos.AutoScroll = true;
-            flowPanelPlanos.AutoScrollMargin = new Size(0, 100); // Espaço extra para rolagem suave
+            flowPanelPlanos.AutoScrollMargin = new Size(0, 100);
 
-            // Âncoras
+            // ComboBoxes
             cmbLivro.Anchor = AnchorStyles.Top | AnchorStyles.Left;
             cmbCapitulo.Anchor = AnchorStyles.Top | AnchorStyles.Left;
 
-
-            // Skin do MaterialSkin
+            // -------------------- ESTILO: MaterialSkin --------------------
             var skinManager = MaterialSkinManager.Instance;
             skinManager.AddFormToManage(this);
             skinManager.Theme = MaterialSkinManager.Themes.DARK;
@@ -136,24 +129,7 @@ namespace BeLightBible
                 TextShade.WHITE
             );
 
-            cmbLivro.SelectedIndexChanged += cmbLivro_SelectedIndexChanged;
-
-            // Estilização dos botões e controles (Bible)
-            estilo.EstilizarPictureBoxComoBotao(picBtnProximoCapitulo, true, cmbLivro, cmbCapitulo, BibleTab);
-            estilo.EstilizarPictureBoxComoBotao(picBtnAnteriorCapitulo, false, cmbLivro, cmbCapitulo, BibleTab);
-            estilo.EstilizarPictureBoxAudio(picAudio);
-
-            estilo.ArredondarControle(picBtnProximoCapitulo, 10);
-            estilo.ArredondarControle(picBtnAnteriorCapitulo, 10);
-            estilo.ArredondarControle(picAudio, 10);
-
-            // Estilização dos botões e controles (Bible Kids)
-            estilo.EstilizarPictureBoxComoBotao(picBtnProximaHistoria);
-            estilo.EstilizarPictureBoxComoBotao(picBtnVoltarHistoria);
-
-            estilo.ArredondarControle(picBtnProximaHistoria, 10);
-            estilo.ArredondarControle(picBtnVoltarHistoria, 10);
-
+            // -------------------- EVENTOS --------------------
             this.Load += MenuForm_Load;
             this.Load += FormPrincipal_Load;
 
@@ -162,7 +138,6 @@ namespace BeLightBible
             {
                 AtualizarLarguraDosCards(flowLayoutPanelAnotacoes);
                 AtualizarLarguraDosCards(flowPanelPlanos);
-
                 AjustarFonteCards();
             };
 
@@ -170,26 +145,43 @@ namespace BeLightBible
             {
                 AtualizarLarguraDosCards(flowLayoutPanelAnotacoes);
                 AtualizarLarguraDosCards(flowPanelPlanos);
-
                 AjustarFonteCards();
-
                 CarregarUltimoPonto();
-
                 AplicarLayoutResponsivoBible();
                 AtualizarLarguraDasMensagens();
             };
 
             flowLayoutPanelConversa.Resize += flowLayoutPanelConversa_Resize;
+
+            cmbLivro.SelectedIndexChanged += cmbLivro_SelectedIndexChanged;
+
+            this.picAudio.Click += new System.EventHandler(this.picAudio_Click);
+
+            // -------------------- ESTILIZAÇÃO --------------------
+
+            // Bible
+            estilo.EstilizarPictureBoxComoBotao(picBtnProximoCapitulo, true, cmbLivro, cmbCapitulo, BibleTab);
+            estilo.EstilizarPictureBoxComoBotao(picBtnAnteriorCapitulo, false, cmbLivro, cmbCapitulo, BibleTab);
+            estilo.EstilizarPictureBoxAudio(picAudio);
+
+            estilo.ArredondarControle(picBtnProximoCapitulo, 10);
+            estilo.ArredondarControle(picBtnAnteriorCapitulo, 10);
+            estilo.ArredondarControle(picAudio, 10);
+
+            // Bible Kids
+            estilo.EstilizarPictureBoxComoBotao(picBtnProximaHistoria);
+            estilo.EstilizarPictureBoxComoBotao(picBtnVoltarHistoria);
+            estilo.ArredondarControle(picBtnProximaHistoria, 10);
+            estilo.ArredondarControle(picBtnVoltarHistoria, 10);
+
+            // Ajustes visuais finais
             AplicarLayoutResponsivoBible();
             AtualizarLarguraDasMensagens();
             AtualizarLarguraDosCards(flowLayoutPanelAnotacoes);
             AtualizarLarguraDosCards(flowPanelPlanos);
-
             AjustarFonteCards();
-
-            this.picAudio.Click += new System.EventHandler(this.picAudio_Click);
-
         }
+
 
         // -------------------- LAYOUT --------------------
         private void MenuForm_Resize(object sender, EventArgs e)
@@ -214,6 +206,9 @@ namespace BeLightBible
 
             CarregarAnotacoes();
             CarregarPlanoLeituraTodos();
+
+            //Definições
+            CriarPainelDeConfiguracoes(panelSettings); // 'meuPanel' é o nome do painel do Designer
         }
 
         private void AtualizarLarguraDosCards(FlowLayoutPanel flowLayoutPanel)
@@ -369,7 +364,7 @@ namespace BeLightBible
                 AutoSize = true,
                 AutoSizeMode = AutoSizeMode.GrowAndShrink,
                 Padding = new Padding(10),
-                Margin = new Padding(5,5,5,50),
+                Margin = new Padding(5, 5, 5, 50),
                 BackColor = isUser ? Color.FromArgb(33, 150, 243) : Color.FromArgb(97, 97, 97),
             };
 
@@ -497,7 +492,7 @@ namespace BeLightBible
                     AddBotMessage(respostaCache.Resposta);
                     return; // Se encontrou no cache, não precisa enviar para o LLM
                 }
-                
+
                 string promptBase = @"Você é um especialista em Bíblia, teologia cristã e princípios do cristianismo.
 Todas as suas respostas devem ser baseadas nas Escrituras Sagradas, na fé cristã e em valores bíblicos.
 Mesmo que a pergunta não pareça religiosa, responda de forma que conecte com a Bíblia, princípios cristãos ou histórias bíblicas.
@@ -742,7 +737,7 @@ Agora responda a seguinte pergunta em Portugues de Portugal de forma clara, com 
                 Versiculo versiculo = new Versiculo(lbl);
 
                 ContextMenuStrip menu = new ContextMenuStrip();
-                menu.Items.Add(new ToolStripMenuItem("Grifar", Image.FromFile("icons/palette.png"), (s, ev) =>
+                menu.Items.Add(new ToolStripMenuItem("Sublinhar", Image.FromFile("icons/palette.png"), (s, ev) =>
                 {
                     int versNumero = Convert.ToInt32(lbl.Tag);
                     versiculo.Grifar(Sessao.UserId, cmbLivro.SelectedItem.ToString(), int.Parse(cmbCapitulo.SelectedItem.ToString()), versNumero, lbl.Text);
@@ -2258,6 +2253,29 @@ Agora responda a seguinte pergunta em Portugues de Portugal de forma clara, com 
 
                 CriarCardsMeusPlanos(meusPlanos, flowPanelPlanos);
             }
+        }
+
+        // ------------------------------------------------------------------------------------
+        // -------------------- TELA DAS DEFINIÇÕES ---------------------------------------
+        // ------------------------------------------------------------------------------------
+
+       
+
+        private void CriarPainelDeConfiguracoes(Panel panelSettings)
+        {
+            panelSettings.AutoScroll = true;
+            panelSettings.Dock = DockStyle.Fill;
+            panelSettings.Padding = new Padding(10);
+            panelSettings.Controls.Clear(); // limpa antes de adicionar
+
+
+            // Adiciona os grupos ao painel
+            panelSettings.Controls.Add(gbFonteTamanho);
+        }
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }
