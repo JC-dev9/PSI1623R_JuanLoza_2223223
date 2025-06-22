@@ -39,9 +39,9 @@
 
 ## 🛠️ Tecnologias Utilizadas
 
-- 🧠 **Inteligência Artificial:**  
-  Modelo ajustado do **LLaMA 3.3**
-  Conexão com o **Groq Cloud**  
+- 🧠 **Inteligência Artificial:**
+  - Modelo ajustado do **LLaMA 3.3**
+  - Conexão com o **Groq Cloud**  
 
 - 💻 **Aplicação Desktop:**  
   - C# com Windows Forms
