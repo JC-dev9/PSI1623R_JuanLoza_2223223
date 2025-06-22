@@ -14,6 +14,10 @@ namespace BeLightBible
         {
             InitializeComponent();
 
+            // Serve para impedir redimensionamento
+            this.FormBorderStyle = FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
+
             var skinManager = MaterialSkinManager.Instance;
             skinManager.AddFormToManage(this);
             skinManager.Theme = MaterialSkinManager.Themes.DARK;

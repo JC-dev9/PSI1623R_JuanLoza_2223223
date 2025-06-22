@@ -119,7 +119,6 @@ namespace BeLightBible
             this.txtNewEmail.MouseState = MaterialSkin.MouseState.OUT;
             this.txtNewEmail.Multiline = false;
             this.txtNewEmail.Name = "txtNewEmail";
-            this.txtNewEmail.Password = true;
             this.txtNewEmail.Size = new System.Drawing.Size(300, 50);
             this.txtNewEmail.TabIndex = 6;
             this.txtNewEmail.Text = "";
