@@ -58,5 +58,29 @@ namespace BeLightBible.Properties {
                 this["DataUltimoVersiculo"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("\tSegoe UI")]
+        public string FonteBiblia {
+            get {
+                return ((string)(this["FonteBiblia"]));
+            }
+            set {
+                this["FonteBiblia"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("12")]
+        public int TamanhoFonteBiblia {
+            get {
+                return ((int)(this["TamanhoFonteBiblia"]));
+            }
+            set {
+                this["TamanhoFonteBiblia"] = value;
+            }
+        }
     }
 }

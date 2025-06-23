@@ -209,6 +209,9 @@ namespace BeLightBible
 
             //Definições
             CriarPainelDeConfiguracoes(panelSettings); // 'meuPanel' é o nome do painel do Designer
+
+            cmbFonte.SelectedItem = Properties.Settings.Default.FonteBiblia;
+
         }
 
         private void AtualizarLarguraDosCards(FlowLayoutPanel flowLayoutPanel)
@@ -640,10 +643,12 @@ Agora responda a seguinte pergunta em Portugues de Portugal de forma clara, com 
 
             flowLayoutPanelVersiculos.Controls.Clear();
 
+            string fonte = Properties.Settings.Default.FonteBiblia ?? "Segoe UI";
+
             lblTituloCapitulo = new Label
             {
                 AutoSize = true,
-                Font = new Font("Segoe UI", 14, FontStyle.Bold),
+                Font = new Font(fonte, 14, FontStyle.Bold),
                 ForeColor = Color.White,
                 BackColor = Color.Transparent,
                 Margin = new Padding(1),
@@ -651,6 +656,7 @@ Agora responda a seguinte pergunta em Portugues de Portugal de forma clara, com 
                 Location = new Point(flowLayoutPanelVersiculos.Left, flowLayoutPanelVersiculos.Top),
                 Text = $"{livro.ToUpper()} {capitulo}"
             };
+
 
             flowLayoutPanelVersiculos.Controls.Add(lblTituloCapitulo);
             var grifos = Versiculo.ObterGrifosUtilizador(Sessao.UserId, livro, capitulo);
@@ -664,12 +670,13 @@ Agora responda a seguinte pergunta em Portugues de Portugal de forma clara, com 
                     Cursor = Cursors.Hand,
                     AutoSize = true,
                     MaximumSize = new Size(flowLayoutPanelVersiculos.ClientSize.Width - 20, 0),
-                    Font = new Font("Segoe UI", 12, FontStyle.Italic),
+                    Font = new Font(fonte, 12, FontStyle.Italic),
                     Margin = new Padding(1),
                     Padding = new Padding(1),
                     ForeColor = Color.White,
                     BackColor = Color.Transparent
                 };
+
 
                 foreach (var item in grifos)
                 {
@@ -2268,10 +2275,32 @@ Agora responda a seguinte pergunta em Portugues de Portugal de forma clara, com 
             panelSettings.Padding = new Padding(10);
             panelSettings.Controls.Clear(); // limpa antes de adicionar
 
+            cmbFonte.Items.Clear();
+            foreach (FontFamily fonte in FontFamily.Families)
+            {
+                cmbFonte.Items.Add(fonte.Name);
+            }
+
+            // Defina a fonte salva como selecionada APÓS preencher os itens
+            string fonteSalva = Properties.Settings.Default.FonteBiblia;
+            if (!string.IsNullOrEmpty(fonteSalva) && cmbFonte.Items.Contains(fonteSalva))
+            {
+                cmbFonte.SelectedItem = fonteSalva;
+            }
+
 
             // Adiciona os grupos ao painel
             panelSettings.Controls.Add(gbFonteTamanho);
+            panelSettings.Controls.Add(gbSessao);
         }
+
+        private void cmbFonte_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string fonteSelecionada = cmbFonte.SelectedItem.ToString();
+            Properties.Settings.Default.FonteBiblia = fonteSelecionada;
+            Properties.Settings.Default.Save();
+        }
+
 
         private void panel1_Paint(object sender, PaintEventArgs e)
         {

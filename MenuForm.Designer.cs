@@ -73,14 +73,16 @@ namespace BeLightBible
             this.picBtnProximaHistoria = new System.Windows.Forms.PictureBox();
             this.tabSettings = new System.Windows.Forms.TabPage();
             this.panelSettings = new System.Windows.Forms.Panel();
-            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+            this.gbSessao = new System.Windows.Forms.GroupBox();
+            this.SwitchSair = new MaterialSkin.Controls.MaterialSwitch();
+            this.SwitchManterSessao = new MaterialSkin.Controls.MaterialSwitch();
             this.gbFonteTamanho = new System.Windows.Forms.GroupBox();
-            this.lblFonte = new MaterialSkin.Controls.MaterialLabel();
-            this.cmbFonte = new MaterialSkin.Controls.MaterialComboBox();
-            this.lblTamanho = new MaterialSkin.Controls.MaterialLabel();
-            this.numericTamanho = new System.Windows.Forms.NumericUpDown();
             this.switchTema = new MaterialSkin.Controls.MaterialSwitch();
-            this.panel2 = new System.Windows.Forms.Panel();
+            this.numericTamanho = new System.Windows.Forms.NumericUpDown();
+            this.lblTamanho = new MaterialSkin.Controls.MaterialLabel();
+            this.cmbFonte = new MaterialSkin.Controls.MaterialComboBox();
+            this.lblFonte = new MaterialSkin.Controls.MaterialLabel();
+            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.TabControlPrincipal.SuspendLayout();
             this.tabHome.SuspendLayout();
             this.cardUltimaLeitura.SuspendLayout();
@@ -105,6 +107,7 @@ namespace BeLightBible
             ((System.ComponentModel.ISupportInitialize)(this.picBtnProximaHistoria)).BeginInit();
             this.tabSettings.SuspendLayout();
             this.panelSettings.SuspendLayout();
+            this.gbSessao.SuspendLayout();
             this.gbFonteTamanho.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericTamanho)).BeginInit();
             this.SuspendLayout();
@@ -690,7 +693,7 @@ namespace BeLightBible
             // 
             // panelSettings
             // 
-            this.panelSettings.Controls.Add(this.panel2);
+            this.panelSettings.Controls.Add(this.gbSessao);
             this.panelSettings.Controls.Add(this.gbFonteTamanho);
             this.panelSettings.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelSettings.Location = new System.Drawing.Point(3, 3);
@@ -698,19 +701,46 @@ namespace BeLightBible
             this.panelSettings.Size = new System.Drawing.Size(860, 389);
             this.panelSettings.TabIndex = 0;
             // 
-            // imageList1
+            // gbSessao
             // 
-            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
-            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
-            this.imageList1.Images.SetKeyName(0, "notepad-text.png");
-            this.imageList1.Images.SetKeyName(1, "bot.png");
-            this.imageList1.Images.SetKeyName(2, "book-marked(1).png");
-            this.imageList1.Images.SetKeyName(3, "house.png");
-            this.imageList1.Images.SetKeyName(4, "bookmark.png");
-            this.imageList1.Images.SetKeyName(5, "baby.png");
-            this.imageList1.Images.SetKeyName(6, "calendar-days.png");
-            this.imageList1.Images.SetKeyName(7, "settings.png");
-            this.imageList1.Images.SetKeyName(8, "bible.png");
+            this.gbSessao.Controls.Add(this.SwitchSair);
+            this.gbSessao.Controls.Add(this.SwitchManterSessao);
+            this.gbSessao.Location = new System.Drawing.Point(15, 210);
+            this.gbSessao.Name = "gbSessao";
+            this.gbSessao.Size = new System.Drawing.Size(823, 136);
+            this.gbSessao.TabIndex = 12;
+            this.gbSessao.TabStop = false;
+            this.gbSessao.Text = "Manter e Encerrar Sessão";
+            // 
+            // SwitchSair
+            // 
+            this.SwitchSair.AutoSize = true;
+            this.SwitchSair.Depth = 0;
+            this.SwitchSair.Location = new System.Drawing.Point(18, 86);
+            this.SwitchSair.Margin = new System.Windows.Forms.Padding(0);
+            this.SwitchSair.MouseLocation = new System.Drawing.Point(-1, -1);
+            this.SwitchSair.MouseState = MaterialSkin.MouseState.HOVER;
+            this.SwitchSair.Name = "SwitchSair";
+            this.SwitchSair.Ripple = true;
+            this.SwitchSair.Size = new System.Drawing.Size(108, 37);
+            this.SwitchSair.TabIndex = 3;
+            this.SwitchSair.Text = "Logout";
+            this.SwitchSair.UseVisualStyleBackColor = true;
+            // 
+            // SwitchManterSessao
+            // 
+            this.SwitchManterSessao.AutoSize = true;
+            this.SwitchManterSessao.Depth = 0;
+            this.SwitchManterSessao.Location = new System.Drawing.Point(18, 31);
+            this.SwitchManterSessao.Margin = new System.Windows.Forms.Padding(0);
+            this.SwitchManterSessao.MouseLocation = new System.Drawing.Point(-1, -1);
+            this.SwitchManterSessao.MouseState = MaterialSkin.MouseState.HOVER;
+            this.SwitchManterSessao.Name = "SwitchManterSessao";
+            this.SwitchManterSessao.Ripple = true;
+            this.SwitchManterSessao.Size = new System.Drawing.Size(144, 37);
+            this.SwitchManterSessao.TabIndex = 2;
+            this.SwitchManterSessao.Text = "Mudar tema";
+            this.SwitchManterSessao.UseVisualStyleBackColor = true;
             // 
             // gbFonteTamanho
             // 
@@ -726,60 +756,20 @@ namespace BeLightBible
             this.gbFonteTamanho.TabStop = false;
             this.gbFonteTamanho.Text = "Tema e Fonte";
             // 
-            // lblFonte
+            // switchTema
             // 
-            this.lblFonte.AutoSize = true;
-            this.lblFonte.Depth = 0;
-            this.lblFonte.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.lblFonte.Location = new System.Drawing.Point(20, 31);
-            this.lblFonte.MouseState = MaterialSkin.MouseState.HOVER;
-            this.lblFonte.Name = "lblFonte";
-            this.lblFonte.Size = new System.Drawing.Size(45, 19);
-            this.lblFonte.TabIndex = 0;
-            this.lblFonte.Text = "Fonte:";
-            // 
-            // cmbFonte
-            // 
-            this.cmbFonte.AutoResize = false;
-            this.cmbFonte.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.cmbFonte.Depth = 0;
-            this.cmbFonte.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
-            this.cmbFonte.DropDownHeight = 118;
-            this.cmbFonte.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbFonte.DropDownWidth = 121;
-            this.cmbFonte.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.cmbFonte.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.cmbFonte.FormattingEnabled = true;
-            this.cmbFonte.IntegralHeight = false;
-            this.cmbFonte.ItemHeight = 29;
-            this.cmbFonte.Items.AddRange(new object[] {
-            "Segoe UI",
-            "",
-            "Arial",
-            "",
-            "Verdana",
-            "",
-            "Calibri"});
-            this.cmbFonte.Location = new System.Drawing.Point(23, 64);
-            this.cmbFonte.MaxDropDownItems = 4;
-            this.cmbFonte.MouseState = MaterialSkin.MouseState.OUT;
-            this.cmbFonte.Name = "cmbFonte";
-            this.cmbFonte.Size = new System.Drawing.Size(158, 35);
-            this.cmbFonte.StartIndex = 0;
-            this.cmbFonte.TabIndex = 2;
-            this.cmbFonte.UseTallSize = false;
-            // 
-            // lblTamanho
-            // 
-            this.lblTamanho.AutoSize = true;
-            this.lblTamanho.Depth = 0;
-            this.lblTamanho.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.lblTamanho.Location = new System.Drawing.Point(219, 31);
-            this.lblTamanho.MouseState = MaterialSkin.MouseState.HOVER;
-            this.lblTamanho.Name = "lblTamanho";
-            this.lblTamanho.Size = new System.Drawing.Size(70, 19);
-            this.lblTamanho.TabIndex = 3;
-            this.lblTamanho.Text = "Tamanho";
+            this.switchTema.AutoSize = true;
+            this.switchTema.Depth = 0;
+            this.switchTema.Location = new System.Drawing.Point(395, 31);
+            this.switchTema.Margin = new System.Windows.Forms.Padding(0);
+            this.switchTema.MouseLocation = new System.Drawing.Point(-1, -1);
+            this.switchTema.MouseState = MaterialSkin.MouseState.HOVER;
+            this.switchTema.Name = "switchTema";
+            this.switchTema.Ripple = true;
+            this.switchTema.Size = new System.Drawing.Size(144, 37);
+            this.switchTema.TabIndex = 1;
+            this.switchTema.Text = "Mudar tema";
+            this.switchTema.UseVisualStyleBackColor = true;
             // 
             // numericTamanho
             // 
@@ -803,27 +793,71 @@ namespace BeLightBible
             0,
             0});
             // 
-            // switchTema
+            // lblTamanho
             // 
-            this.switchTema.AutoSize = true;
-            this.switchTema.Depth = 0;
-            this.switchTema.Location = new System.Drawing.Point(395, 31);
-            this.switchTema.Margin = new System.Windows.Forms.Padding(0);
-            this.switchTema.MouseLocation = new System.Drawing.Point(-1, -1);
-            this.switchTema.MouseState = MaterialSkin.MouseState.HOVER;
-            this.switchTema.Name = "switchTema";
-            this.switchTema.Ripple = true;
-            this.switchTema.Size = new System.Drawing.Size(144, 37);
-            this.switchTema.TabIndex = 1;
-            this.switchTema.Text = "Mudar tema";
-            this.switchTema.UseVisualStyleBackColor = true;
+            this.lblTamanho.AutoSize = true;
+            this.lblTamanho.Depth = 0;
+            this.lblTamanho.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.lblTamanho.Location = new System.Drawing.Point(219, 31);
+            this.lblTamanho.MouseState = MaterialSkin.MouseState.HOVER;
+            this.lblTamanho.Name = "lblTamanho";
+            this.lblTamanho.Size = new System.Drawing.Size(70, 19);
+            this.lblTamanho.TabIndex = 3;
+            this.lblTamanho.Text = "Tamanho";
             // 
-            // panel2
+            // cmbFonte
             // 
-            this.panel2.Location = new System.Drawing.Point(0, 325);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(857, 61);
-            this.panel2.TabIndex = 11;
+            this.cmbFonte.AutoResize = false;
+            this.cmbFonte.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.cmbFonte.Depth = 0;
+            this.cmbFonte.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
+            this.cmbFonte.DropDownHeight = 118;
+            this.cmbFonte.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbFonte.DropDownWidth = 121;
+            this.cmbFonte.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.cmbFonte.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.cmbFonte.FormattingEnabled = true;
+            this.cmbFonte.IntegralHeight = false;
+            this.cmbFonte.ItemHeight = 29;
+            this.cmbFonte.Items.AddRange(new object[] {
+            "Segoe UI",
+            "Arial",
+            "Verdana",
+            "Calibri"});
+            this.cmbFonte.Location = new System.Drawing.Point(23, 64);
+            this.cmbFonte.MaxDropDownItems = 4;
+            this.cmbFonte.MouseState = MaterialSkin.MouseState.OUT;
+            this.cmbFonte.Name = "cmbFonte";
+            this.cmbFonte.Size = new System.Drawing.Size(158, 35);
+            this.cmbFonte.StartIndex = 0;
+            this.cmbFonte.TabIndex = 2;
+            this.cmbFonte.UseTallSize = false;
+            // 
+            // lblFonte
+            // 
+            this.lblFonte.AutoSize = true;
+            this.lblFonte.Depth = 0;
+            this.lblFonte.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.lblFonte.Location = new System.Drawing.Point(20, 31);
+            this.lblFonte.MouseState = MaterialSkin.MouseState.HOVER;
+            this.lblFonte.Name = "lblFonte";
+            this.lblFonte.Size = new System.Drawing.Size(45, 19);
+            this.lblFonte.TabIndex = 0;
+            this.lblFonte.Text = "Fonte:";
+            // 
+            // imageList1
+            // 
+            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
+            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageList1.Images.SetKeyName(0, "notepad-text.png");
+            this.imageList1.Images.SetKeyName(1, "bot.png");
+            this.imageList1.Images.SetKeyName(2, "book-marked(1).png");
+            this.imageList1.Images.SetKeyName(3, "house.png");
+            this.imageList1.Images.SetKeyName(4, "bookmark.png");
+            this.imageList1.Images.SetKeyName(5, "baby.png");
+            this.imageList1.Images.SetKeyName(6, "calendar-days.png");
+            this.imageList1.Images.SetKeyName(7, "settings.png");
+            this.imageList1.Images.SetKeyName(8, "bible.png");
             // 
             // MenuForm
             // 
@@ -864,6 +898,8 @@ namespace BeLightBible
             ((System.ComponentModel.ISupportInitialize)(this.picBtnProximaHistoria)).EndInit();
             this.tabSettings.ResumeLayout(false);
             this.panelSettings.ResumeLayout(false);
+            this.gbSessao.ResumeLayout(false);
+            this.gbSessao.PerformLayout();
             this.gbFonteTamanho.ResumeLayout(false);
             this.gbFonteTamanho.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericTamanho)).EndInit();
@@ -920,6 +956,8 @@ namespace BeLightBible
         private MaterialSkin.Controls.MaterialLabel lblTamanho;
         private NumericUpDown numericTamanho;
         private MaterialSkin.Controls.MaterialSwitch switchTema;
-        private Panel panel2;
+        private GroupBox gbSessao;
+        private MaterialSkin.Controls.MaterialSwitch SwitchSair;
+        private MaterialSkin.Controls.MaterialSwitch SwitchManterSessao;
     }
 }
