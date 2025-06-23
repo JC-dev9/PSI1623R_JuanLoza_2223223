@@ -33,8 +33,13 @@
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.materialTabControl1 = new MaterialSkin.Controls.MaterialTabControl();
             this.tabCriarPlano = new System.Windows.Forms.TabPage();
+            this.flowLayoutPanelPlanos = new System.Windows.Forms.FlowLayoutPanel();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.pnlCategoriaPlano = new System.Windows.Forms.Panel();
+            this.btnCriarPlano = new MaterialSkin.Controls.MaterialButton();
             this.materialTabControl1.SuspendLayout();
+            this.tabCriarPlano.SuspendLayout();
+            this.pnlCategoriaPlano.SuspendLayout();
             this.SuspendLayout();
             // 
             // imageList1
@@ -60,6 +65,8 @@
             // 
             // tabCriarPlano
             // 
+            this.tabCriarPlano.Controls.Add(this.pnlCategoriaPlano);
+            this.tabCriarPlano.Controls.Add(this.flowLayoutPanelPlanos);
             this.tabCriarPlano.ImageKey = "auto_stories_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24(1).png";
             this.tabCriarPlano.Location = new System.Drawing.Point(4, 31);
             this.tabCriarPlano.Name = "tabCriarPlano";
@@ -68,6 +75,15 @@
             this.tabCriarPlano.TabIndex = 0;
             this.tabCriarPlano.Text = "Plano de Leitura";
             this.tabCriarPlano.UseVisualStyleBackColor = true;
+            // 
+            // flowLayoutPanelPlanos
+            // 
+            this.flowLayoutPanelPlanos.AutoScroll = true;
+            this.flowLayoutPanelPlanos.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flowLayoutPanelPlanos.Location = new System.Drawing.Point(3, 3);
+            this.flowLayoutPanelPlanos.Name = "flowLayoutPanelPlanos";
+            this.flowLayoutPanelPlanos.Size = new System.Drawing.Size(798, 389);
+            this.flowLayoutPanelPlanos.TabIndex = 1;
             // 
             // tabPage1
             // 
@@ -79,6 +95,37 @@
             this.tabPage1.Text = "tabPage1";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // pnlCategoriaPlano
+            // 
+            this.pnlCategoriaPlano.BackColor = System.Drawing.Color.Transparent;
+            this.pnlCategoriaPlano.Controls.Add(this.btnCriarPlano);
+            this.pnlCategoriaPlano.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlCategoriaPlano.ForeColor = System.Drawing.SystemColors.GrayText;
+            this.pnlCategoriaPlano.Location = new System.Drawing.Point(3, 3);
+            this.pnlCategoriaPlano.Name = "pnlCategoriaPlano";
+            this.pnlCategoriaPlano.Size = new System.Drawing.Size(798, 59);
+            this.pnlCategoriaPlano.TabIndex = 10;
+            // 
+            // btnCriarPlano
+            // 
+            this.btnCriarPlano.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnCriarPlano.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            this.btnCriarPlano.Depth = 0;
+            this.btnCriarPlano.HighEmphasis = true;
+            this.btnCriarPlano.Icon = null;
+            this.btnCriarPlano.Location = new System.Drawing.Point(18, 11);
+            this.btnCriarPlano.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.btnCriarPlano.MouseState = MaterialSkin.MouseState.HOVER;
+            this.btnCriarPlano.Name = "btnCriarPlano";
+            this.btnCriarPlano.NoAccentTextColor = System.Drawing.Color.Empty;
+            this.btnCriarPlano.Size = new System.Drawing.Size(159, 36);
+            this.btnCriarPlano.TabIndex = 0;
+            this.btnCriarPlano.Text = "Criar novo plano";
+            this.btnCriarPlano.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            this.btnCriarPlano.UseAccentColor = false;
+            this.btnCriarPlano.UseVisualStyleBackColor = true;
+            this.btnCriarPlano.Click += new System.EventHandler(this.btnCriarPlano_Click);
+            // 
             // MenuAdmin
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -88,7 +135,11 @@
             this.DrawerTabControl = this.materialTabControl1;
             this.Name = "MenuAdmin";
             this.Text = "MenuAdmin";
+            this.Load += new System.EventHandler(this.MenuAdmin_Load);
             this.materialTabControl1.ResumeLayout(false);
+            this.tabCriarPlano.ResumeLayout(false);
+            this.pnlCategoriaPlano.ResumeLayout(false);
+            this.pnlCategoriaPlano.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -98,5 +149,8 @@
         private MaterialSkin.Controls.MaterialTabControl materialTabControl1;
         private System.Windows.Forms.TabPage tabCriarPlano;
         private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanelPlanos;
+        private System.Windows.Forms.Panel pnlCategoriaPlano;
+        private MaterialSkin.Controls.MaterialButton btnCriarPlano;
     }
 }

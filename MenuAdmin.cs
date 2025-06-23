@@ -16,15 +16,17 @@ namespace BeLightBible
 {
     public partial class MenuAdmin : MaterialForm
     {
-
         public MenuAdmin()
         {
             InitializeComponent();
 
+            // Ajustes visuais finais
+            this.Resize += MenuAdmin_Resize;
+            AtualizarLarguraDosCards(flowLayoutPanelPlanos);
+            AjustarFonteCards();
 
-            // Serve para impedir redimensionamento
-            this.FormBorderStyle = FormBorderStyle.FixedSingle;
-            this.MaximizeBox = false;
+     
+
 
             // Skin do MaterialSkin
             var skinManager = MaterialSkinManager.Instance;
@@ -37,6 +39,155 @@ namespace BeLightBible
                 Accent.DeepOrange200,
                 TextShade.WHITE
             );
+        }
+        private void MenuAdmin_Resize(object sender, EventArgs e)
+        {
+            AtualizarLarguraDosCards(flowLayoutPanelPlanos);
+            AjustarFonteCards();
+        }
+        private void MenuAdmin_Load(object sender, EventArgs e)
+        {
+            CarregarPlanoLeituraTodos();
+        }
+        private void AjustarFonteCards()
+        {
+            float baseWidth = 800f; // largura base para o design original
+            float scaleFactor = this.ClientSize.Width / baseWidth;
+
+            float baseFontSizeReferencia = 10f;
+            float baseFontSizeTexto = 11f;
+            float baseFontSizeBtn = 9f;
+
+            // limita o tamanho para não ficar muito pequeno nem muito grande
+            float fontSizeReferencia = Math.Min(Math.Max(11f, baseFontSizeReferencia * scaleFactor), 14f);
+            float fontSizeTexto = Math.Min(Math.Max(11f, baseFontSizeTexto * scaleFactor), 16f);
+
+            foreach (Control ctrl in flowLayoutPanelPlanos.Controls)
+            {
+                if (ctrl is MaterialCard card)
+                {
+                    foreach (Control child in card.Controls)
+                    {
+                        if (child is Label lbl)
+                        {
+                            if (lbl.Font.Style == FontStyle.Bold)
+                                lbl.Font = new Font("Segoe UI", fontSizeReferencia, FontStyle.Bold);
+                            else
+                                lbl.Font = new Font("Segoe UI", fontSizeTexto, FontStyle.Regular);
+                        }
+
+                    }
+                }
+            }
+        }
+        private void AtualizarLarguraDosCards(FlowLayoutPanel flowLayoutPanel)
+        {
+            foreach (Control control in flowLayoutPanel.Controls)
+            {
+                if (control is MaterialCard card)
+                {
+                    card.Width = flowLayoutPanel.ClientSize.Width - 30;
+                }
+            }
+        }
+
+        private void CarregarPlanoLeituraTodos()
+        {
+            using (var context = new Entities())
+            {
+                var planos = context.PlanoLeitura.ToList();
+                CriarCardsPlanosADM(planos, flowLayoutPanelPlanos);
+            }
+        }
+
+        private void CriarCardsPlanosADM(List<PlanoLeitura> planos, FlowLayoutPanel flowPanelPlanos)
+        {
+            flowPanelPlanos.Controls.Clear();
+            flowPanelPlanos.Padding = new Padding(10, 50, 10, 10);
+
+            foreach (var plano in planos)
+            {
+
+                var card = new MaterialCard
+                {
+                    Padding = new Padding(10),
+                    Margin = new Padding(10),
+                    Width = flowPanelPlanos.ClientSize.Width - 30,
+                    Height = 120,
+                    AutoSize = false,
+                    BackColor = Color.White,
+                    Tag = plano
+                };
+
+                // Imagem
+                var pic = new PictureBox
+                {
+                    SizeMode = PictureBoxSizeMode.Zoom,
+                    Location = new Point(10, 10),
+                    Size = new Size(80, 80)
+                };
+
+                if (!string.IsNullOrEmpty(plano.ImagemBase64))
+                {
+                    byte[] imgBytes = Convert.FromBase64String(plano.ImagemBase64);
+                    pic.Image = Image.FromStream(new MemoryStream(imgBytes));
+                }
+
+                card.Controls.Add(pic);
+
+                // Título
+                var lblTitulo = new Label
+                {
+                    Text = plano.Nome,
+                    Font = new Font("Segoe UI", 12, FontStyle.Bold),
+                    ForeColor = Color.White,
+                    Location = new Point(100, 10),
+                    AutoSize = true
+                };
+                card.Controls.Add(lblTitulo);
+
+                // Botão Editar
+                Button btnEditar = new Button
+                {
+                    Text = "Editar",
+                    AutoSize = true,
+                    BackColor = Color.FromArgb(63, 81, 181),
+                    ForeColor = Color.White,
+                    FlatStyle = FlatStyle.Flat,
+                    Location = new Point(card.Width - 160, card.Height - 35),
+                    Anchor = AnchorStyles.Bottom | AnchorStyles.Right
+                };
+
+                // Botão Excluir
+                Button btnExcluir = new Button
+                {
+                    Text = "Excluir",
+                    AutoSize = true,
+                    BackColor = Color.FromArgb(244, 67, 54),
+                    ForeColor = Color.White,
+                    FlatStyle = FlatStyle.Flat,
+                    Location = new Point(card.Width - 80, card.Height - 35),
+                    Anchor = AnchorStyles.Bottom | AnchorStyles.Right
+                };
+
+                //btnEditar.Click += BtnEditar_Click;
+                //btnExcluir.Click += BtnExcluir_Click;
+                card.Controls.Add(btnEditar);
+                card.Controls.Add(btnExcluir);
+
+                flowPanelPlanos.Controls.Add(card);
+            }
+        }
+
+        private void btnCriarPlano_Click(object sender, EventArgs e)
+        {
+
+            // Fecha o MenuAdmin (este form)
+            this.Hide();
+
+            // Abre o FormPlanoDiasAdmin
+            var formPlano = new CriarPlanoLeitura();
+            formPlano.Show();
         }
     }
 }

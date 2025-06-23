@@ -105,8 +105,14 @@ namespace BeLightBible
         }
         private void btnCancelar_Click(object sender, EventArgs e)
         {
-            this.DialogResult = DialogResult.Cancel;
-            this.Close();
+            MessageBox.Show("Plano de leitura não criado.", "Informação", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            // Fecha o MenuAdmin (este form)
+            this.Hide();
+
+            // Abre o FormPlanoDiasAdmin
+            var formDias = new MenuAdmin();
+            formDias.Show();
         }
 
         private void txtDias_KeyPress(object sender, KeyPressEventArgs e)
