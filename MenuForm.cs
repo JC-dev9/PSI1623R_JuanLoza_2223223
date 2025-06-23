@@ -597,6 +597,7 @@ Agora responda a seguinte pergunta em Portugues de Portugal de forma clara, com 
             await EnviarParaOllama(pergunta);
         }
 
+
         private void MensagemClicada(object sender, MouseEventArgs e)
         {
             if (sender is Label lbl)
@@ -626,6 +627,14 @@ Agora responda a seguinte pergunta em Portugues de Portugal de forma clara, com 
             foreach (var livro in livrosDictionary)
             {
                 cmbLivro.Items.Add(livro.Key);
+            }
+        }
+        private void txtPergunta_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.SuppressKeyPress = true; // Evita o som "beep"
+                btnEnviarChatbot.PerformClick(); // Simula clique no botão
             }
         }
 
@@ -2017,7 +2026,7 @@ Agora responda a seguinte pergunta em Portugues de Portugal de forma clara, com 
                 {
                     Text = plano.Nome,
                     Font = new Font("Segoe UI", 12, FontStyle.Bold),
-                    ForeColor = Color.Black,
+                    ForeColor = Color.White,
                     Location = new Point(100, 10),
                     AutoSize = true
                 };
@@ -2028,7 +2037,7 @@ Agora responda a seguinte pergunta em Portugues de Portugal de forma clara, com 
                 {
                     Text = plano.Descricao,
                     Font = new Font("Segoe UI", 10),
-                    ForeColor = Color.DimGray,
+                    ForeColor = Color.White,
                     Location = new Point(100, 35),
                     Size = new Size(card.Width - 200, 40),
                     AutoEllipsis = true
@@ -2163,7 +2172,7 @@ Agora responda a seguinte pergunta em Portugues de Portugal de forma clara, com 
                 {
                     Text = plano.Nome,
                     Font = new Font("Segoe UI", 12, FontStyle.Bold),
-                    ForeColor = Color.Black,
+                    ForeColor = Color.White,
                     Location = new Point(100, 10),
                     AutoSize = true
                 };
@@ -2246,7 +2255,6 @@ Agora responda a seguinte pergunta em Portugues de Portugal de forma clara, com 
             leituraForm.ShowDialog();
         }
 
-
         private void CarregarMeusPlanos()
         {
             int userId = Sessao.UserId;
@@ -2265,8 +2273,6 @@ Agora responda a seguinte pergunta em Portugues de Portugal de forma clara, com 
         // ------------------------------------------------------------------------------------
         // -------------------- TELA DAS DEFINIÇÕES ---------------------------------------
         // ------------------------------------------------------------------------------------
-
-       
 
         private void CriarPainelDeConfiguracoes(Panel panelSettings)
         {
@@ -2299,12 +2305,10 @@ Agora responda a seguinte pergunta em Portugues de Portugal de forma clara, com 
             string fonteSelecionada = cmbFonte.SelectedItem.ToString();
             Properties.Settings.Default.FonteBiblia = fonteSelecionada;
             Properties.Settings.Default.Save();
+
+            MessageBox.Show(Properties.Settings.Default.FonteBiblia);
         }
 
-
-        private void panel1_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
+       
     }
 }

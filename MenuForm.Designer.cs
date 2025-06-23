@@ -74,7 +74,7 @@ namespace BeLightBible
             this.tabSettings = new System.Windows.Forms.TabPage();
             this.panelSettings = new System.Windows.Forms.Panel();
             this.gbSessao = new System.Windows.Forms.GroupBox();
-            this.SwitchSair = new MaterialSkin.Controls.MaterialSwitch();
+            this.btnLogout = new MaterialSkin.Controls.MaterialButton();
             this.SwitchManterSessao = new MaterialSkin.Controls.MaterialSwitch();
             this.gbFonteTamanho = new System.Windows.Forms.GroupBox();
             this.switchTema = new MaterialSkin.Controls.MaterialSwitch();
@@ -129,7 +129,7 @@ namespace BeLightBible
             this.TabControlPrincipal.Multiline = true;
             this.TabControlPrincipal.Name = "TabControlPrincipal";
             this.TabControlPrincipal.SelectedIndex = 0;
-            this.TabControlPrincipal.Size = new System.Drawing.Size(874, 430);
+            this.TabControlPrincipal.Size = new System.Drawing.Size(899, 443);
             this.TabControlPrincipal.TabIndex = 0;
             // 
             // tabHome
@@ -141,7 +141,7 @@ namespace BeLightBible
             this.tabHome.Location = new System.Drawing.Point(4, 31);
             this.tabHome.Name = "tabHome";
             this.tabHome.Padding = new System.Windows.Forms.Padding(3);
-            this.tabHome.Size = new System.Drawing.Size(866, 395);
+            this.tabHome.Size = new System.Drawing.Size(891, 408);
             this.tabHome.TabIndex = 0;
             this.tabHome.Text = "Home";
             // 
@@ -444,6 +444,7 @@ namespace BeLightBible
             this.txtPergunta.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.txtPergunta.TrailingIcon = null;
             this.txtPergunta.UseSystemPasswordChar = false;
+            this.txtPergunta.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtPergunta_KeyDown);
             // 
             // pnlChatbot
             // 
@@ -593,7 +594,8 @@ namespace BeLightBible
             this.cmbCategoriaPlanos.ItemHeight = 29;
             this.cmbCategoriaPlanos.Items.AddRange(new object[] {
             "Todos",
-            "Meus"});
+            "Meus",
+            "\t\t\t"});
             this.cmbCategoriaPlanos.Location = new System.Drawing.Point(14, 12);
             this.cmbCategoriaPlanos.MaxDropDownItems = 4;
             this.cmbCategoriaPlanos.MouseState = MaterialSkin.MouseState.OUT;
@@ -612,7 +614,7 @@ namespace BeLightBible
             this.tabBibleKids.Location = new System.Drawing.Point(4, 31);
             this.tabBibleKids.Name = "tabBibleKids";
             this.tabBibleKids.Padding = new System.Windows.Forms.Padding(3);
-            this.tabBibleKids.Size = new System.Drawing.Size(866, 395);
+            this.tabBibleKids.Size = new System.Drawing.Size(891, 408);
             this.tabBibleKids.TabIndex = 4;
             this.tabBibleKids.Text = "Bíblia (crianças)";
             this.tabBibleKids.UseVisualStyleBackColor = true;
@@ -642,7 +644,7 @@ namespace BeLightBible
             // 
             // pictureBoxImagemHistoria
             // 
-            this.pictureBoxImagemHistoria.Location = new System.Drawing.Point(664, 48);
+            this.pictureBoxImagemHistoria.Location = new System.Drawing.Point(656, 48);
             this.pictureBoxImagemHistoria.Name = "pictureBoxImagemHistoria";
             this.pictureBoxImagemHistoria.Size = new System.Drawing.Size(160, 213);
             this.pictureBoxImagemHistoria.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -658,7 +660,7 @@ namespace BeLightBible
             this.pnlBibleKids.ForeColor = System.Drawing.SystemColors.GrayText;
             this.pnlBibleKids.Location = new System.Drawing.Point(3, 3);
             this.pnlBibleKids.Name = "pnlBibleKids";
-            this.pnlBibleKids.Size = new System.Drawing.Size(860, 59);
+            this.pnlBibleKids.Size = new System.Drawing.Size(885, 59);
             this.pnlBibleKids.TabIndex = 7;
             // 
             // picBtnVoltarHistoria
@@ -703,7 +705,7 @@ namespace BeLightBible
             // 
             // gbSessao
             // 
-            this.gbSessao.Controls.Add(this.SwitchSair);
+            this.gbSessao.Controls.Add(this.btnLogout);
             this.gbSessao.Controls.Add(this.SwitchManterSessao);
             this.gbSessao.Location = new System.Drawing.Point(15, 210);
             this.gbSessao.Name = "gbSessao";
@@ -712,20 +714,27 @@ namespace BeLightBible
             this.gbSessao.TabStop = false;
             this.gbSessao.Text = "Manter e Encerrar Sessão";
             // 
-            // SwitchSair
+            // btnLogout
             // 
-            this.SwitchSair.AutoSize = true;
-            this.SwitchSair.Depth = 0;
-            this.SwitchSair.Location = new System.Drawing.Point(18, 86);
-            this.SwitchSair.Margin = new System.Windows.Forms.Padding(0);
-            this.SwitchSair.MouseLocation = new System.Drawing.Point(-1, -1);
-            this.SwitchSair.MouseState = MaterialSkin.MouseState.HOVER;
-            this.SwitchSair.Name = "SwitchSair";
-            this.SwitchSair.Ripple = true;
-            this.SwitchSair.Size = new System.Drawing.Size(108, 37);
-            this.SwitchSair.TabIndex = 3;
-            this.SwitchSair.Text = "Logout";
-            this.SwitchSair.UseVisualStyleBackColor = true;
+            this.btnLogout.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnLogout.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            this.btnLogout.Depth = 0;
+            this.btnLogout.ForeColor = System.Drawing.SystemColors.GrayText;
+            this.btnLogout.HighEmphasis = true;
+            this.btnLogout.Icon = null;
+            this.btnLogout.Location = new System.Drawing.Point(18, 91);
+            this.btnLogout.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.btnLogout.MouseState = MaterialSkin.MouseState.HOVER;
+            this.btnLogout.Name = "btnLogout";
+            this.btnLogout.NoAccentTextColor = System.Drawing.Color.Empty;
+            this.btnLogout.Size = new System.Drawing.Size(78, 36);
+            this.btnLogout.TabIndex = 5;
+            this.btnLogout.Text = "Logout";
+            this.btnLogout.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnLogout.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            this.btnLogout.UseAccentColor = false;
+            this.btnLogout.UseVisualStyleBackColor = true;
+            this.btnLogout.Click += new System.EventHandler(this.btnLogout_Click);
             // 
             // SwitchManterSessao
             // 
@@ -863,10 +872,11 @@ namespace BeLightBible
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(880, 497);
+            this.ClientSize = new System.Drawing.Size(905, 510);
             this.Controls.Add(this.TabControlPrincipal);
             this.DrawerShowIconsWhenHidden = true;
             this.DrawerTabControl = this.TabControlPrincipal;
+            this.MinimumSize = new System.Drawing.Size(905, 510);
             this.Name = "MenuForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "BeLight Bible";
@@ -957,7 +967,7 @@ namespace BeLightBible
         private NumericUpDown numericTamanho;
         private MaterialSkin.Controls.MaterialSwitch switchTema;
         private GroupBox gbSessao;
-        private MaterialSkin.Controls.MaterialSwitch SwitchSair;
         private MaterialSkin.Controls.MaterialSwitch SwitchManterSessao;
+        private MaterialSkin.Controls.MaterialButton btnLogout;
     }
 }

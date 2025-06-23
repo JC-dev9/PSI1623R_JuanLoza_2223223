@@ -33,6 +33,7 @@
             this.materialTabControl1 = new MaterialSkin.Controls.MaterialTabControl();
             this.tabCriarPlano = new System.Windows.Forms.TabPage();
             this.btnSalvar = new MaterialSkin.Controls.MaterialButton();
+            this.pictureBoxPreview = new System.Windows.Forms.PictureBox();
             this.btnSelecionarImagem = new MaterialSkin.Controls.MaterialButton();
             this.txtDias = new MaterialSkin.Controls.MaterialTextBox();
             this.lblDuracao = new MaterialSkin.Controls.MaterialLabel();
@@ -40,9 +41,7 @@
             this.lblDescricao = new MaterialSkin.Controls.MaterialLabel();
             this.txtNome = new MaterialSkin.Controls.MaterialTextBox();
             this.lblNome = new MaterialSkin.Controls.MaterialLabel();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
-            this.pictureBoxPreview = new System.Windows.Forms.PictureBox();
             this.materialTabControl1.SuspendLayout();
             this.tabCriarPlano.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPreview)).BeginInit();
@@ -51,7 +50,6 @@
             // materialTabControl1
             // 
             this.materialTabControl1.Controls.Add(this.tabCriarPlano);
-            this.materialTabControl1.Controls.Add(this.tabPage2);
             this.materialTabControl1.Depth = 0;
             this.materialTabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.materialTabControl1.ImageList = this.imageList1;
@@ -103,6 +101,16 @@
             this.btnSalvar.UseVisualStyleBackColor = true;
             this.btnSalvar.Click += new System.EventHandler(this.btnSalvar_Click);
             // 
+            // pictureBoxPreview
+            // 
+            this.pictureBoxPreview.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pictureBoxPreview.Location = new System.Drawing.Point(512, 29);
+            this.pictureBoxPreview.Name = "pictureBoxPreview";
+            this.pictureBoxPreview.Size = new System.Drawing.Size(135, 117);
+            this.pictureBoxPreview.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBoxPreview.TabIndex = 10;
+            this.pictureBoxPreview.TabStop = false;
+            // 
             // btnSelecionarImagem
             // 
             this.btnSelecionarImagem.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
@@ -129,7 +137,7 @@
             this.txtDias.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtDias.CausesValidation = false;
             this.txtDias.Depth = 0;
-            this.txtDias.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.txtDias.Font = new System.Drawing.Font("Roboto", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.txtDias.Hint = "Número de dias (ex: 7)";
             this.txtDias.LeadingIcon = null;
             this.txtDias.Location = new System.Drawing.Point(36, 162);
@@ -159,7 +167,7 @@
             this.txtDescricao.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtDescricao.CausesValidation = false;
             this.txtDescricao.Depth = 0;
-            this.txtDescricao.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.txtDescricao.Font = new System.Drawing.Font("Roboto", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.txtDescricao.Hint = "Descrição";
             this.txtDescricao.LeadingIcon = null;
             this.txtDescricao.Location = new System.Drawing.Point(36, 274);
@@ -189,7 +197,7 @@
             this.txtNome.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtNome.CausesValidation = false;
             this.txtNome.Depth = 0;
-            this.txtNome.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.txtNome.Font = new System.Drawing.Font("Roboto", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.txtNome.Hint = "Insira o nome";
             this.txtNome.LeadingIcon = null;
             this.txtNome.Location = new System.Drawing.Point(36, 46);
@@ -213,31 +221,11 @@
             this.lblNome.TabIndex = 3;
             this.lblNome.Text = "Nome do Plano:";
             // 
-            // tabPage2
-            // 
-            this.tabPage2.Location = new System.Drawing.Point(4, 31);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(804, 395);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "tabPage2";
-            this.tabPage2.UseVisualStyleBackColor = true;
-            // 
             // imageList1
             // 
             this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
             this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
             this.imageList1.Images.SetKeyName(0, "auto_stories_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24(1).png");
-            // 
-            // pictureBoxPreview
-            // 
-            this.pictureBoxPreview.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pictureBoxPreview.Location = new System.Drawing.Point(512, 29);
-            this.pictureBoxPreview.Name = "pictureBoxPreview";
-            this.pictureBoxPreview.Size = new System.Drawing.Size(135, 117);
-            this.pictureBoxPreview.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBoxPreview.TabIndex = 10;
-            this.pictureBoxPreview.TabStop = false;
             // 
             // MenuAdmin
             // 
@@ -260,7 +248,6 @@
 
         private MaterialSkin.Controls.MaterialTabControl materialTabControl1;
         private System.Windows.Forms.TabPage tabCriarPlano;
-        private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.ImageList imageList1;
         private MaterialSkin.Controls.MaterialLabel lblNome;
         private MaterialSkin.Controls.MaterialTextBox txtNome;
