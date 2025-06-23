@@ -170,7 +170,7 @@ namespace BeLightBible
                     Anchor = AnchorStyles.Bottom | AnchorStyles.Right
                 };
 
-                //btnEditar.Click += BtnEditar_Click;
+                btnEditar.Click += BtnEditar_Click;
                 //btnExcluir.Click += BtnExcluir_Click;
                 card.Controls.Add(btnEditar);
                 card.Controls.Add(btnExcluir);
@@ -178,6 +178,22 @@ namespace BeLightBible
                 flowPanelPlanos.Controls.Add(card);
             }
         }
+        private void BtnEditar_Click(object sender, EventArgs e)
+        {
+            // Obtém o botão que foi clicado
+            Button btn = sender as Button;
+
+            // Sobe até o card (pai do botão) e pega o objeto PlanoLeitura que está no Tag
+            if (btn?.Parent is MaterialCard card && card.Tag is PlanoLeitura planoSelecionado)
+            {
+                int planoId = planoSelecionado.Id;
+
+                // Abre o Form de edição passando o planoId
+                FormPlanoDiasAdmin formDias = new FormPlanoDiasAdmin(planoId);
+                formDias.ShowDialog();
+            }
+        }
+
 
         private void btnCriarPlano_Click(object sender, EventArgs e)
         {

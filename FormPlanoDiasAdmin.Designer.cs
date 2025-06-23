@@ -28,38 +28,20 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.cmbPlanos = new MaterialSkin.Controls.MaterialComboBox();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormPlanoDiasAdmin));
             this.btnSalvarDia = new MaterialSkin.Controls.MaterialButton();
-            this.listDias = new MaterialSkin.Controls.MaterialListBox();
+            this.listDia = new MaterialSkin.Controls.MaterialListBox();
             this.numericUpDownDia = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
             this.cmbLivro = new MaterialSkin.Controls.MaterialComboBox();
             this.cmbCapitulo = new MaterialSkin.Controls.MaterialComboBox();
             this.btnVoltarTelaAdmin = new MaterialSkin.Controls.MaterialButton();
+            this.picBtnProximoDia = new System.Windows.Forms.PictureBox();
+            this.picBtnAnteriorDia = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownDia)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picBtnProximoDia)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picBtnAnteriorDia)).BeginInit();
             this.SuspendLayout();
-            // 
-            // cmbPlanos
-            // 
-            this.cmbPlanos.AutoResize = false;
-            this.cmbPlanos.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.cmbPlanos.Depth = 0;
-            this.cmbPlanos.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
-            this.cmbPlanos.DropDownHeight = 174;
-            this.cmbPlanos.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbPlanos.DropDownWidth = 121;
-            this.cmbPlanos.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.cmbPlanos.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.cmbPlanos.FormattingEnabled = true;
-            this.cmbPlanos.IntegralHeight = false;
-            this.cmbPlanos.ItemHeight = 43;
-            this.cmbPlanos.Location = new System.Drawing.Point(27, 80);
-            this.cmbPlanos.MaxDropDownItems = 4;
-            this.cmbPlanos.MouseState = MaterialSkin.MouseState.OUT;
-            this.cmbPlanos.Name = "cmbPlanos";
-            this.cmbPlanos.Size = new System.Drawing.Size(300, 49);
-            this.cmbPlanos.StartIndex = 0;
-            this.cmbPlanos.TabIndex = 0;
             // 
             // btnSalvarDia
             // 
@@ -81,19 +63,19 @@
             this.btnSalvarDia.UseVisualStyleBackColor = true;
             this.btnSalvarDia.Click += new System.EventHandler(this.btnSalvarDia_Click);
             // 
-            // listDias
+            // listDia
             // 
-            this.listDias.BackColor = System.Drawing.Color.White;
-            this.listDias.BorderColor = System.Drawing.Color.LightGray;
-            this.listDias.Depth = 0;
-            this.listDias.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.listDias.Location = new System.Drawing.Point(352, 80);
-            this.listDias.MouseState = MaterialSkin.MouseState.HOVER;
-            this.listDias.Name = "listDias";
-            this.listDias.SelectedIndex = -1;
-            this.listDias.SelectedItem = null;
-            this.listDias.Size = new System.Drawing.Size(421, 290);
-            this.listDias.TabIndex = 12;
+            this.listDia.BackColor = System.Drawing.Color.White;
+            this.listDia.BorderColor = System.Drawing.Color.LightGray;
+            this.listDia.Depth = 0;
+            this.listDia.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.listDia.Location = new System.Drawing.Point(352, 80);
+            this.listDia.MouseState = MaterialSkin.MouseState.HOVER;
+            this.listDia.Name = "listDia";
+            this.listDia.SelectedIndex = -1;
+            this.listDia.SelectedItem = null;
+            this.listDia.Size = new System.Drawing.Size(421, 290);
+            this.listDia.TabIndex = 12;
             // 
             // numericUpDownDia
             // 
@@ -170,7 +152,7 @@
             this.btnVoltarTelaAdmin.MouseState = MaterialSkin.MouseState.HOVER;
             this.btnVoltarTelaAdmin.Name = "btnVoltarTelaAdmin";
             this.btnVoltarTelaAdmin.NoAccentTextColor = System.Drawing.Color.Empty;
-            this.btnVoltarTelaAdmin.Size = new System.Drawing.Size(76, 36);
+            this.btnVoltarTelaAdmin.Size = new System.Drawing.Size(92, 36);
             this.btnVoltarTelaAdmin.TabIndex = 17;
             this.btnVoltarTelaAdmin.Text = "<- Voltar";
             this.btnVoltarTelaAdmin.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
@@ -178,38 +160,61 @@
             this.btnVoltarTelaAdmin.UseVisualStyleBackColor = true;
             this.btnVoltarTelaAdmin.Click += new System.EventHandler(this.btnVoltarTelaAdmin_Click);
             // 
+            // picBtnProximoDia
+            // 
+            this.picBtnProximoDia.Image = ((System.Drawing.Image)(resources.GetObject("picBtnProximoDia.Image")));
+            this.picBtnProximoDia.Location = new System.Drawing.Point(250, 80);
+            this.picBtnProximoDia.Name = "picBtnProximoDia";
+            this.picBtnProximoDia.Size = new System.Drawing.Size(77, 47);
+            this.picBtnProximoDia.TabIndex = 18;
+            this.picBtnProximoDia.TabStop = false;
+            this.picBtnProximoDia.Click += new System.EventHandler(this.picBtnProximoDia_Click);
+            // 
+            // picBtnAnteriorDia
+            // 
+            this.picBtnAnteriorDia.Image = ((System.Drawing.Image)(resources.GetObject("picBtnAnteriorDia.Image")));
+            this.picBtnAnteriorDia.Location = new System.Drawing.Point(26, 80);
+            this.picBtnAnteriorDia.Name = "picBtnAnteriorDia";
+            this.picBtnAnteriorDia.Size = new System.Drawing.Size(77, 47);
+            this.picBtnAnteriorDia.TabIndex = 19;
+            this.picBtnAnteriorDia.TabStop = false;
+            this.picBtnAnteriorDia.Click += new System.EventHandler(this.picBtnAnteriorDia_Click);
+            // 
             // FormPlanoDiasAdmin
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.picBtnAnteriorDia);
+            this.Controls.Add(this.picBtnProximoDia);
             this.Controls.Add(this.btnVoltarTelaAdmin);
             this.Controls.Add(this.cmbCapitulo);
             this.Controls.Add(this.cmbLivro);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.numericUpDownDia);
-            this.Controls.Add(this.listDias);
+            this.Controls.Add(this.listDia);
             this.Controls.Add(this.btnSalvarDia);
-            this.Controls.Add(this.cmbPlanos);
             this.Name = "FormPlanoDiasAdmin";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "FormPlanoDiasAdmin";
             this.Click += new System.EventHandler(this.btnSalvarDia_Click);
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownDia)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picBtnProximoDia)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picBtnAnteriorDia)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-
-        private MaterialSkin.Controls.MaterialComboBox cmbPlanos;
         private MaterialSkin.Controls.MaterialButton btnSalvarDia;
-        private MaterialSkin.Controls.MaterialListBox listDias;
+        private MaterialSkin.Controls.MaterialListBox listDia;
         private System.Windows.Forms.NumericUpDown numericUpDownDia;
         private System.Windows.Forms.Label label1;
         private MaterialSkin.Controls.MaterialComboBox cmbLivro;
         private MaterialSkin.Controls.MaterialComboBox cmbCapitulo;
         private MaterialSkin.Controls.MaterialButton btnVoltarTelaAdmin;
+        private System.Windows.Forms.PictureBox picBtnProximoDia;
+        private System.Windows.Forms.PictureBox picBtnAnteriorDia;
     }
 }

@@ -173,7 +173,6 @@ namespace BeLightBible
             card.Controls.Add(pnlTextoComScroll);
         }
 
-
         private void MostrarHistoriaAtual()
         {
             if (historias.Count == 0) return;
