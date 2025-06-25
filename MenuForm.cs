@@ -195,10 +195,11 @@ namespace BeLightBible
 
         private void FormPrincipal_Load(object sender, EventArgs e)
         {
-            historiasTab = new HistoriasKidsTab(tabBibleKids, pnlBibleKidPrincipal, picBtnProximaHistoria, picBtnVoltarHistoria, cardTextoHistoria, pictureBoxImagemHistoria, pnlBibleKids);
         }
         private async void MenuForm_Load(object sender, EventArgs e)
         {
+            historiasTab = new HistoriasKidsTab(tabBibleKids, pnlBibleKidPrincipal, picBtnProximaHistoria, picBtnVoltarHistoria, cardTextoHistoria, pictureBoxImagemHistoria, pnlBibleKids);
+
             CriarCardUltimoPonto();
             CarregarUltimoPonto();
             CriarLabelsVersiculoDia();
@@ -212,7 +213,47 @@ namespace BeLightBible
 
             cmbFonte.SelectedItem = Properties.Settings.Default.FonteBiblia;
 
+            await AtualizarInterfaceCompletaAsync();
+
         }
+        public async Task AtualizarInterfaceCompletaAsync()
+        {
+            // Recarregar anotações
+            CarregarAnotacoes();
+            AtualizarLarguraDosCards(flowLayoutPanelAnotacoes);
+            AtualizarLarguraDosCards(flowPanelPlanos);
+            AjustarFonteCards();
+
+            // Tela inicial
+            CriarCardUltimoPonto();
+            CarregarUltimoPonto();
+            CriarLabelsVersiculoDia();
+            await CarregarVersiculoDiaAsync();
+
+            // Tela Bíblia Kids
+ 
+            historiasTab.CriarComponentes();
+            historiasTab.MostrarHistoriaAtual();
+            historiasTab.InicializarHistorias();
+            historiasTab.CriarTituloPrincipal();
+
+            // Estilo Bíblia
+            estilo.EstilizarPictureBoxComoBotao(picBtnProximoCapitulo, true, cmbLivro, cmbCapitulo, BibleTab);
+            estilo.EstilizarPictureBoxComoBotao(picBtnAnteriorCapitulo, false, cmbLivro, cmbCapitulo, BibleTab);
+            estilo.EstilizarPictureBoxAudio(picAudio);
+
+            estilo.ArredondarControle(picBtnProximoCapitulo, 10);
+            estilo.ArredondarControle(picBtnAnteriorCapitulo, 10);
+            estilo.ArredondarControle(picAudio, 10);
+
+            // Estilo Bíblia Kids
+            estilo.EstilizarPictureBoxComoBotao(picBtnProximaHistoria);
+            estilo.EstilizarPictureBoxComoBotao(picBtnVoltarHistoria);
+            estilo.ArredondarControle(picBtnProximaHistoria, 10);
+            estilo.ArredondarControle(picBtnVoltarHistoria, 10);
+        }
+
+
 
         private void AtualizarLarguraDosCards(FlowLayoutPanel flowLayoutPanel)
         {
@@ -978,13 +1019,38 @@ Agora responda a seguinte pergunta em Portugues de Portugal de forma clara, com 
             }
         }
 
+        private void PararAudio()
+        {
+            if (outputDevice != null)
+            {
+                outputDevice.Stop();
+                // NÃO chame LiberarAudio() aqui para evitar liberar duas vezes.
+                // LiberarAudio() será chamado no evento PlaybackStopped.
+            }
+        }
+
+        private void OutputDevice_PlaybackStopped(object sender, StoppedEventArgs e)
+        {
+            this.Invoke(new Action(() =>
+            {
+                LiberarAudio();
+            }));
+        }
+
         private void LiberarAudio()
         {
-            outputDevice?.Dispose();
-            outputDevice = null;
+            if (outputDevice != null)
+            {
+                outputDevice.PlaybackStopped -= OutputDevice_PlaybackStopped; // desvincula evento
+                outputDevice.Dispose();
+                outputDevice = null;
+            }
 
-            audioFile?.Dispose();
-            audioFile = null;
+            if (audioFile != null)
+            {
+                audioFile.Dispose();
+                audioFile = null;
+            }
 
             try
             {
@@ -998,20 +1064,6 @@ Agora responda a seguinte pergunta em Portugues de Portugal de forma clara, com 
             isPlaying = false;
         }
 
-
-        private void PararAudio()
-        {
-            outputDevice?.Stop();
-            LiberarAudio();
-        }
-
-        private void OutputDevice_PlaybackStopped(object sender, StoppedEventArgs e)
-        {
-            this.Invoke(new Action(() =>
-            {
-                LiberarAudio();
-            }));
-        }
 
         private string ObterTextoDosVersiculos()
         {
@@ -1523,41 +1575,8 @@ Agora responda a seguinte pergunta em Portugues de Portugal de forma clara, com 
                         menu?.Show();
                     }
 
-                    // Depois de salvar, recarrega as anotações na interface:
+                    await AtualizarInterfaceCompletaAsync();
 
-                    CarregarAnotacoes();
-                    AtualizarLarguraDosCards(flowLayoutPanelAnotacoes); //Responsivo
-                    AtualizarLarguraDosCards(flowPanelPlanos);
-
-                    AjustarFonteCards(); //Responsivo
-
-                    //Renovar tela inicial
-                    CriarCardUltimoPonto();
-                    CarregarUltimoPonto();
-                    CriarLabelsVersiculoDia();
-                    await CarregarVersiculoDiaAsync();
-
-                    //Renovar tela Bible
-                    historiasTab.CriarComponentes(); // ✔️ certo
-                    historiasTab.MostrarHistoriaAtual();
-                    historiasTab.InicializarHistorias();
-                    historiasTab.CriarTituloPrincipal();
-
-                    //Renovar Estilos
-                    estilo.EstilizarPictureBoxComoBotao(picBtnProximoCapitulo, true, cmbLivro, cmbCapitulo, BibleTab);
-                    estilo.EstilizarPictureBoxComoBotao(picBtnAnteriorCapitulo, false, cmbLivro, cmbCapitulo, BibleTab);
-                    estilo.EstilizarPictureBoxAudio(picAudio);
-
-                    estilo.ArredondarControle(picBtnProximoCapitulo, 10);
-                    estilo.ArredondarControle(picBtnAnteriorCapitulo, 10);
-                    estilo.ArredondarControle(picAudio, 10);
-
-                    // Estilização dos botões e controles (Bible Kids)
-                    estilo.EstilizarPictureBoxComoBotao(picBtnProximaHistoria);
-                    estilo.EstilizarPictureBoxComoBotao(picBtnVoltarHistoria);
-
-                    estilo.ArredondarControle(picBtnProximaHistoria, 10);
-                    estilo.ArredondarControle(picBtnVoltarHistoria, 10);
                 }
             }
         }
@@ -2213,7 +2232,7 @@ Agora responda a seguinte pergunta em Portugues de Portugal de forma clara, com 
             }
         }
 
-        private void BtnContinuar_Click(object sender, EventArgs e)
+        private async void BtnContinuar_Click(object sender, EventArgs e)
         {
             var btn = sender as MaterialButton;
             var planoUtilizador = btn?.Tag as PlanoLeituraUtilizador;
@@ -2230,10 +2249,14 @@ Agora responda a seguinte pergunta em Portugues de Portugal de forma clara, com 
                 return;
             }
 
-            // Aqui sim abre a tela de leitura diária
+            // Abre a tela de leitura diária
             var leituraForm = new FormLeituraDiaria(planoUtilizador.Id);
             leituraForm.ShowDialog();
+
+            // Após o diálogo ser fechado, atualiza toda a interface
+            await AtualizarInterfaceCompletaAsync();
         }
+
 
         private void CarregarMeusPlanos()
         {
