@@ -196,7 +196,7 @@
             this.Controls.Add(this.btnSalvarDia);
             this.Name = "FormPlanoDiasAdmin";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "FormPlanoDiasAdmin";
+            this.Text = "Dia";
             this.Click += new System.EventHandler(this.btnSalvarDia_Click);
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownDia)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picBtnProximoDia)).EndInit();

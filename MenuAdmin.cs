@@ -25,9 +25,6 @@ namespace BeLightBible
             AtualizarLarguraDosCards(flowLayoutPanelPlanos);
             AjustarFonteCards();
 
-     
-
-
             // Skin do MaterialSkin
             var skinManager = MaterialSkinManager.Instance;
             skinManager.AddFormToManage(this);
@@ -248,7 +245,6 @@ namespace BeLightBible
                     formDias.ShowDialog();
                 }
             }
-
         }
 
 

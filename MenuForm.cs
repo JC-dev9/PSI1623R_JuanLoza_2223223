@@ -1520,7 +1520,6 @@ Agora responda a seguinte pergunta em Portugues de Portugal de forma clara, com 
                                 context.SaveChanges();
                             }
                         }
-
                         menu?.Show();
                     }
 
