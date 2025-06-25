@@ -336,6 +336,9 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>Model.Designer.cs</LastGenOutput>
     </EntityDeploy>
+    <None Include="docs-originais\TGSPSI23R_JuanLoza_2223223_ManualProgramador.pdf" />
+    <None Include="docs-originais\TGSPSI23R_JuanLoza_2223223_ManualUtilizador.pdf" />
+    <None Include="docs-originais\TGSPSI23R_JuanLoza_2223223_RelatorioFinal.pdf" />
     <None Include="Model.edmx.diagram">
       <DependentUpon>Model.edmx</DependentUpon>
     </None>
@@ -354,6 +357,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="dist\BeLightBible.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="icons\book-open-text.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -416,6 +422,9 @@
     </Content>
     <None Include="Resources\ImagemPadrao.png" />
     <None Include="Resources\open-book.png" />
+    <Content Include="scriptsbd\BeLightBible.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="volume-2-white.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -426,11 +435,7 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="dist\" />
-    <Folder Include="docs-originais\" />
-    <Folder Include="scriptbd\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
