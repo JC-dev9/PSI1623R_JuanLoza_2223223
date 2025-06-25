@@ -30,6 +30,7 @@ namespace BeLightBible
             lbl = label;
         }
 
+        // Retorna lista de versículos salvos por usuário, ordenados pela data
         public static List<VersiculoSalvo> ObterVersiculosSalvos(int userId)
         {
             using (var context = new Entities())
@@ -41,6 +42,7 @@ namespace BeLightBible
             }
         }
 
+        // Remove versículo salvo do usuário
         public static void ExcluirVersiculoSalvo(int userId, string livro, int capitulo, int versiculo)
         {
             using (var context = new Entities())
@@ -58,19 +60,21 @@ namespace BeLightBible
                 }
             }
         }
+
+        // Obtém o último ponto de leitura do usuário
         public static (string Livro, int Capitulo)? ObterUltimoPonto(int userId)
         {
             using (var context = new Entities())
             {
                 var ultimo = context.UltimoPontoLeitura.SingleOrDefault(x => x.UserId == userId);
                 if (ultimo != null)
-                {
                     return (ultimo.Livro, ultimo.Capitulo);
-                }
+
                 return null;
             }
         }
 
+        // Salva ou atualiza o último ponto de leitura
         public static void SalvarUltimoPonto(int userId, string livro, int capitulo)
         {
             using (var context = new Entities())
@@ -98,32 +102,30 @@ namespace BeLightBible
             }
         }
 
+        // Salva um novo versículo favorito
         public void SalvarVersiculoEF(int userId, string referencia, string texto)
         {
             try
             {
-                // Exemplo: "Salmos 37:5"
                 string[] partes = referencia.Split(' ');
-                string capVersStr = partes.Last(); // último item deve ser "cap:vers"
-                string livro = string.Join(" ", partes.Take(partes.Length - 1)); // junta o resto como nome do livro
+                string capVersStr = partes.Last();
+                string livro = string.Join(" ", partes.Take(partes.Length - 1));
 
                 string[] capVers = capVersStr.Split(':');
                 int capitulo = int.Parse(capVers[0]);
                 int versiculo = int.Parse(capVers[1]);
 
-
-                using (var context = new Entities()) // Substitua pelo nome do seu DbContext
+                using (var context = new Entities())
                 {
                     bool jaExiste = context.VersiculoSalvo.Any(v =>
                         v.UserId == userId &&
                         v.Livro == livro &&
                         v.Capitulo == capitulo &&
-                        v.Versiculo == versiculo
-                    );
+                        v.Versiculo == versiculo);
 
                     if (!jaExiste)
                     {
-                        var versiculoSalvo = new VersiculoSalvo
+                        context.VersiculoSalvo.Add(new VersiculoSalvo
                         {
                             UserId = userId,
                             Livro = livro,
@@ -131,9 +133,8 @@ namespace BeLightBible
                             Versiculo = versiculo,
                             Texto = texto,
                             DataSalvo = DateTime.Now
-                        };
+                        });
 
-                        context.VersiculoSalvo.Add(versiculoSalvo);
                         context.SaveChanges();
                         MessageBox.Show("Versículo salvo com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
@@ -149,6 +150,7 @@ namespace BeLightBible
             }
         }
 
+        // Retorna grifos de um capítulo
         public static List<VersiculoSublinhado> ObterGrifosUtilizador(int userId, string livro, int capitulo)
         {
             using (var context = new Entities())
@@ -159,6 +161,7 @@ namespace BeLightBible
             }
         }
 
+        // Retorna todos os grifos do usuário
         public static List<VersiculoSublinhado> ObterGrifosUtilizador(int userId)
         {
             using (var context = new Entities())
@@ -169,6 +172,7 @@ namespace BeLightBible
             }
         }
 
+        // Exclui grifo
         public static void ExcluirGrifo(int userId, string livro, int capitulo, int versiculo)
         {
             using (var context = new Entities())
@@ -187,11 +191,14 @@ namespace BeLightBible
             }
         }
 
-        private void SalvarGrifo(int userId, string livro, int capitulo, int versiculo, string texto,string corHex)
+        // Salva ou atualiza um grifo
+        private void SalvarGrifo(int userId, string livro, int capitulo, int versiculo, string texto, string corHex)
         {
             using (var context = new Entities())
             {
-                var grifoExistente = context.VersiculoSublinhado.FirstOrDefault(v => v.UserId == userId && v.Livro == livro && v.Capitulo == capitulo && v.Versiculo == versiculo);
+                var grifoExistente = context.VersiculoSublinhado.FirstOrDefault(v =>
+                    v.UserId == userId && v.Livro == livro &&
+                    v.Capitulo == capitulo && v.Versiculo == versiculo);
 
                 if (grifoExistente != null)
                 {
@@ -199,7 +206,7 @@ namespace BeLightBible
                 }
                 else
                 {
-                    var novoGrifo = new VersiculoSublinhado
+                    context.VersiculoSublinhado.Add(new VersiculoSublinhado
                     {
                         UserId = userId,
                         Livro = livro,
@@ -208,41 +215,37 @@ namespace BeLightBible
                         Texto = texto,
                         Cor = corHex,
                         DataCriado = DateTime.Now
-                    };
-
-                    context.VersiculoSublinhado.Add(novoGrifo);
+                    });
                 }
 
                 context.SaveChanges();
             }
         }
+
+        // Mostra seletor de cor e salva grifo no banco
         public void Grifar(int userId, string livro, int capitulo, int versiculo, string texto)
         {
-
             using (ColorDialog colorDialog = new ColorDialog())
             {
                 if (colorDialog.ShowDialog() == DialogResult.OK)
                 {
-                    // Atualiza a cor de fundo do Label
                     lbl.BackColor = colorDialog.Color;
-
-                    // Converte a cor selecionada para o formato hexadecimal
                     string corHex = ColorTranslator.ToHtml(colorDialog.Color);
 
                     try
                     {
-                        // Salva a cor no banco de dados
                         SalvarGrifo(userId, livro, capitulo, versiculo, texto, corHex);
                         MessageBox.Show("Grifo salvo com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                     catch (Exception ex)
                     {
-                        // Trata possíveis erros ao salvar no banco de dados
                         MessageBox.Show($"Erro ao salvar o grifo: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
             }
         }
+
+        // Retorna anotações do usuário
         public static List<VersiculoAnotado> ObterAnotacoes(int userId)
         {
             using (var context = new Entities())
@@ -254,6 +257,7 @@ namespace BeLightBible
             }
         }
 
+        // Abre formulário de anotação e salva no banco
         public async Task Anotar(int userId, string livro, int capitulo, int versiculo, Func<Task> recarregarCallback)
         {
             using (var context = new Entities())
@@ -287,23 +291,22 @@ namespace BeLightBible
                         context.SaveChanges();
                     }
 
-                    // Chama o callback pra recarregar a interface
                     if (recarregarCallback != null)
-                    {
                         await recarregarCallback();
-                    }
                 }
             }
         }
+
+        // Copia o conteúdo do label para a área de transferência
         public void Copiar()
         {
             Clipboard.SetText(lbl.Text);
             MessageBox.Show("Versículo copiado para a área de transferência.");
         }
 
+        // (A ser implementado) Lógica de compartilhamento
         public void Compartilhar()
         {
-            // Implementar lógica para compartilhar
             MessageBox.Show("Abrindo opções de compartilhamento...");
         }
     }
