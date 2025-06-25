@@ -214,6 +214,8 @@ namespace BeLightBible
 
             await AtualizarInterfaceCompletaAsync();
 
+            SwitchManterSessao.Checked = Properties.Settings.Default.ManterSessao;
+
         }
         public async Task AtualizarInterfaceCompletaAsync()
         {
@@ -2313,7 +2315,7 @@ Agora responda a seguinte pergunta em Portugues de Portugal de forma clara, com 
                 Properties.Settings.Default.UserIdSalvo = 0;
             }
 
-            Properties.Settings.Default.Save(); // Grava as configurações
+            Properties.Settings.Default.Save();
         }
 
     }

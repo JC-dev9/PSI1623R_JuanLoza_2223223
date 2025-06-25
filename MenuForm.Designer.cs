@@ -708,7 +708,7 @@ namespace BeLightBible
             this.gbSessao.Controls.Add(this.SwitchManterSessao);
             this.gbSessao.Location = new System.Drawing.Point(15, 210);
             this.gbSessao.Name = "gbSessao";
-            this.gbSessao.Size = new System.Drawing.Size(823, 136);
+            this.gbSessao.Size = new System.Drawing.Size(730, 136);
             this.gbSessao.TabIndex = 12;
             this.gbSessao.TabStop = false;
             this.gbSessao.Text = "Manter e Encerrar Sessão";
@@ -745,9 +745,9 @@ namespace BeLightBible
             this.SwitchManterSessao.MouseState = MaterialSkin.MouseState.HOVER;
             this.SwitchManterSessao.Name = "SwitchManterSessao";
             this.SwitchManterSessao.Ripple = true;
-            this.SwitchManterSessao.Size = new System.Drawing.Size(144, 37);
+            this.SwitchManterSessao.Size = new System.Drawing.Size(164, 37);
             this.SwitchManterSessao.TabIndex = 2;
-            this.SwitchManterSessao.Text = "Mudar tema";
+            this.SwitchManterSessao.Text = "Manter Sessão";
             this.SwitchManterSessao.UseVisualStyleBackColor = true;
             this.SwitchManterSessao.CheckedChanged += new System.EventHandler(this.SwitchManterSessao_CheckedChanged);
             // 
@@ -760,7 +760,7 @@ namespace BeLightBible
             this.gbFonteTamanho.Controls.Add(this.lblFonte);
             this.gbFonteTamanho.Location = new System.Drawing.Point(15, 15);
             this.gbFonteTamanho.Name = "gbFonteTamanho";
-            this.gbFonteTamanho.Size = new System.Drawing.Size(823, 136);
+            this.gbFonteTamanho.Size = new System.Drawing.Size(730, 136);
             this.gbFonteTamanho.TabIndex = 0;
             this.gbFonteTamanho.TabStop = false;
             this.gbFonteTamanho.Text = "Tema e Fonte";
@@ -782,7 +782,7 @@ namespace BeLightBible
             // 
             // numericTamanho
             // 
-            this.numericTamanho.Location = new System.Drawing.Point(222, 77);
+            this.numericTamanho.Location = new System.Drawing.Point(222, 71);
             this.numericTamanho.Maximum = new decimal(new int[] {
             30,
             0,
