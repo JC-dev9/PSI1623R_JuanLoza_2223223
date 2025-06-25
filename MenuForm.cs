@@ -2167,14 +2167,17 @@ Agora responda a seguinte pergunta em Portugues de Portugal de forma clara, com 
                 };
                 card.Controls.Add(lblTitulo);
 
-                int diaAtual = (int)planoUtilizador.ProgressoDiaAtual;
+                int progressoBruto = (int)planoUtilizador.ProgressoDiaAtual;
+                int diaParaProgresso = progressoBruto - 1;
+                if (diaParaProgresso < 0) diaParaProgresso = 0;
+
                 int totalDias = plano.DiasDuracao;
+                if (totalDias <= 0) totalDias = 1;
 
-                if (totalDias <= 0) totalDias = 1; // evita divisão por zero
+                bool planoConcluido = progressoBruto > totalDias;
+                int porcentagem = planoConcluido ? 100 : (int)((diaParaProgresso / (double)totalDias) * 100);
 
-                bool planoConcluido = diaAtual >= totalDias;
 
-                int porcentagem = planoConcluido ? 100 : (int)((diaAtual / (double)totalDias) * 100);
 
                 // Remove progressBars antigos do card, se existirem
                 var barrasExistentes = card.Controls.OfType<ProgressBar>().ToList();
@@ -2196,15 +2199,15 @@ Agora responda a seguinte pergunta em Portugues de Portugal de forma clara, com 
                 card.Controls.Add(barra);
                 barra.BringToFront(); // garantir que fique visível
 
-                MessageBox.Show($"Valor da porcentagem: {porcentagem}");
 
 
                 var lblProgresso = new Label
                 {
-                    Text = planoConcluido ? $"Plano concluído ({totalDias} dias)" : $"Dia {diaAtual} de {totalDias}",
+                    Text = planoConcluido ? $"Plano concluído ({totalDias} dias)" : $"Dia {progressoBruto} de {totalDias}",
                     Location = new Point(100, 65),
                     AutoSize = true
                 };
+
                 card.Controls.Add(lblProgresso);
 
 

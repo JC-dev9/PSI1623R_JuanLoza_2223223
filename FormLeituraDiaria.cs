@@ -107,7 +107,11 @@ namespace BeLightBible
                 lblTitulo.Text = $"Dia {diaAtual} de {diasTotais}";
 
                 // A barra inicia com o progresso correto
-                progressBar.Value = Math.Min(100, (int)((float)diaAtual / diasTotais * 100));
+                int progressoDia = diaAtual - 1;
+                if (progressoDia < 0) progressoDia = 0;
+
+                progressBar.Value = Math.Min(100, (int)((float)progressoDia / diasTotais * 100));
+
 
                 var leituraDia = db.PlanoLeituraDia
                                    .FirstOrDefault(d => d.PlanoUtilizadorId == planoUtilizadorId && d.Dia == diaAtual);
