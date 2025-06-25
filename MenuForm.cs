@@ -1024,7 +1024,6 @@ Agora responda a seguinte pergunta em Portugues de Portugal de forma clara, com 
             if (outputDevice != null)
             {
                 outputDevice.Stop();
-                // NÃO chame LiberarAudio() aqui para evitar liberar duas vezes.
                 // LiberarAudio() será chamado no evento PlaybackStopped.
             }
         }
