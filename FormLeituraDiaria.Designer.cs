@@ -37,7 +37,7 @@
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Name = "FormLeituraDiaria";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "FormLeituraDiaria";
+            this.Text = "Leitura Diária";
             this.ResumeLayout(false);
 
         }

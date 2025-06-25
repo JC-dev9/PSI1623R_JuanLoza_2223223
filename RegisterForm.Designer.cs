@@ -172,7 +172,7 @@ namespace BeLightBible
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "RegisterForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Registar-se";
+            this.Text = "BeLight Bible";
             this.ResumeLayout(false);
             this.PerformLayout();
 

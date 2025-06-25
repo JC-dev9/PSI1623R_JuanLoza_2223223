@@ -122,7 +122,8 @@
             this.Controls.Add(this.materialTabControl1);
             this.DrawerTabControl = this.materialTabControl1;
             this.Name = "MenuAdmin";
-            this.Text = "MenuAdmin";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Administrador";
             this.Load += new System.EventHandler(this.MenuAdmin_Load);
             this.materialTabControl1.ResumeLayout(false);
             this.tabCriarPlano.ResumeLayout(false);

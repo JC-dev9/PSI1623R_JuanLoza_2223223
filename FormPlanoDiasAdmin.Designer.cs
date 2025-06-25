@@ -147,7 +147,7 @@
             this.btnVoltarTelaAdmin.Depth = 0;
             this.btnVoltarTelaAdmin.HighEmphasis = true;
             this.btnVoltarTelaAdmin.Icon = null;
-            this.btnVoltarTelaAdmin.Location = new System.Drawing.Point(697, 395);
+            this.btnVoltarTelaAdmin.Location = new System.Drawing.Point(665, 396);
             this.btnVoltarTelaAdmin.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnVoltarTelaAdmin.MouseState = MaterialSkin.MouseState.HOVER;
             this.btnVoltarTelaAdmin.Name = "btnVoltarTelaAdmin";
@@ -196,7 +196,7 @@
             this.Controls.Add(this.btnSalvarDia);
             this.Name = "FormPlanoDiasAdmin";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Dia";
+            this.Text = "Plano de Leitura";
             this.Click += new System.EventHandler(this.btnSalvarDia_Click);
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownDia)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picBtnProximoDia)).EndInit();
