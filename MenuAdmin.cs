@@ -258,5 +258,11 @@ namespace BeLightBible
             var formPlano = new CriarPlanoLeitura();
             formPlano.Show();
         }
+
+        private void btnLogout_Click(object sender, EventArgs e)
+        {
+            new LoginForm().Show();
+            this.Hide();
+        }
     }
 }

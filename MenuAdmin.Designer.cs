@@ -36,6 +36,7 @@
             this.pnlCategoriaPlano = new System.Windows.Forms.Panel();
             this.btnCriarPlano = new MaterialSkin.Controls.MaterialButton();
             this.flowLayoutPanelPlanos = new System.Windows.Forms.FlowLayoutPanel();
+            this.btnLogout = new MaterialSkin.Controls.MaterialButton();
             this.materialTabControl1.SuspendLayout();
             this.tabCriarPlano.SuspendLayout();
             this.pnlCategoriaPlano.SuspendLayout();
@@ -77,6 +78,7 @@
             // pnlCategoriaPlano
             // 
             this.pnlCategoriaPlano.BackColor = System.Drawing.Color.Transparent;
+            this.pnlCategoriaPlano.Controls.Add(this.btnLogout);
             this.pnlCategoriaPlano.Controls.Add(this.btnCriarPlano);
             this.pnlCategoriaPlano.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlCategoriaPlano.ForeColor = System.Drawing.SystemColors.GrayText;
@@ -114,6 +116,28 @@
             this.flowLayoutPanelPlanos.Size = new System.Drawing.Size(798, 389);
             this.flowLayoutPanelPlanos.TabIndex = 1;
             // 
+            // btnLogout
+            // 
+            this.btnLogout.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnLogout.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            this.btnLogout.Depth = 0;
+            this.btnLogout.ForeColor = System.Drawing.SystemColors.GrayText;
+            this.btnLogout.HighEmphasis = true;
+            this.btnLogout.Icon = null;
+            this.btnLogout.Location = new System.Drawing.Point(670, 11);
+            this.btnLogout.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.btnLogout.MouseState = MaterialSkin.MouseState.HOVER;
+            this.btnLogout.Name = "btnLogout";
+            this.btnLogout.NoAccentTextColor = System.Drawing.Color.Empty;
+            this.btnLogout.Size = new System.Drawing.Size(78, 36);
+            this.btnLogout.TabIndex = 6;
+            this.btnLogout.Text = "Logout";
+            this.btnLogout.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnLogout.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            this.btnLogout.UseAccentColor = false;
+            this.btnLogout.UseVisualStyleBackColor = true;
+            this.btnLogout.Click += new System.EventHandler(this.btnLogout_Click);
+            // 
             // MenuAdmin
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -140,5 +164,6 @@
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanelPlanos;
         private System.Windows.Forms.Panel pnlCategoriaPlano;
         private MaterialSkin.Controls.MaterialButton btnCriarPlano;
+        private MaterialSkin.Controls.MaterialButton btnLogout;
     }
 }
