@@ -36,6 +36,9 @@ namespace BeLightBible
                 Accent.DeepOrange200,
                 TextShade.WHITE
             );
+
+            btnLogout.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+
         }
         private void MenuAdmin_Resize(object sender, EventArgs e)
         {
@@ -100,7 +103,8 @@ namespace BeLightBible
         private void CriarCardsPlanosADM(List<PlanoLeitura> planos, FlowLayoutPanel flowPanelPlanos)
         {
             flowPanelPlanos.Controls.Clear();
-            flowPanelPlanos.Padding = new Padding(10, 50, 10, 10);
+            flowPanelPlanos.Padding = new Padding(10, 50, 10, 20);
+            
 
             foreach (var plano in planos)
             {
@@ -225,8 +229,6 @@ namespace BeLightBible
             }
         }
 
-
-
         private void BtnEditar_Click(object sender, EventArgs e)
         {
             // Obtém o botão que foi clicado
@@ -247,9 +249,9 @@ namespace BeLightBible
             }
         }
 
-
         private void btnCriarPlano_Click(object sender, EventArgs e)
         {
+
 
             // Fecha o MenuAdmin (este form)
             this.Hide();

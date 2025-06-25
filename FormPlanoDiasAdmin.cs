@@ -41,7 +41,7 @@ namespace BeLightBible
                 Primary.BlueGrey500,
                 Primary.BlueGrey700,
                 Primary.BlueGrey100,
-                Accent.Orange400,
+                Accent.DeepOrange200,
                 TextShade.WHITE
             );
 

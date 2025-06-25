@@ -2188,13 +2188,15 @@ Agora responda a seguinte pergunta em Portugues de Portugal de forma clara, com 
                 {
                     Minimum = 0,
                     Maximum = 100,
-                    Value = Math.Max(1, Math.Min(porcentagem, 100)), // nunca zero se começou (ajuste opcional)
+                    Value = Math.Min(Math.Max(porcentagem, 0), 100),
                     Size = new Size(card.Width - 120, 20),
                     Location = new Point(100, 40)
                 };
 
                 card.Controls.Add(barra);
                 barra.BringToFront(); // garantir que fique visível
+
+                MessageBox.Show($"Valor da porcentagem: {porcentagem}");
 
 
                 var lblProgresso = new Label
