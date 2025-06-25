@@ -1490,8 +1490,6 @@ Agora responda a seguinte pergunta em Portugues de Portugal de forma clara, com 
             if (sender is Button btn && btn.Parent is MaterialCard card)
             {
                 // Aqui você precisa acessar os dados da anotação correspondente,
-                // por exemplo, guardar uma referência ou ID na Tag do card ou botão.
-                // Vou supor que você guardou o objeto anotacao na Tag do card:
 
                 if (card.Tag is VersiculoAnotado anotacao)
                 {

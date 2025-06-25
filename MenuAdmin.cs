@@ -171,27 +171,84 @@ namespace BeLightBible
                 };
 
                 btnEditar.Click += BtnEditar_Click;
-                //btnExcluir.Click += BtnExcluir_Click;
+                btnExcluir.Click += BtnExcluir_Click;
+
                 card.Controls.Add(btnEditar);
                 card.Controls.Add(btnExcluir);
 
                 flowPanelPlanos.Controls.Add(card);
             }
         }
+
+        private void BtnExcluir_Click(object sender, EventArgs e)
+        {
+            var btn = sender as Button;
+            if (btn?.Parent is MaterialCard card && card.Tag is PlanoLeitura planoSelecionado)
+            {
+                var confirmResult = MessageBox.Show("Tem certeza que deseja excluir este plano?",
+                                                    "Confirmação", MessageBoxButtons.YesNo);
+
+                if (confirmResult == DialogResult.Yes)
+                {
+                    using (var context = new Entities())
+                    {
+                        try
+                        {
+                            // Primeiro, carrega o plano completo com suas dependências se quiser remover tudo
+                            var plano = context.PlanoLeitura.Find(planoSelecionado.Id);
+
+                            // Remove dias modelo
+                            var diasModelo = context.PlanoLeituraModeloDia.Where(d => d.PlanoLeituraId == plano.Id);
+                            context.PlanoLeituraModeloDia.RemoveRange(diasModelo);
+
+                            // Remove registros de utilização
+                            var utilizadores = context.PlanoLeituraUtilizador.Where(p => p.PlanoLeituraId == plano.Id).ToList();
+
+                            foreach (var util in utilizadores)
+                            {
+                                var dias = context.PlanoLeituraDia.Where(d => d.PlanoUtilizadorId == util.Id);
+                                context.PlanoLeituraDia.RemoveRange(dias);
+                            }
+
+                            context.PlanoLeituraUtilizador.RemoveRange(utilizadores);
+
+                            // Por fim, remove o plano
+                            context.PlanoLeitura.Remove(plano);
+                            context.SaveChanges();
+
+                            MessageBox.Show("Plano excluído com sucesso!");
+                            CarregarPlanoLeituraTodos();
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("Erro ao excluir: " + ex.Message);
+                        }
+                    }
+                }
+            }
+        }
+
+
+
         private void BtnEditar_Click(object sender, EventArgs e)
         {
             // Obtém o botão que foi clicado
             Button btn = sender as Button;
+
+            MenuAdmin menu = this.FindForm() as MenuAdmin;
+            menu?.Hide();
 
             // Sobe até o card (pai do botão) e pega o objeto PlanoLeitura que está no Tag
             if (btn?.Parent is MaterialCard card && card.Tag is PlanoLeitura planoSelecionado)
             {
                 int planoId = planoSelecionado.Id;
 
-                // Abre o Form de edição passando o planoId
-                FormPlanoDiasAdmin formDias = new FormPlanoDiasAdmin(planoId);
-                formDias.ShowDialog();
+                using (FormPlanoDiasAdmin formDias = new FormPlanoDiasAdmin(planoId))
+                {
+                    formDias.ShowDialog();
+                }
             }
+
         }
 
 
