@@ -1,6 +1,7 @@
 ﻿using MaterialSkin;
 using MaterialSkin.Controls;
 using System;
+using System.Collections.Generic;
 using System.Data.SqlTypes;
 using System.Linq;
 using System.Windows.Forms;
@@ -140,14 +141,41 @@ namespace BeLightBible
 
             using (var db = new Entities())
             {
-                var novoCapitulo = new PlanoLeituraModeloDia
-                {
-                    PlanoLeituraId = planoLeituraId,
-                    Dia = diaAtual,
-                    Capitulos = capituloCompleto
-                };
+                // Busca o registro do dia e plano
+                var registroExistente = db.PlanoLeituraModeloDia
+                    .FirstOrDefault(r => r.PlanoLeituraId == planoLeituraId && r.Dia == diaAtual);
 
-                db.PlanoLeituraModeloDia.Add(novoCapitulo);
+                if (registroExistente != null)
+                {
+                    // Se já tem capítulos, adiciona o novo (evitando repetição)
+                    var capitulosExistentes = registroExistente.Capitulos?.Split(',')
+                        .Select(c => c.Trim())
+                        .ToList() ?? new List<string>();
+
+                    if (!capitulosExistentes.Contains(capituloCompleto))
+                    {
+                        capitulosExistentes.Add(capituloCompleto);
+                        registroExistente.Capitulos = string.Join(", ", capitulosExistentes);
+                        db.Entry(registroExistente).State = System.Data.Entity.EntityState.Modified;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Esse capítulo já está adicionado para hoje.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        return;
+                    }
+                }
+                else
+                {
+                    // Não existe, cria novo registro
+                    var novoCapitulo = new PlanoLeituraModeloDia
+                    {
+                        PlanoLeituraId = planoLeituraId,
+                        Dia = diaAtual,
+                        Capitulos = capituloCompleto
+                    };
+                    db.PlanoLeituraModeloDia.Add(novoCapitulo);
+                }
+
                 db.SaveChanges();
             }
 
@@ -157,6 +185,7 @@ namespace BeLightBible
             cmbLivro.SelectedIndex = -1;
             cmbCapitulo.Items.Clear();
         }
+
 
 
         private int ObterDiasMaximoPlano(int planoId)
@@ -173,7 +202,7 @@ namespace BeLightBible
         private void CarregarCapitulosDoDia()
         {
             listDia.Items.Clear();
-            //lblDiaAtual.Text = $"Dia {diaAtual}"; // Supondo que você tem um Label chamado lblDiaAtual
+
 
             using (var db = new Entities())
             {
