@@ -198,11 +198,9 @@ namespace BeLightBible
                          .FirstOrDefault();
             }
         }
-
         private void CarregarCapitulosDoDia()
         {
             listDia.Items.Clear();
-
 
             using (var db = new Entities())
             {
@@ -213,7 +211,15 @@ namespace BeLightBible
 
                 foreach (var cap in capitulos)
                 {
-                    listDia.Items.Add(new MaterialListBoxItem(cap));
+                    // Separar capítulos pela vírgula, remover espaços extras e adicionar um por um
+                    var capitulosSeparados = cap.Split(',')
+                                               .Select(c => c.Trim())
+                                               .Where(c => !string.IsNullOrEmpty(c));
+
+                    foreach (var capitulo in capitulosSeparados)
+                    {
+                        listDia.Items.Add(new MaterialListBoxItem(capitulo));
+                    }
                 }
             }
         }
