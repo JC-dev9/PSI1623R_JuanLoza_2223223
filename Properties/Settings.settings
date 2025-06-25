@@ -11,11 +11,14 @@
     <Setting Name="DataUltimoVersiculo" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="FonteBiblia" Type="System.String" Scope="User">
-      <Value Profile="(Default)">	Segoe UI</Value>
+    <Setting Name="ManterSessao" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="TamanhoFonteBiblia" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">12</Value>
+    <Setting Name="UsernameSalvo" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="UserIdSalvo" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
     </Setting>
   </Settings>
 </SettingsFile>

@@ -6,17 +6,30 @@ using System.Windows.Forms;
 
 namespace BeLightBible
 {
-    internal static class Program
+    static class Program
     {
-        /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
         [STAThread]
         static void Main()
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new LoginForm());
+
+            if (Properties.Settings.Default.ManterSessao &&
+                !string.IsNullOrEmpty(Properties.Settings.Default.UsernameSalvo))
+            {
+                Sessao.Username = Properties.Settings.Default.UsernameSalvo;
+                Sessao.UserId = Properties.Settings.Default.UserIdSalvo;
+
+                if (Sessao.Username == "admin")
+                    Application.Run(new MenuAdmin());
+                else
+                    Application.Run(new MenuForm());
+            }
+            else
+            {
+                Application.Run(new LoginForm());
+            }
         }
     }
+
 }

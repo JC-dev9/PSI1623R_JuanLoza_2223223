@@ -61,25 +61,37 @@ namespace BeLightBible.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("\tSegoe UI")]
-        public string FonteBiblia {
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ManterSessao {
             get {
-                return ((string)(this["FonteBiblia"]));
+                return ((bool)(this["ManterSessao"]));
             }
             set {
-                this["FonteBiblia"] = value;
+                this["ManterSessao"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("12")]
-        public int TamanhoFonteBiblia {
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string UsernameSalvo {
             get {
-                return ((int)(this["TamanhoFonteBiblia"]));
+                return ((string)(this["UsernameSalvo"]));
             }
             set {
-                this["TamanhoFonteBiblia"] = value;
+                this["UsernameSalvo"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int UserIdSalvo {
+            get {
+                return ((int)(this["UserIdSalvo"]));
+            }
+            set {
+                this["UserIdSalvo"] = value;
             }
         }
     }

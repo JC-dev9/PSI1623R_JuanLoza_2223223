@@ -211,7 +211,6 @@ namespace BeLightBible
             //Definições
             CriarPainelDeConfiguracoes(panelSettings); // 'meuPanel' é o nome do painel do Designer
 
-            cmbFonte.SelectedItem = Properties.Settings.Default.FonteBiblia;
 
             await AtualizarInterfaceCompletaAsync();
 
@@ -693,7 +692,7 @@ Agora responda a seguinte pergunta em Portugues de Portugal de forma clara, com 
 
             flowLayoutPanelVersiculos.Controls.Clear();
 
-            string fonte = Properties.Settings.Default.FonteBiblia ?? "Segoe UI";
+            string fonte = "Segoe UI";
 
             lblTituloCapitulo = new Label
             {
@@ -876,9 +875,14 @@ Agora responda a seguinte pergunta em Portugues de Portugal de forma clara, com 
 
         private void btnLogout_Click(object sender, EventArgs e)
         {
-            new LoginForm().Show();
-            this.Hide();
+            Properties.Settings.Default.ManterSessao = false;
+            Properties.Settings.Default.UsernameSalvo = "";
+            Properties.Settings.Default.UserIdSalvo = 0;
+            Properties.Settings.Default.Save();
+
+            Application.Restart(); // Reinicia a aplicação
         }
+
 
         private void tabPage4_Click(object sender, EventArgs e) { }
 
@@ -2289,28 +2293,28 @@ Agora responda a seguinte pergunta em Portugues de Portugal de forma clara, com 
                 cmbFonte.Items.Add(fonte.Name);
             }
 
-            // Defina a fonte salva como selecionada APÓS preencher os itens
-            string fonteSalva = Properties.Settings.Default.FonteBiblia;
-            if (!string.IsNullOrEmpty(fonteSalva) && cmbFonte.Items.Contains(fonteSalva))
-            {
-                cmbFonte.SelectedItem = fonteSalva;
-            }
-
-
             // Adiciona os grupos ao painel
             panelSettings.Controls.Add(gbFonteTamanho);
             panelSettings.Controls.Add(gbSessao);
         }
 
-        private void cmbFonte_SelectedIndexChanged(object sender, EventArgs e)
+        private void SwitchManterSessao_CheckedChanged(object sender, EventArgs e)
         {
-            string fonteSelecionada = cmbFonte.SelectedItem.ToString();
-            Properties.Settings.Default.FonteBiblia = fonteSelecionada;
-            Properties.Settings.Default.Save();
+            if (SwitchManterSessao.Checked)
+            {
+                Properties.Settings.Default.ManterSessao = true;
+                Properties.Settings.Default.UsernameSalvo = Sessao.Username;
+                Properties.Settings.Default.UserIdSalvo = Sessao.UserId;
+            }
+            else
+            {
+                Properties.Settings.Default.ManterSessao = false;
+                Properties.Settings.Default.UsernameSalvo = "";
+                Properties.Settings.Default.UserIdSalvo = 0;
+            }
 
-            MessageBox.Show(Properties.Settings.Default.FonteBiblia);
+            Properties.Settings.Default.Save(); // Grava as configurações
         }
 
-       
     }
 }

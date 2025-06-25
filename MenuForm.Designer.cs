@@ -594,8 +594,7 @@ namespace BeLightBible
             this.cmbCategoriaPlanos.ItemHeight = 29;
             this.cmbCategoriaPlanos.Items.AddRange(new object[] {
             "Todos",
-            "Meus",
-            "\t\t\t"});
+            "Meus"});
             this.cmbCategoriaPlanos.Location = new System.Drawing.Point(14, 12);
             this.cmbCategoriaPlanos.MaxDropDownItems = 4;
             this.cmbCategoriaPlanos.MouseState = MaterialSkin.MouseState.OUT;
@@ -750,6 +749,7 @@ namespace BeLightBible
             this.SwitchManterSessao.TabIndex = 2;
             this.SwitchManterSessao.Text = "Mudar tema";
             this.SwitchManterSessao.UseVisualStyleBackColor = true;
+            this.SwitchManterSessao.CheckedChanged += new System.EventHandler(this.SwitchManterSessao_CheckedChanged);
             // 
             // gbFonteTamanho
             // 
