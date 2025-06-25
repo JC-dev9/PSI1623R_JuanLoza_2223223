@@ -1538,9 +1538,10 @@ Agora responda a seguinte pergunta em Portugues de Portugal de forma clara, com 
                     await CarregarVersiculoDiaAsync();
 
                     //Renovar tela Bible
-                    historiasTab = new HistoriasKidsTab(tabBibleKids, pnlBibleKidPrincipal, picBtnProximaHistoria, picBtnVoltarHistoria, cardTextoHistoria, pictureBoxImagemHistoria, pnlBibleKids);
                     historiasTab.CriarComponentes(); // ✔️ certo
+                    historiasTab.MostrarHistoriaAtual();
                     historiasTab.InicializarHistorias();
+                    historiasTab.CriarTituloPrincipal();
 
                     //Renovar Estilos
                     estilo.EstilizarPictureBoxComoBotao(picBtnProximoCapitulo, true, cmbLivro, cmbCapitulo, BibleTab);
@@ -2142,20 +2143,35 @@ Agora responda a seguinte pergunta em Portugues de Portugal de forma clara, com 
                 };
                 card.Controls.Add(lblTitulo);
 
-                // Progresso
                 int diaAtual = (int)planoUtilizador.ProgressoDiaAtual;
                 int totalDias = plano.DiasDuracao;
 
+                if (totalDias <= 0) totalDias = 1; // evita divisão por zero
+
                 bool planoConcluido = diaAtual >= totalDias;
+
                 int porcentagem = planoConcluido ? 100 : (int)((diaAtual / (double)totalDias) * 100);
+
+                // Remove progressBars antigos do card, se existirem
+                var barrasExistentes = card.Controls.OfType<ProgressBar>().ToList();
+                foreach (var b in barrasExistentes)
+                {
+                    card.Controls.Remove(b);
+                    b.Dispose();
+                }
 
                 var barra = new ProgressBar
                 {
-                    Value = Math.Min(porcentagem, 100),
+                    Minimum = 0,
+                    Maximum = 100,
+                    Value = Math.Max(1, Math.Min(porcentagem, 100)), // nunca zero se começou (ajuste opcional)
                     Size = new Size(card.Width - 120, 20),
                     Location = new Point(100, 40)
                 };
+
                 card.Controls.Add(barra);
+                barra.BringToFront(); // garantir que fique visível
+
 
                 var lblProgresso = new Label
                 {

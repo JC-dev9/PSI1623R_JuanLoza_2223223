@@ -105,16 +105,18 @@ namespace BeLightBible
                                .Max();
 
                 lblTitulo.Text = $"Dia {diaAtual} de {diasTotais}";
+
+                // A barra inicia com o progresso correto
                 progressBar.Value = Math.Min(100, (int)((float)diaAtual / diasTotais * 100));
 
                 var leituraDia = db.PlanoLeituraDia
                                    .FirstOrDefault(d => d.PlanoUtilizadorId == planoUtilizadorId && d.Dia == diaAtual);
 
-                // Se ainda não tiver instância de leitura gerada, gerar com base no modelo
                 if (leituraDia == null)
                 {
                     var modelo = db.PlanoLeituraModeloDia
-                                   .FirstOrDefault(m => m.PlanoLeituraId == planoUser.PlanoLeituraId && m.Dia == diaAtual);
+                                   .Where(m => m.PlanoLeituraId == planoUser.PlanoLeituraId && m.Dia == diaAtual)
+                                   .FirstOrDefault();
 
                     if (modelo != null)
                     {
@@ -131,7 +133,6 @@ namespace BeLightBible
                     }
                 }
 
-                // Mostrar capítulos
                 flowCapitulos.Controls.Clear();
 
                 if (leituraDia != null && !string.IsNullOrWhiteSpace(leituraDia.Capitulos))
@@ -148,14 +149,36 @@ namespace BeLightBible
                             Font = new Font("Segoe UI", 12),
                             Margin = new Padding(5)
                         };
+
+                        check.CheckedChanged += Check_CheckedChanged; // adicionar evento
+
                         flowCapitulos.Controls.Add(check);
                     }
+
+                    // Atualiza estado do botão Concluir Dia conforme os checkboxes carregados
+                    AtualizarEstadoBotaoConcluir();
                 }
                 else
                 {
                     MessageBox.Show("Nenhuma leitura encontrada para hoje.");
+                    btnConcluirDia.Enabled = false; // desabilitar se nada para ler
                 }
             }
+        }
+
+        private void Check_CheckedChanged(object sender, EventArgs e)
+        {
+            AtualizarEstadoBotaoConcluir();
+        }
+
+        private void AtualizarEstadoBotaoConcluir()
+        {
+            // O botão só habilita se todos os checkboxes estiverem marcados
+            bool todosMarcados = flowCapitulos.Controls
+                                  .OfType<CheckBox>()
+                                  .All(c => c.Checked);
+
+            btnConcluirDia.Enabled = todosMarcados;
         }
 
         private void btnConcluirDia_Click(object sender, EventArgs e)
@@ -179,9 +202,14 @@ namespace BeLightBible
                     {
                         planoUser.ProgressoDiaAtual++;
                         db.SaveChanges();
+
+                        // Atualiza progresso da barra e tela
+                        diaAtual = (int)planoUser.ProgressoDiaAtual;
+                        progressBar.Value = Math.Min(100, (int)((float)diaAtual / diasTotais * 100));
+                        lblTitulo.Text = $"Dia {diaAtual} de {diasTotais}";
+
                         CarregarLeituraDoDia();
                     }
-
                     else
                     {
                         db.SaveChanges();
@@ -193,5 +221,6 @@ namespace BeLightBible
                 }
             }
         }
+
     }
 }

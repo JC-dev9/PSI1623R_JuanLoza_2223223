@@ -60,6 +60,16 @@ namespace BeLightBible
 
         public void CriarTituloPrincipal()
         {
+            // Remove instância anterior do Label, se existir
+            if (lblTituloPrincipal != null)
+            {
+                // Remover de todos os painéis possíveis onde ele pode ter sido adicionado
+                lblTituloPrincipal.Parent?.Controls.Remove(lblTituloPrincipal);
+                lblTituloPrincipal.Dispose();
+                lblTituloPrincipal = null;
+            }
+
+            // Cria novo Label
             lblTituloPrincipal = new Label
             {
                 Text = "Bíblia para Crianças",
@@ -69,15 +79,12 @@ namespace BeLightBible
                 AutoSize = true
             };
 
-            // Centraliza horizontalmente e posiciona um pouco abaixo do topo
-            int centerX = (pnlBibleKidPrincipal.Width - lblTituloPrincipal.PreferredWidth) / 2 - 20; // <-- desloca 20px à esquerda
-            lblTituloPrincipal.Location = new Point(centerX, 0); // Y no topo
-
-            // Para garantir que ele se reposicione corretamente ao redimensionar o painel:
-
+            int centerX = (pnlBibleKids.Width - lblTituloPrincipal.PreferredWidth) / 2 - 20;
+            lblTituloPrincipal.Location = new Point(centerX, 0);
 
             pnlBibleKids.Controls.Add(lblTituloPrincipal);
         }
+
 
         public void InicializarHistorias()
         {
@@ -173,7 +180,7 @@ namespace BeLightBible
             card.Controls.Add(pnlTextoComScroll);
         }
 
-        private void MostrarHistoriaAtual()
+        public void MostrarHistoriaAtual()
         {
             if (historias.Count == 0) return;
 
