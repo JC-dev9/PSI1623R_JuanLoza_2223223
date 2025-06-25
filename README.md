@@ -2,6 +2,8 @@
 
 **BeLight Bible** é uma aplicação de leitura e estudo bíblico moderna, com recursos integrados de inteligência artificial, personalização avançada, leitura com áudio e planos devocionais. Tudo isso com uma experiência fluida e acessível para adultos, jovens e crianças.
 
+![Tela Inicial](Imagens/telaInicial.png)
+
 ---
 
 ## ✨ Destaques
