@@ -394,6 +394,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Imagens\adaoEva.png" />
+    <Content Include="Imagens\telaInicial.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Imagens\noe.png" />
     <Content Include="loading.gif">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
