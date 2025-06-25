@@ -1255,43 +1255,10 @@ Agora responda a seguinte pergunta em Portugues de Portugal de forma clara, com 
                 }
             };
 
-            // Item: Salvar Versículo em PDF
-            ToolStripMenuItem salvarPdfItem = new ToolStripMenuItem("Salvar como PDF");
-            salvarPdfItem.Image = Image.FromFile("icons/pdf.png");
-            salvarPdfItem.Click += (s, ev) =>
-            {
-                string texto = ObterTextoVersiculo();
-                string referencia = ObterReferenciaVersiculo();
-
-                if (string.IsNullOrEmpty(texto) || string.IsNullOrEmpty(referencia))
-                {
-                    MessageBox.Show("Nenhum versículo para salvar.");
-                    return;
-                }
-
-                try
-                {
-                    string[] partes = referencia.Split(' ');
-                    string livro = partes[0];
-                    string[] capVers = partes[1].Split(':');
-                    int capitulo = int.Parse(capVers[0]);
-                    int versiculo = int.Parse(capVers[1]);
-
-                    // Chama a função que gera o PDF (que abre o SaveFileDialog)
-                    Versiculo.SalvarVersiculoComoPdf(texto, livro, capitulo, versiculo);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Formato da referência inválido: " + ex.Message);
-                }
-
-            };
-
             // Adiciona os itens ao menu
             menu.Items.Add(copiarItem);
             menu.Items.Add(whatsappItem);
             menu.Items.Add(emailItem);
-            menu.Items.Add(salvarPdfItem);
             menu.Items.Add(salvarImagemItem);
 
             // Mostra o menu abaixo do botão

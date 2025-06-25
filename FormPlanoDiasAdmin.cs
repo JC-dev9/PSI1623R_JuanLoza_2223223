@@ -126,7 +126,6 @@ namespace BeLightBible
             }
         }
 
-
         private void btnSalvarDia_Click(object sender, EventArgs e)
         {
             if (cmbLivro.SelectedItem == null || cmbCapitulo.SelectedItem == null)
@@ -166,7 +165,7 @@ namespace BeLightBible
             {
                 return db.PlanoLeitura
                          .Where(p => p.Id == planoId)
-                         .Select(p => p.DiasDuracao)
+                         .Select(p => p.DiasDuracao)    
                          .FirstOrDefault();
             }
         }

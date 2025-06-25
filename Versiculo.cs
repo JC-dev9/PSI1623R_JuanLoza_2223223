@@ -30,71 +30,6 @@ namespace BeLightBible
             lbl = label;
         }
 
-        public static void SalvarVersiculoComoPdf(string mensagem, string livro, int capitulo, int versiculo)
-        {
-            SaveFileDialog saveDialog = new SaveFileDialog
-            {
-                Filter = "PDF File|*.pdf",
-                FileName = "versiculo.pdf"
-            };
-
-            if (saveDialog.ShowDialog() == DialogResult.OK)
-            {
-                string caminho = saveDialog.FileName;
-
-                try
-                {
-                    var writer = new PdfWriter(caminho);
-                    var pdf = new PdfDocument(writer);
-                    var doc = new Document(pdf);
-
-                    // Fonte padrão (Helvetica)
-                    PdfFont font = PdfFontFactory.CreateFont(iText.IO.Font.Constants.StandardFonts.HELVETICA);
-                    PdfFont fontBold = PdfFontFactory.CreateFont(iText.IO.Font.Constants.StandardFonts.HELVETICA_BOLD);
-                    PdfFont fontItalic = PdfFontFactory.CreateFont(iText.IO.Font.Constants.StandardFonts.HELVETICA_OBLIQUE);
-
-                    // Logo (opcional)
-                    string logoPath = "icons/logo.jpg";
-                    if (File.Exists(logoPath))
-                    {
-                        var img = new iText.Layout.Element.Image(ImageDataFactory.Create(logoPath));
-                        img.SetHorizontalAlignment(iText.Layout.Properties.HorizontalAlignment.CENTER);
-                        img.SetMaxHeight(100);
-                        doc.Add(img);
-                    }
-
-                    // Título
-                    doc.Add(new Paragraph("Versículo do Dia")
-                        .SetFont(fontBold)
-                        .SetFontSize(20)
-                        .SetTextAlignment(TextAlignment.CENTER)
-                        .SetMarginBottom(10));
-
-                    // Subtítulo com referência bíblica
-                    string referencia = $"{livro} {capitulo}:{versiculo}";
-                    doc.Add(new Paragraph(referencia)
-                        .SetFont(fontItalic)
-                        .SetFontSize(14)
-                        .SetFontColor(ColorConstants.GRAY)
-                        .SetTextAlignment(TextAlignment.CENTER)
-                        .SetMarginBottom(20));
-
-                    // Corpo com o versículo
-                    doc.Add(new Paragraph(mensagem)
-                        .SetFont(font)
-                        .SetFontSize(16)
-                        .SetTextAlignment(TextAlignment.JUSTIFIED));
-
-                    doc.Close();
-                    MessageBox.Show("PDF salvo com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Erro ao salvar PDF: " + ex.Message);
-                }
-            }
-        }
-
         public static List<VersiculoSalvo> ObterVersiculosSalvos(int userId)
         {
             using (var context = new Entities())
@@ -308,12 +243,6 @@ namespace BeLightBible
                 }
             }
         }
-        public void Salvar()
-        {
-            // Implementar lógica para salvar versículo
-            MessageBox.Show("Versículo salvo!");
-        }
-
         public static List<VersiculoAnotado> ObterAnotacoes(int userId)
         {
             using (var context = new Entities())
@@ -371,12 +300,6 @@ namespace BeLightBible
             Clipboard.SetText(lbl.Text);
             MessageBox.Show("Versículo copiado para a área de transferência.");
         }
-
-        public void Explicar(string livro, int capitulo, int versiculo, TabPage tabChatbot, TabControl tabControl, Action<string> exibirMensagem, Func<string, Task> enviarPrompt)
-        {
-
-        }
-
 
         public void Compartilhar()
         {
