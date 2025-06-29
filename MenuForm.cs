@@ -794,18 +794,27 @@ Agora responda a seguinte pergunta em Portugues de Portugal de forma clara, com 
                 lbl.Font = new Font(lbl.Font, lbl.Font.Style | FontStyle.Underline);
                 Versiculo versiculo = new Versiculo(lbl);
 
+                string livro = cmbLivro.SelectedItem.ToString();
+                int capitulo = int.Parse(cmbCapitulo.SelectedItem.ToString());
+                int versNumero = Convert.ToInt32(lbl.Tag);
+                string mensagem = $"{lbl.Text.TrimEnd()} - {livro} {capitulo}:{versNumero}";
+
                 ContextMenuStrip menu = new ContextMenuStrip();
+
+                // Sublinhar
                 menu.Items.Add(new ToolStripMenuItem("Sublinhar", Image.FromFile("icons/palette.png"), (s, ev) =>
                 {
-                    int versNumero = Convert.ToInt32(lbl.Tag);
-                    versiculo.Grifar(Sessao.UserId, cmbLivro.SelectedItem.ToString(), int.Parse(cmbCapitulo.SelectedItem.ToString()), versNumero, lbl.Text);
+                    versiculo.Grifar(Sessao.UserId, livro, capitulo, versNumero, lbl.Text);
                 }));
+
+                // Copiar
                 menu.Items.Add(new ToolStripMenuItem("Copiar", Image.FromFile("icons/copy.png"), (s, ev) => versiculo.Copiar()));
+
+                // Anotar
                 menu.Items.Add(new ToolStripMenuItem("Anotar", Image.FromFile("icons/notepad.png"), async (s, ev) =>
                 {
-                    int versNumero = Convert.ToInt32(lbl.Tag);
-                    await versiculo.Anotar(Sessao.UserId, cmbLivro.SelectedItem.ToString(), int.Parse(cmbCapitulo.SelectedItem.ToString()), versNumero,
-                        async () => await BibleTab(cmbLivro.SelectedItem.ToString(), int.Parse(cmbCapitulo.SelectedItem.ToString())));
+                    await versiculo.Anotar(Sessao.UserId, livro, capitulo, versNumero,
+                        async () => await BibleTab(livro, capitulo));
 
                     estilo.EstilizarPictureBoxComoBotao(picBtnProximoCapitulo, true, cmbLivro, cmbCapitulo, BibleTab);
                     estilo.EstilizarPictureBoxComoBotao(picBtnAnteriorCapitulo, false, cmbLivro, cmbCapitulo, BibleTab);
@@ -816,34 +825,126 @@ Agora responda a seguinte pergunta em Portugues de Portugal de forma clara, com 
                     estilo.ArredondarControle(picAudio, 10);
 
                     CarregarAnotacoes();
-
-                    //Renovar tela inicial
                     CriarCardUltimoPonto();
                     CarregarUltimoPonto();
                     CriarLabelsVersiculoDia();
                     await CarregarVersiculoDiaAsync();
-
                 }));
+
+                // Explicar
                 menu.Items.Add(new ToolStripMenuItem("Explicar", Image.FromFile("icons/ai.png"), async (s, ev) =>
                 {
-                    int versNumero = Convert.ToInt32(lbl.Tag);
-                    string livro = cmbLivro.SelectedItem.ToString();
-                    int capitulo = int.Parse(cmbCapitulo.SelectedItem.ToString());
                     string textoVersiculo = lbl.Text;
 
-                    // Muda para a aba do chatbot
                     TabControlPrincipal.SelectedTab = tabChatbot;
 
-                    // Cria o prompt
                     string prompt = $"Você é um especialista bíblico. Explique com clareza e profundidade o contexto histórico, cultural e teológico do versículo {livro} {capitulo}:{versNumero}, que diz: \"{textoVersiculo}\". Inclua referências relevantes e aplicação prática para a vida cristã hoje.";
 
-                    // Mostra a mensagem do usuário na conversa
                     AddUserMessage(prompt);
-
-                    // Envia o prompt para o chatbot (aguarda resposta)
                     await EnviarParaOllama(prompt);
                 }));
 
+                // Compartilhar (submenu)
+                ToolStripMenuItem compartilharMenu = new ToolStripMenuItem("Compartilhar", Image.FromFile("icons/share-2.png"));
+
+                // Copiar
+                compartilharMenu.DropDownItems.Add("Copiar", Image.FromFile("icons/copy.png"), (s, ev) =>
+                {
+                    Clipboard.SetText(mensagem);
+                    MessageBox.Show("Versículo copiado para a área de transferência!");
+                });
+
+                // WhatsApp
+                compartilharMenu.DropDownItems.Add("Compartilhar via WhatsApp", Image.FromFile("icons/whatsapp.png"), (s, ev) =>
+                {
+                    string url = $"https://wa.me/?text={Uri.EscapeDataString(mensagem)}";
+                    System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                    {
+                        FileName = url,
+                        UseShellExecute = true
+                    });
+                });
+
+                // Email
+                compartilharMenu.DropDownItems.Add("Compartilhar por Email", Image.FromFile("icons/email.png"), (s, ev) =>
+                {
+                    string assunto = Uri.EscapeDataString("Versículo do Dia");
+                    string corpo = Uri.EscapeDataString(mensagem);
+                    string url = $"mailto:?subject={assunto}&body={corpo}";
+                    System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                    {
+                        FileName = url,
+                        UseShellExecute = true
+                    });
+                });
+
+                compartilharMenu.DropDownItems.Add("Salvar como Imagem", Image.FromFile("icons/image.png"), (s, ev) =>
+                {
+                    // Configura fonte e cores
+                    Font fonte = new Font("Segoe UI", 18, FontStyle.Bold);
+                    Color corFundo = Color.FromArgb(245, 245, 245);
+                    Color corTexto = Color.FromArgb(40, 40, 40);
+                    Color corSombra = Color.FromArgb(0, 0, 0, 0);
+
+                    // Calcula tamanho da imagem baseado no texto (com margem)
+                    int largura = 800;
+                    int margem = 30;
+                    SizeF tamanhoTexto;
+
+                    using (var bmpTmp = new Bitmap(1, 1))
+                    using (var gTmp = Graphics.FromImage(bmpTmp))
+                    {
+                        var areaTexto = new RectangleF(0, 0, largura - 2 * margem, 1000);
+                        var sf = new StringFormat() { Alignment = StringAlignment.Near, LineAlignment = StringAlignment.Near };
+                        tamanhoTexto = gTmp.MeasureString(mensagem, fonte, areaTexto.Size, sf);
+                    }
+
+                    int altura = (int)tamanhoTexto.Height + margem * 2;
+
+                    Bitmap bmp = new Bitmap(largura, altura);
+                    using (Graphics g = Graphics.FromImage(bmp))
+                    {
+                        g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                        g.Clear(corFundo);
+
+                        var areaTexto = new RectangleF(margem, margem, largura - 2 * margem, altura - 2 * margem);
+                        var sf = new StringFormat() { Alignment = StringAlignment.Near, LineAlignment = StringAlignment.Near };
+
+                        // Desenha sombra do texto
+                        using (Brush sombra = new SolidBrush(corSombra))
+                        {
+                            g.DrawString(mensagem, fonte, sombra, new RectangleF(areaTexto.X + 2, areaTexto.Y + 2, areaTexto.Width, areaTexto.Height), sf);
+                        }
+
+                        // Desenha texto principal
+                        using (Brush bTexto = new SolidBrush(corTexto))
+                        {
+                            g.DrawString(mensagem, fonte, bTexto, areaTexto, sf);
+                        }
+
+                        // Opcional: desenhar uma linha fina na base para decorar
+                        using (Pen pen = new Pen(Color.Orange, 3))
+                        {
+                            g.DrawLine(pen, margem, altura - margem / 2, largura - margem, altura - margem / 2);
+                        }
+                    }
+
+                    SaveFileDialog saveDialog = new SaveFileDialog
+                    {
+                        Filter = "Imagem PNG|*.png",
+                        FileName = "versiculo.png"
+                    };
+
+                    if (saveDialog.ShowDialog() == DialogResult.OK)
+                    {
+                        bmp.Save(saveDialog.FileName, System.Drawing.Imaging.ImageFormat.Png);
+                        MessageBox.Show("Imagem salva com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                });
+
+                menu.Items.Add(compartilharMenu);
+
+                // Restaurar estilo ao fechar menu
                 menu.Closed += (s, ev) =>
                 {
                     lbl.Font = new Font(lbl.Font, lbl.Font.Style & ~FontStyle.Underline);
@@ -852,6 +953,7 @@ Agora responda a seguinte pergunta em Portugues de Portugal de forma clara, com 
                 menu.Show(lbl, new Point(e.X, e.Y));
             }
         }
+
 
         private async void btnBuscar_Click(object sender, EventArgs e)
         {
