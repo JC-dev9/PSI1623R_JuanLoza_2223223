@@ -480,7 +480,7 @@ namespace BeLightBible
 
             var todosCaches = await _context.RespostasCache.ToListAsync();
 
-            double threshold = 1;
+            double threshold = 0.92;
             RespostasCache melhorCache = null;
             double melhorSimilaridade = 0;
 
@@ -832,20 +832,19 @@ Agora responda a seguinte pergunta em Portugues de Portugal de forma clara, com 
                 }));
 
                 // Explicar
-                // Cria o item "Explicar" principal (sem ação direta)
                 ToolStripMenuItem explicarMenu = new ToolStripMenuItem("Explicar", Image.FromFile("icons/ai.png"));
 
                 // Opção 1: Contexto histórico e teológico (como antes)
-                explicarMenu.DropDownItems.Add("Contexto histórico e teológico", null, async (s, ev) =>
+                explicarMenu.DropDownItems.Add("Contexto histórico e teológico", Image.FromFile("icons/scroll-text.png"), async (s, ev) =>
                 {
-                    string prompt = $"Você é um especialista bíblico. Explique com clareza e profundidade o contexto histórico, cultural e teológico do versículo {livro} {capitulo}:{versNumero}, que diz: \"{lbl.Text}\". Inclua referências relevantes.";
+                    string prompt = $"Você é um especialista bíblico. Explique com clareza e profundidade o contexto histórico, cultural e teológico do versículo {livro} {capitulo}:{versNumero}, que diz: \"{lbl.Text}\".";
                     TabControlPrincipal.SelectedTab = tabChatbot;
                     AddUserMessage(prompt);
                     await EnviarParaOllama(prompt);
                 });
 
                 // Opção 2: Curiosidades sobre o versículo
-                explicarMenu.DropDownItems.Add("Curiosidades", null, async (s, ev) =>
+                explicarMenu.DropDownItems.Add("Curiosidades", Image.FromFile("icons/lightbulb.png"), async (s, ev) =>
                 {
                     string prompt = $"Conte curiosidades interessantes sobre o versículo {livro} {capitulo}:{versNumero}, \"{lbl.Text}\".";
                     TabControlPrincipal.SelectedTab = tabChatbot;
@@ -854,7 +853,7 @@ Agora responda a seguinte pergunta em Portugues de Portugal de forma clara, com 
                 });
 
                 // Opção 3: Aplicação prática para a vida
-                explicarMenu.DropDownItems.Add("Aplicação prática", null, async (s, ev) =>
+                explicarMenu.DropDownItems.Add("Aplicação prática", Image.FromFile("icons/handshake.png"), async (s, ev) =>
                 {
                     string prompt = $"Explique como aplicar o versículo {livro} {capitulo}:{versNumero} na vida cristã diária.";
                     TabControlPrincipal.SelectedTab = tabChatbot;
@@ -863,7 +862,7 @@ Agora responda a seguinte pergunta em Portugues de Portugal de forma clara, com 
                 });
 
                 // Opção 4: Perguntas frequentes (FAQ) sobre o versículo
-                explicarMenu.DropDownItems.Add("Perguntas frequentes", null, async (s, ev) =>
+                explicarMenu.DropDownItems.Add("Perguntas frequentes", Image.FromFile("icons/message-circle-question-mark.png"), async (s, ev) =>
                 {
                     string prompt = $"Liste e responda perguntas frequentes relacionadas ao versículo {livro} {capitulo}:{versNumero}.";
                     TabControlPrincipal.SelectedTab = tabChatbot;
