@@ -336,9 +336,9 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>Model.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <None Include="docs-originais\TGSPSI23R_JuanLoza_2223223_ManualProgramador.pdf" />
-    <None Include="docs-originais\TGSPSI23R_JuanLoza_2223223_ManualUtilizador.pdf" />
-    <None Include="docs-originais\TGSPSI23R_JuanLoza_2223223_RelatorioFinal.pdf" />
+    <None Include="docs\TGSPSI23R_JuanLoza_2223223_ManualProgramador.pdf" />
+    <None Include="docs\TGSPSI23R_JuanLoza_2223223_ManualUtilizador.pdf" />
+    <None Include="docs\TGSPSI23R_JuanLoza_2223223_RelatorioFinal.pdf" />
     <None Include="Model.edmx.diagram">
       <DependentUpon>Model.edmx</DependentUpon>
     </None>

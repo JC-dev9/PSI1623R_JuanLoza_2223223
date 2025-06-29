@@ -110,6 +110,7 @@ select * from PlanoLeituraModeloDia
 
 select * from PlanoLeituraModeloDia
 select * from PlanoLeituraUtilizador
+select * from PlanoLeituraDia
 ALTER TABLE PlanoLeitura
 ADD ImagemBase64 NVARCHAR(MAX) NULL;
 

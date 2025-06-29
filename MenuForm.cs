@@ -551,7 +551,7 @@ Agora responda a seguinte pergunta em Portugues de Portugal de forma clara, com 
                 var url = "https://api.groq.com/openai/v1/chat/completions";
 
                 client.DefaultRequestHeaders.Authorization =
-                    new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", "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");
+                    new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", "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");
 
                 var requestData = new
                 {
@@ -843,9 +843,6 @@ Agora responda a seguinte pergunta em Portugues de Portugal de forma clara, com 
                     // Envia o prompt para o chatbot (aguarda resposta)
                     await EnviarParaOllama(prompt);
                 }));
-
-
-                menu.Items.Add(new ToolStripMenuItem("Compartilhar", Image.FromFile("icons/share-2.png"), (s, ev) => versiculo.Copiar()));
 
                 menu.Closed += (s, ev) =>
                 {
@@ -2323,5 +2320,9 @@ Agora responda a seguinte pergunta em Portugues de Portugal de forma clara, com 
             Properties.Settings.Default.Save();
         }
 
+        private void flowLayoutPanelConversa_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
     }
 }

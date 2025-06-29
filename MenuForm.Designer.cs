@@ -217,9 +217,9 @@ namespace BeLightBible
             this.btnCompartilharVersiculo.MouseState = MaterialSkin.MouseState.HOVER;
             this.btnCompartilharVersiculo.Name = "btnCompartilharVersiculo";
             this.btnCompartilharVersiculo.NoAccentTextColor = System.Drawing.Color.Empty;
-            this.btnCompartilharVersiculo.Size = new System.Drawing.Size(137, 36);
+            this.btnCompartilharVersiculo.Size = new System.Drawing.Size(133, 36);
             this.btnCompartilharVersiculo.TabIndex = 4;
-            this.btnCompartilharVersiculo.Text = "Compartiilhar";
+            this.btnCompartilharVersiculo.Text = "Compartilhar";
             this.btnCompartilharVersiculo.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             this.btnCompartilharVersiculo.UseAccentColor = false;
             this.btnCompartilharVersiculo.UseVisualStyleBackColor = true;
@@ -484,6 +484,7 @@ namespace BeLightBible
             this.flowLayoutPanelConversa.Name = "flowLayoutPanelConversa";
             this.flowLayoutPanelConversa.Size = new System.Drawing.Size(891, 408);
             this.flowLayoutPanelConversa.TabIndex = 6;
+            this.flowLayoutPanelConversa.Paint += new System.Windows.Forms.PaintEventHandler(this.flowLayoutPanelConversa_Paint);
             // 
             // tabAnotacoes
             // 
@@ -969,5 +970,6 @@ namespace BeLightBible
         private GroupBox gbSessao;
         private MaterialSkin.Controls.MaterialSwitch SwitchManterSessao;
         private MaterialSkin.Controls.MaterialButton btnLogout;
+
     }
 }
