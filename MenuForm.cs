@@ -480,7 +480,7 @@ namespace BeLightBible
 
             var todosCaches = await _context.RespostasCache.ToListAsync();
 
-            double threshold = 0.95;
+            double threshold = 1;
             RespostasCache melhorCache = null;
             double melhorSimilaridade = 0;
 
@@ -832,17 +832,48 @@ Agora responda a seguinte pergunta em Portugues de Portugal de forma clara, com 
                 }));
 
                 // Explicar
-                menu.Items.Add(new ToolStripMenuItem("Explicar", Image.FromFile("icons/ai.png"), async (s, ev) =>
+                // Cria o item "Explicar" principal (sem ação direta)
+                ToolStripMenuItem explicarMenu = new ToolStripMenuItem("Explicar", Image.FromFile("icons/ai.png"));
+
+                // Opção 1: Contexto histórico e teológico (como antes)
+                explicarMenu.DropDownItems.Add("Contexto histórico e teológico", null, async (s, ev) =>
                 {
-                    string textoVersiculo = lbl.Text;
-
+                    string prompt = $"Você é um especialista bíblico. Explique com clareza e profundidade o contexto histórico, cultural e teológico do versículo {livro} {capitulo}:{versNumero}, que diz: \"{lbl.Text}\". Inclua referências relevantes.";
                     TabControlPrincipal.SelectedTab = tabChatbot;
-
-                    string prompt = $"Você é um especialista bíblico. Explique com clareza e profundidade o contexto histórico, cultural e teológico do versículo {livro} {capitulo}:{versNumero}, que diz: \"{textoVersiculo}\". Inclua referências relevantes e aplicação prática para a vida cristã hoje.";
-
                     AddUserMessage(prompt);
                     await EnviarParaOllama(prompt);
-                }));
+                });
+
+                // Opção 2: Curiosidades sobre o versículo
+                explicarMenu.DropDownItems.Add("Curiosidades", null, async (s, ev) =>
+                {
+                    string prompt = $"Conte curiosidades interessantes sobre o versículo {livro} {capitulo}:{versNumero}, \"{lbl.Text}\".";
+                    TabControlPrincipal.SelectedTab = tabChatbot;
+                    AddUserMessage(prompt);
+                    await EnviarParaOllama(prompt);
+                });
+
+                // Opção 3: Aplicação prática para a vida
+                explicarMenu.DropDownItems.Add("Aplicação prática", null, async (s, ev) =>
+                {
+                    string prompt = $"Explique como aplicar o versículo {livro} {capitulo}:{versNumero} na vida cristã diária.";
+                    TabControlPrincipal.SelectedTab = tabChatbot;
+                    AddUserMessage(prompt);
+                    await EnviarParaOllama(prompt);
+                });
+
+                // Opção 4: Perguntas frequentes (FAQ) sobre o versículo
+                explicarMenu.DropDownItems.Add("Perguntas frequentes", null, async (s, ev) =>
+                {
+                    string prompt = $"Liste e responda perguntas frequentes relacionadas ao versículo {livro} {capitulo}:{versNumero}.";
+                    TabControlPrincipal.SelectedTab = tabChatbot;
+                    AddUserMessage(prompt);
+                    await EnviarParaOllama(prompt);
+                });
+
+                // Adiciona o submenu ao menu principal
+                menu.Items.Add(explicarMenu);
+
 
                 // Compartilhar (submenu)
                 ToolStripMenuItem compartilharMenu = new ToolStripMenuItem("Compartilhar", Image.FromFile("icons/share-2.png"));

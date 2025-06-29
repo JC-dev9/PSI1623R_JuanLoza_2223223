@@ -363,6 +363,12 @@
     <Content Include="icons\book-open-text.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="icons\lightbulb.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="icons\message-circle-question-mark.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="icons\openbook.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
