@@ -1388,16 +1388,60 @@ Agora responda a seguinte pergunta em Portugues de Portugal de forma clara, com 
                 });
             };
 
-            // Item: Salvar Imagem
+            // Cria o item do menu
             ToolStripMenuItem salvarImagemItem = new ToolStripMenuItem("Salvar como Imagem");
             salvarImagemItem.Image = Image.FromFile("icons/image.png");
+
+            // Define o evento Click
             salvarImagemItem.Click += (s, ev) =>
             {
-                Bitmap bmp = new Bitmap(600, 200); // ajuste tamanho
+                // Configura fonte e cores
+                Font fonte = new Font("Segoe UI", 18, FontStyle.Bold);
+                Color corFundo = Color.FromArgb(245, 245, 245);
+                Color corTexto = Color.FromArgb(40, 40, 40);
+                Color corSombra = Color.FromArgb(50, 0, 0, 0); // sombra preta semi-transparente
+
+                // Calcula tamanho da imagem baseado no texto (com margem)
+                int largura = 800;
+                int margem = 30;
+                SizeF tamanhoTexto;
+
+                using (var bmpTmp = new Bitmap(1, 1))
+                using (var gTmp = Graphics.FromImage(bmpTmp))
+                {
+                    var areaTexto = new RectangleF(0, 0, largura - 2 * margem, 1000);
+                    var sf = new StringFormat() { Alignment = StringAlignment.Near, LineAlignment = StringAlignment.Near };
+                    tamanhoTexto = gTmp.MeasureString(mensagem, fonte, areaTexto.Size, sf);
+                }
+
+                int altura = (int)tamanhoTexto.Height + margem * 2;
+
+                Bitmap bmp = new Bitmap(largura, altura);
                 using (Graphics g = Graphics.FromImage(bmp))
                 {
-                    g.Clear(Color.White);
-                    g.DrawString(mensagem, new Font("Arial", 16), Brushes.Black, new RectangleF(10, 10, 580, 180));
+                    g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                    g.Clear(corFundo);
+
+                    var areaTexto = new RectangleF(margem, margem, largura - 2 * margem, altura - 2 * margem);
+                    var sf = new StringFormat() { Alignment = StringAlignment.Near, LineAlignment = StringAlignment.Near };
+
+                    // Desenha sombra do texto
+                    using (Brush sombra = new SolidBrush(corSombra))
+                    {
+                        g.DrawString(mensagem, fonte, sombra, new RectangleF(areaTexto.X + 2, areaTexto.Y + 2, areaTexto.Width, areaTexto.Height), sf);
+                    }
+
+                    // Desenha texto principal
+                    using (Brush bTexto = new SolidBrush(corTexto))
+                    {
+                        g.DrawString(mensagem, fonte, bTexto, areaTexto, sf);
+                    }
+
+                    // Linha decorativa na base
+                    using (Pen pen = new Pen(Color.Orange, 3))
+                    {
+                        g.DrawLine(pen, margem, altura - margem / 2, largura - margem, altura - margem / 2);
+                    }
                 }
 
                 SaveFileDialog saveDialog = new SaveFileDialog
@@ -1413,6 +1457,7 @@ Agora responda a seguinte pergunta em Portugues de Portugal de forma clara, com 
                 }
             };
 
+          
             // Adiciona os itens ao menu
             menu.Items.Add(copiarItem);
             menu.Items.Add(whatsappItem);
