@@ -551,7 +551,7 @@ Agora responda a seguinte pergunta em Portugues de Portugal de forma clara, com 
                 var url = "https://api.groq.com/openai/v1/chat/completions";
 
                 client.DefaultRequestHeaders.Authorization =
-                    new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", "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");
+                    new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", "");
 
                 var requestData = new
                 {
