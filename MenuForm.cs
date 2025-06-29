@@ -879,8 +879,10 @@ Agora responda a seguinte pergunta em Portugues de Portugal de forma clara, com 
             Properties.Settings.Default.UserIdSalvo = 0;
             Properties.Settings.Default.Save();
 
-            Application.Restart(); // Reinicia a aplicação
+            this.Close(); // fecha o form atual
+            Application.Restart();
         }
+
 
 
         private void tabPage4_Click(object sender, EventArgs e) { }
@@ -2124,118 +2126,122 @@ Agora responda a seguinte pergunta em Portugues de Portugal de forma clara, com 
         {
             flowPanelPlanos.Controls.Clear();
 
-            foreach (var planoUtilizador in planos)
+            using (var db = new Entities())
             {
-                var plano = planoUtilizador.PlanoLeitura;
-
-                var card = new MaterialCard
+                foreach (var planoUtilizador in planos)
                 {
-                    Padding = new Padding(10),
-                    Margin = new Padding(10),
-                    Width = flowPanelPlanos.ClientSize.Width - 30,
-                    Height = 150,
-                    BackColor = Color.White
-                };
+                    var plano = planoUtilizador.PlanoLeitura;
 
-                // Imagem
-                var pic = new PictureBox
-                {
-                    SizeMode = PictureBoxSizeMode.Zoom,
-                    Location = new Point(10, 10),
-                    Size = new Size(80, 80)
-                };
+                    var card = new MaterialCard
+                    {
+                        Padding = new Padding(10),
+                        Margin = new Padding(10),
+                        Width = flowPanelPlanos.ClientSize.Width - 30,
+                        Height = 150,
+                        BackColor = Color.White
+                    };
 
-                if (!string.IsNullOrEmpty(plano.ImagemBase64))
-                {
-                    byte[] imgBytes = Convert.FromBase64String(plano.ImagemBase64);
-                    pic.Image = Image.FromStream(new MemoryStream(imgBytes));
+                    // Imagem
+                    var pic = new PictureBox
+                    {
+                        SizeMode = PictureBoxSizeMode.Zoom,
+                        Location = new Point(10, 10),
+                        Size = new Size(80, 80)
+                    };
+
+                    if (!string.IsNullOrEmpty(plano.ImagemBase64))
+                    {
+                        byte[] imgBytes = Convert.FromBase64String(plano.ImagemBase64);
+                        pic.Image = Image.FromStream(new MemoryStream(imgBytes));
+                    }
+
+                    card.Controls.Add(pic);
+
+                    // Título
+                    var lblTitulo = new Label
+                    {
+                        Text = plano.Nome,
+                        Font = new Font("Segoe UI", 12, FontStyle.Bold),
+                        ForeColor = Color.White,
+                        Location = new Point(100, 10),
+                        AutoSize = true
+                    };
+                    card.Controls.Add(lblTitulo);
+
+                    int totalDias = plano.DiasDuracao;
+                    if (totalDias <= 0) totalDias = 1;
+
+                    int progressoBruto = (int)planoUtilizador.ProgressoDiaAtual;
+                    int progressoDia = progressoBruto - 1;
+                    if (progressoDia < 0) progressoDia = 0;
+
+                    // Verifica se o dia atual foi lido
+                    var leituraAtual = db.PlanoLeituraDia
+                        .FirstOrDefault(d => d.PlanoUtilizadorId == planoUtilizador.Id && d.Dia == progressoBruto);
+
+                    if (leituraAtual?.Lido == true)
+                    {
+                        progressoDia++;
+                    }
+
+                    bool planoConcluido = progressoDia >= totalDias;
+                    int porcentagem = planoConcluido ? 100 : (int)((progressoDia / (double)totalDias) * 100);
+
+                    // Remove barras antigas, se existirem
+                    var barrasExistentes = card.Controls.OfType<ProgressBar>().ToList();
+                    foreach (var b in barrasExistentes)
+                    {
+                        card.Controls.Remove(b);
+                        b.Dispose();
+                    }
+
+                    var barra = new ProgressBar
+                    {
+                        Minimum = 0,
+                        Maximum = 100,
+                        Value = Math.Min(Math.Max(porcentagem, 0), 100),
+                        Size = new Size(card.Width - 120, 20),
+                        Location = new Point(100, 40)
+                    };
+
+                    card.Controls.Add(barra);
+                    barra.BringToFront();
+
+                    var lblProgresso = new Label
+                    {
+                        Text = planoConcluido ? $"Plano concluído ({totalDias} dias)" : $"Dia {progressoBruto} de {totalDias}",
+                        Location = new Point(100, 65),
+                        AutoSize = true
+                    };
+
+                    card.Controls.Add(lblProgresso);
+
+                    var btnContinuar = new MaterialButton
+                    {
+                        AutoSize = true,
+                        BackColor = planoConcluido ? Color.Gray : Color.FromArgb(244, 67, 54),
+                        ForeColor = Color.White,
+                        FlatStyle = FlatStyle.Flat,
+                        Location = new Point(card.Width - 80, card.Height - 45),
+                        Anchor = AnchorStyles.Bottom | AnchorStyles.Right,
+                        Tag = planoUtilizador
+                    };
+
+                    if (planoConcluido)
+                    {
+                        btnContinuar.Text = "Concluído ✔";
+                        btnContinuar.Enabled = false;
+                    }
+                    else
+                    {
+                        btnContinuar.Text = "Continuar";
+                        btnContinuar.Click += BtnContinuar_Click;
+                    }
+
+                    card.Controls.Add(btnContinuar);
+
+                    flowPanelPlanos.Controls.Add(card);
                 }
-
-                card.Controls.Add(pic);
-
-                // Título
-                var lblTitulo = new Label
-                {
-                    Text = plano.Nome,
-                    Font = new Font("Segoe UI", 12, FontStyle.Bold),
-                    ForeColor = Color.White,
-                    Location = new Point(100, 10),
-                    AutoSize = true
-                };
-                card.Controls.Add(lblTitulo);
-
-                int progressoBruto = (int)planoUtilizador.ProgressoDiaAtual;
-                int diaParaProgresso = progressoBruto - 1;
-                if (diaParaProgresso < 0) diaParaProgresso = 0;
-
-                int totalDias = plano.DiasDuracao;
-                if (totalDias <= 0) totalDias = 1;
-
-                bool planoConcluido = progressoBruto > totalDias;
-                int porcentagem = planoConcluido ? 100 : (int)((diaParaProgresso / (double)totalDias) * 100);
-
-
-
-                // Remove progressBars antigos do card, se existirem
-                var barrasExistentes = card.Controls.OfType<ProgressBar>().ToList();
-                foreach (var b in barrasExistentes)
-                {
-                    card.Controls.Remove(b);
-                    b.Dispose();
-                }
-
-                var barra = new ProgressBar
-                {
-                    Minimum = 0,
-                    Maximum = 100,
-                    Value = Math.Min(Math.Max(porcentagem, 0), 100),
-                    Size = new Size(card.Width - 120, 20),
-                    Location = new Point(100, 40)
-                };
-
-                card.Controls.Add(barra);
-                barra.BringToFront(); // garantir que fique visível
-
-
-
-                var lblProgresso = new Label
-                {
-                    Text = planoConcluido ? $"Plano concluído ({totalDias} dias)" : $"Dia {progressoBruto} de {totalDias}",
-                    Location = new Point(100, 65),
-                    AutoSize = true
-                };
-
-                card.Controls.Add(lblProgresso);
-
-
-                var btnContinuar = new MaterialButton
-                {
-                    AutoSize = true,
-                    BackColor = planoConcluido ? Color.Gray : Color.FromArgb(244, 67, 54),
-                    ForeColor = Color.White,
-                    FlatStyle = FlatStyle.Flat,
-                    Location = new Point(card.Width - 80, card.Height - 45),
-                    Anchor = AnchorStyles.Bottom | AnchorStyles.Right,
-                    Tag = planoUtilizador
-                };
-
-                if (planoConcluido)
-                {
-                    btnContinuar.Text = "Concluído ✔";
-                    btnContinuar.Enabled = false;
-                }
-                else
-                {
-                    btnContinuar.Text = "Continuar";
-                    btnContinuar.Click += BtnContinuar_Click;
-                }
-
-
-                card.Controls.Add(btnContinuar);
-
-
-
-                flowPanelPlanos.Controls.Add(card);
             }
         }
 
@@ -2250,7 +2256,8 @@ Agora responda a seguinte pergunta em Portugues de Portugal de forma clara, com 
             int diaAtual = (int)planoUtilizador.ProgressoDiaAtual;
             int totalDias = planoUtilizador.PlanoLeitura.DiasDuracao;
 
-            if (diaAtual >= totalDias)
+            // Só impede se já passou do total de dias
+            if (diaAtual > totalDias)
             {
                 MessageBox.Show("Este plano já foi concluído! 🎉", "Concluído", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
@@ -2263,6 +2270,7 @@ Agora responda a seguinte pergunta em Portugues de Portugal de forma clara, com 
             // Após o diálogo ser fechado, atualiza toda a interface
             await AtualizarInterfaceCompletaAsync();
         }
+
 
 
         private void CarregarMeusPlanos()

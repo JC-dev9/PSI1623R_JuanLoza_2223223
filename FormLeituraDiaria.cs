@@ -108,13 +108,16 @@ namespace BeLightBible
 
                 // A barra inicia com o progresso correto
                 int progressoDia = diaAtual - 1;
-                if (progressoDia < 0) progressoDia = 0;
-
-                progressBar.Value = Math.Min(100, (int)((float)progressoDia / diasTotais * 100));
-
 
                 var leituraDia = db.PlanoLeituraDia
-                                   .FirstOrDefault(d => d.PlanoUtilizadorId == planoUtilizadorId && d.Dia == diaAtual);
+                    .FirstOrDefault(d => d.PlanoUtilizadorId == planoUtilizadorId && d.Dia == diaAtual);
+
+                if (leituraDia?.Lido == true)
+                {
+                    progressoDia++; // conta o dia atual como concluído
+                }
+
+                progressBar.Value = Math.Min(100, (int)((float)progressoDia / diasTotais * 100));
 
                 if (leituraDia == null)
                 {
