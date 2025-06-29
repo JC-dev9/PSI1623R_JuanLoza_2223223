@@ -484,7 +484,6 @@ namespace BeLightBible
             this.flowLayoutPanelConversa.Name = "flowLayoutPanelConversa";
             this.flowLayoutPanelConversa.Size = new System.Drawing.Size(891, 408);
             this.flowLayoutPanelConversa.TabIndex = 6;
-            this.flowLayoutPanelConversa.Paint += new System.Windows.Forms.PaintEventHandler(this.flowLayoutPanelConversa_Paint);
             // 
             // tabAnotacoes
             // 
@@ -780,6 +779,7 @@ namespace BeLightBible
             this.switchTema.TabIndex = 1;
             this.switchTema.Text = "Mudar tema";
             this.switchTema.UseVisualStyleBackColor = true;
+            this.switchTema.CheckedChanged += new System.EventHandler(this.switchTema_CheckedChanged);
             // 
             // numericTamanho
             // 

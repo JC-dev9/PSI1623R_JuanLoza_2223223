@@ -2320,7 +2320,7 @@ Agora responda a seguinte pergunta em Portugues de Portugal de forma clara, com 
             Properties.Settings.Default.Save();
         }
 
-        private void flowLayoutPanelConversa_Paint(object sender, PaintEventArgs e)
+        private void switchTema_CheckedChanged(object sender, EventArgs e)
         {
 
         }
