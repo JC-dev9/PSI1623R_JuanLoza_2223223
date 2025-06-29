@@ -661,7 +661,7 @@ Agora responda a seguinte pergunta em Portugues de Portugal de forma clara, com 
             }
         }
 
-        // -------------------- CARREGAMENTO --------------------
+        // -------------------- CARREGAMENTO BIBLIA --------------------
         private void CarregarLivros()
         {
             var livrosDictionary = livros.ObterLivros();
@@ -2320,9 +2320,31 @@ Agora responda a seguinte pergunta em Portugues de Portugal de forma clara, com 
             Properties.Settings.Default.Save();
         }
 
-        private void switchTema_CheckedChanged(object sender, EventArgs e)
+        private async void switchTema_CheckedChanged(object sender, EventArgs e)
         {
+            var skinManager = MaterialSkinManager.Instance;
+
+            if (switchTema.Checked)
+            {
+                skinManager.Theme = MaterialSkinManager.Themes.LIGHT;
+            }
+            else
+            {
+                skinManager.Theme = MaterialSkinManager.Themes.DARK;
+            }
+
+            // Atualiza o esquema de cores se quiser (opcional)
+            skinManager.ColorScheme = new ColorScheme(
+                Primary.BlueGrey500,
+                Primary.BlueGrey700,
+                Primary.BlueGrey100,
+                Accent.DeepOrange200,
+                switchTema.Checked ? TextShade.WHITE : TextShade.BLACK
+            );
+
+            await AtualizarInterfaceCompletaAsync();
 
         }
+
     }
 }
